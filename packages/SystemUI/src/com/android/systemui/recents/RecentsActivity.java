@@ -252,18 +252,18 @@ public class RecentsActivity extends Activity implements RecentsView.RecentsView
                 }
             });
             mRecentsView.setSearchBarVisibility(View.GONE);
-            findViewById(R.id.clear_recents).setVisibility(View.GONE);
+            findViewById(R.id.floating_action_button).setVisibility(View.GONE);
         } else {
             if (mEmptyView != null) {
                 mEmptyView.setVisibility(View.GONE);
                 mEmptyView.setOnClickListener(null);
             }
-            findViewById(R.id.clear_recents).setVisibility(View.VISIBLE);
+            findViewById(R.id.floating_action_button).setVisibility(View.VISIBLE);
             if (!mConfig.searchBarEnabled) {
                 mRecentsView.setSearchBarVisibility(View.GONE);
             } else {
                 if (mRecentsView.hasValidSearchBar()) {
-                    mRecentsView.setSearchBarVisibility(View.VISIBLE);
+                    mRecentsView.setSearchBarVisibility(View.VISIBLE : View.GONE);
                 } else {
                     refreshSearchWidgetView();
                 }
