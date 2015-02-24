@@ -68,10 +68,21 @@
                     android:layout_width="wrap_content"
                     android:layout_height="fill_parent"
                     android:singleLine="true"
-                    android:paddingEnd="6dip"
+                    android:paddingEnd="4dip"
                     android:gravity="center"
                     android:visibility="gone"
                     />
+
+                <ImageView
+                    android:id="@+id/ic_status_bar_xosp_logo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingEnd="1dip"
+                    android:src="@drawable/ic_status_bar_xosp_logo"
+                    android:scaleType="center"
+                    android:visibility="gone"
+                    />
+
                 <com.android.systemui.statusbar.StatusBarIconView android:id="@+id/moreIcon"
                     android:layout_width="@dimen/status_bar_icon_size"
                     android:layout_height="match_parent"

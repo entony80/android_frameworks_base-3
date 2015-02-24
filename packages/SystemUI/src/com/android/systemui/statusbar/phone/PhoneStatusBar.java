@@ -368,6 +368,13 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
 
     int mKeyguardMaxNotificationCount;
 
+
+    private boolean mShowCarrierInPanel = false;
+
+    // XOSP logo
+    private boolean mXOSPLogo;
+    private ImageView XOSPLogo;
+
     boolean mExpandedVisible;
 
     private int mNavigationBarWindowState = WINDOW_STATE_SHOWING;
@@ -457,6 +464,8 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
                     CMSettings.System.NAVBAR_LEFT_IN_LANDSCAPE), false, this, UserHandle.USER_ALL);
             resolver.registerContentObserver(CMSettings.System.getUriFor(
                     CMSettings.Secure.RECENTS_LONG_PRESS_ACTIVITY), false, this);
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.STATUS_BAR_XOSP_LOGO), false, this, UserHandle.USER_ALL);
             update();
         }
 
@@ -487,6 +496,9 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
 
             // This method reads CMSettings.Secure.RECENTS_LONG_PRESS_ACTIVITY
             updateCustomRecentsLongPressHandler(false);
+           mXOSPLogo = Settings.System.getIntForUser(resolver,
+           		Settings.System.STATUS_BAR_XOSP_LOGO, 0, mCurrentUserId) == 1;
+           showXOSPLogo(mXOSPLogo);
         }
     }
 
@@ -3468,6 +3480,15 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
         }
     };
 
+    public void showXOSPLogo(boolean show) {
+        if (mStatusBarView == null) return;
+        ContentResolver resolver = mContext.getContentResolver();
+        XOSPLogo = (ImageView) mStatusBarView.findViewById(R.id.ic_status_bar_xosp_logo);
+        if (XOSPLogo != null) {
+            XOSPLogo.setVisibility(show ? (mXOSPLogo ? View.VISIBLE : View.GONE) : View.GONE);
+        }
+    }
+
     private BroadcastReceiver mPackageBroadcastReceiver = new BroadcastReceiver() {
         public void onReceive(Context context, Intent intent) {
             if (DEBUG) Log.v(TAG, "onReceive: " + intent);
@@ -3697,7 +3718,10 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
      * should, but getting that smooth is tough.  Someday we'll fix that.  In the
      * meantime, just update the things that we know change.
      */
+
     void updateResources(Configuration newConfig) {
+        ContentResolver resolver = mContext.getContentResolver();
+
         // detect theme change.
         ThemeConfig newTheme = newConfig != null ? newConfig.themeConfig : null;
         final boolean updateStatusBar = shouldUpdateStatusbar(mCurrentTheme, newTheme);
@@ -3706,6 +3730,10 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
         if (updateStatusBar) {
             mContext.recreateTheme();
             recreateStatusBar();
+
+            mXOSPLogo = Settings.System.getInt(
+                resolver, Settings.System.STATUS_BAR_XOSP_LOGO, 0) == 1;
+            showXOSPLogo(mXOSPLogo);
         } else {
             loadDimens();
         }

@@ -3478,6 +3478,13 @@ public final class Settings {
          *
          * @hide
          */
+
+        /**
+         * Statusbar XOSP logo
+         * @hide
+         */
+        public static final String STATUS_BAR_XOSP_LOGO = "status_bar_xosp_logo";
+         
         public static final String[] SETTINGS_TO_BACKUP = {
             STAY_ON_WHILE_PLUGGED_IN,   // moved to global
             WIFI_USE_STATIC_IP,
