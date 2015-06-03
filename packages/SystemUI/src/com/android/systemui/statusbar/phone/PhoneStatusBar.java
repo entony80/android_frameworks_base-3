@@ -500,6 +500,18 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
             update();
         }
 
+	@Override
+        public void onChange(boolean selfChange, Uri uri) {
+            if (uri.equals(Settings.System.getUriFor(
+                    Settings.System.ENABLE_TASK_MANAGER))) {
+                    mShowTaskManager = Settings.System.getIntForUser(
+                            mContext.getContentResolver(),
+                            Settings.System.ENABLE_TASK_MANAGER,
+                            0, UserHandle.USER_CURRENT) == 1;
+                             recreateStatusBar();
+            update();
+        }
+
         @Override
         protected void unobserve() {
             super.unobserve();
