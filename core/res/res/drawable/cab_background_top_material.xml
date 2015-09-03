@@ -24,6 +24,6 @@
     <item>
         <nine-patch
             android:src="@drawable/cab_background_top_mtrl_alpha"
-            android:tint="?attr/colorControlActivated" />
+            android:tint="@color/material_blue_900" />
     </item>
 </layer-list>

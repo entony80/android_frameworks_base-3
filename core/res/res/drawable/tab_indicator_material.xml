@@ -25,7 +25,7 @@
     </item>
     <item android:gravity="bottom">
         <shape android:shape="rectangle"
-               android:tint="?attr/colorControlActivated">
+               android:tint="@color/material_blue_900">
             <size android:height="2dp" />
             <solid android:color="@color/tab_indicator_material" />
         </shape>

@@ -31,7 +31,7 @@
         </item>
         <item>
             <nine-patch android:src="@drawable/textfield_activated_mtrl_alpha"
-                android:tint="?attr/colorControlActivated" />
+                android:tint="@color/material_blue_900" />
         </item>
     </selector>
 </inset>

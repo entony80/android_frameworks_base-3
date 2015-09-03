@@ -18,7 +18,7 @@
     <item android:state_pressed="true">
         <bitmap
             android:src="@drawable/btn_rating_star_on_mtrl_alpha"
-            android:tint="?attr/colorControlActivated" />
+            android:tint="@color/material_blue_900" />
     </item>
     <item>
         <bitmap
