@@ -37,7 +37,7 @@
     <color name="system_primary_color">#ff263238</color><!-- blue grey 900 -->
     <color name="system_primary_color_translucent">#90aaaaaa</color><!-- blue grey 900 -->
     <color name="system_secondary_color">#ff384248</color>
-    <color name="system_accent_color">#ff80CBC4</color><!-- deep teal 200 -->
+    <color name="system_accent_color">@*android:color/material_blue_500</color> <!-- Blue 500 -->
     <color name="system_warning_color">#fff4511e</color><!-- deep orange 600 -->
     <color name="qs_text">#FFFFFFFF</color>
     <color name="qs_tile_divider">#29ffffff</color><!-- 16% white -->
@@ -47,7 +47,7 @@
     <color name="qs_detail_button">#FFB0BEC5</color><!-- 100% blue grey 200 -->
     <color name="qs_detail_button_white">#B3FFFFFF</color><!-- 70% white -->
     <color name="qs_detail_transition">#66FFFFFF</color>
-    <color name="qs_detail_progress_track">#99009688</color><!-- 60% deep teal 500 -->
+    <color name="qs_detail_progress_track">@*android:color/material_blue_900</color><!-- Blue 900 -->
     <color name="data_usage_secondary">#99FFFFFF</color><!-- 60% white -->
     <color name="data_usage_graph_track">#33FFFFFF</color><!-- 20% white -->
     <color name="data_usage_graph_warning">#FFFFFFFF</color>
@@ -124,8 +124,8 @@
     <!-- Shadow color for the furthest pixels around the fake shadow for recents. -->
     <color name="fake_shadow_end_color">#03000000</color>
 
-    <color name="screen_pinning_nav_icon_highlight_outer">#4080cbc4</color><!-- 25% deep teal 200 -->
-    <color name="screen_pinning_request_bg">#ff009688</color><!-- deep teal 500 -->
+    <color name="screen_pinning_nav_icon_highlight_outer">#400094ca</color> <!-- 25% Blue 900 -->
+    <color name="screen_pinning_request_bg">@*android:color/material_blue_500</color> <!-- Blue 500 -->
     <color name="screen_pinning_request_window_bg">#80000000</color>
 
     <color name="segmented_buttons_background">#14FFFFFF</color><!-- 8% white -->
