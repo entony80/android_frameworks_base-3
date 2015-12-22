@@ -188,6 +188,7 @@ import com.android.systemui.statusbar.stack.StackViewState;
 import com.android.systemui.volume.VolumeComponent;
 import cyanogenmod.app.CustomTileListenerService;
 import cyanogenmod.app.StatusBarPanelCustomTile;
+import android.net.Uri;
 
 import java.io.FileDescriptor;
 import java.io.PrintWriter;
