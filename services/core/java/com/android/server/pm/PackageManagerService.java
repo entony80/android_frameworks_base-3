@@ -94,7 +94,7 @@ import android.Manifest;
 
 import cyanogenmod.app.suggest.AppSuggestManager;
 
-import com.android.internal.policy.PhoneWindowManager;
+import com.android.server.policy.PhoneWindowManager;
 import android.app.ActivityManager;
 import android.app.ActivityManagerNative;
 import android.app.AppGlobals;
