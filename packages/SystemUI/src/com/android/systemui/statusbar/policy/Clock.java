@@ -205,6 +205,14 @@ public class Clock extends TextView implements DemoMode {
         if (mDemoMode || mCalendar == null) return;
 
         ContentResolver resolver = mContext.getContentResolver();
+
+        mClockFontStyle = Settings.System.getIntForUser(resolver,
+                Settings.System.STATUSBAR_CLOCK_FONT_STYLE, FONT_NORMAL,
+                UserHandle.USER_CURRENT);
+        mClockFontSize = Settings.System.getIntForUser(resolver,
+                Settings.System.STATUSBAR_CLOCK_FONT_SIZE, 14,
+                UserHandle.USER_CURRENT);
+
         int defaultColor = mContext.getResources().getColor(R.color.status_bar_clock_color);
         int clockColor = Settings.System.getIntForUser(resolver,
                 Settings.System.STATUSBAR_CLOCK_COLOR, defaultColor,
@@ -214,6 +222,8 @@ public class Clock extends TextView implements DemoMode {
             clockColor = defaultColor;
         }
         setTextColor(clockColor);
+        getFontStyle(mClockFontStyle);
+        setTextSize(mClockFontSize);
 
         mCalendar.setTimeInMillis(System.currentTimeMillis());
         setText(getSmallTime());
@@ -347,14 +357,7 @@ public class Clock extends TextView implements DemoMode {
         mClockDateStyle = Settings.System.getIntForUser(resolver,
                 Settings.System.STATUS_BAR_DATE_STYLE, CLOCK_DATE_STYLE_REGULAR,
                 UserHandle.USER_CURRENT);
-        mClockFontStyle = Settings.System.getIntForUser(resolver,
-                Settings.System.STATUSBAR_CLOCK_FONT_STYLE, FONT_NORMAL,
-                UserHandle.USER_CURRENT);
-        mClockFontSize = Settings.System.getIntForUser(resolver,
-                Settings.System.STATUSBAR_CLOCK_FONT_SIZE, 14,
-                UserHandle.USER_CURRENT);
 
-        setTextSize(mClockFontSize);
         updateClock();
     }
 
