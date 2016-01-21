@@ -26,17 +26,24 @@ import android.content.ContentResolver;
 import android.app.ActivityManager;
 import android.app.StatusBarManager;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.pm.PackageManager;
+import android.graphics.drawable.BitmapDrawable;
 import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.database.ContentObserver;
+import android.graphics.*;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Handler;
+import android.provider.Settings;
 import android.os.PowerManager;
 import android.os.UserHandle;
 import android.provider.Settings;
@@ -55,6 +62,7 @@ import android.view.WindowManager;
 import android.view.WindowManagerGlobal;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.animation.AnimationUtils;
+import android.view.animation.*;
 import android.view.animation.Interpolator;
 import android.view.animation.PathInterpolator;
 import android.widget.FrameLayout;
@@ -70,6 +78,8 @@ import com.android.systemui.R;
 import com.android.systemui.SwipeHelper;
 import com.android.systemui.qs.QSContainer;
 import com.android.systemui.qs.QSDragPanel;
+import com.android.systemui.qs.QSPanel;
+import com.android.systemui.statusbar.*;
 import com.android.systemui.statusbar.ExpandableNotificationRow;
 import com.android.systemui.statusbar.ExpandableView;
 import com.android.systemui.statusbar.FlingAnimationUtils;
@@ -121,7 +131,7 @@ public class NotificationPanelView extends PanelView implements
     private StatusBarHeaderView mHeader;
     private KeyguardUserSwitcher mKeyguardUserSwitcher;
     private KeyguardStatusBarView mKeyguardStatusBar;
-    private QSContainer mQsContainer;
+    public static QSContainer mQsContainer;
     private QSDragPanel mQsPanel;
     private KeyguardStatusView mKeyguardStatusView;
     private ObservableScrollView mScrollView;
@@ -152,7 +162,8 @@ public class NotificationPanelView extends PanelView implements
     private boolean mQsExpanded;
     private boolean mQsExpandedWhenExpandingStarted;
     private boolean mQsFullyExpanded;
-    private boolean mKeyguardShowing;
+    public static boolean mKeyguardShowing;
+    public static boolean mHeadsUpShowing;
     private boolean mDozing;
     private boolean mDozingOnDown;
     private int mStatusBarState;
@@ -228,7 +239,7 @@ public class NotificationPanelView extends PanelView implements
     private int mPositionMinSideMargin;
     private int mLastOrientation = -1;
     private boolean mClosingWithAlphaFadeOut;
-    private boolean mHeadsUpAnimatingAway;
+    public static boolean mHeadsUpAnimatingAway;
     private boolean mLaunchingAffordance;
     private String mLastCameraLaunchSource = KeyguardBottomAreaView.CAMERA_LAUNCH_SOURCE_AFFORDANCE;
 
@@ -342,6 +353,36 @@ public class NotificationPanelView extends PanelView implements
             mKeyguardStatusView.setTranslationX(0);
             mKeyguardStatusView.setAlpha(1f);
         }
+    public static boolean mBlurredStatusBarExpandedEnabled;
+    public static NotificationPanelView mNotificationPanelView;
+
+    private static int mBlurScale;
+    private static int mBlurRadius;
+    private static BlurUtils mBlurUtils;
+    private static FrameLayout mBlurredView;
+    private static ColorFilter mColorFilter;
+    private static int mBlurDarkColorFilter;
+    private static int mBlurMixedColorFilter;
+    private static int mBlurLightColorFilter;
+    private static int mTranslucencyPercentage;
+    private static AlphaAnimation mAlphaAnimation;
+    private static boolean mTranslucentQuickSettings;
+    private static Animation.AnimationListener mAnimationListener = new Animation.AnimationListener() {
+
+        @Override
+        public void onAnimationStart(Animation anim) {
+
+            // visível
+            mBlurredView.setVisibility(View.VISIBLE);
+
+        }
+
+        @Override
+        public void onAnimationEnd(Animation anim) {}
+
+        @Override
+        public void onAnimationRepeat(Animation anim) {}
+
     };
 
     public NotificationPanelView(Context context, AttributeSet attrs) {
@@ -533,6 +574,96 @@ public class NotificationPanelView extends PanelView implements
 
     public boolean isAffordanceSwipeInProgress() {
         return mAfforanceHelper.isSwipingInProgress();
+        
+            mNotificationPanelView = this;
+
+            mBlurUtils = new BlurUtils(mNotificationPanelView.getContext());
+
+            mAlphaAnimation = new AlphaAnimation(0.0f, 1.0f);
+            mAlphaAnimation.setDuration(75);
+            mAlphaAnimation.setAnimationListener(mAnimationListener);
+
+            mBlurredView = new FrameLayout(mNotificationPanelView.getContext());
+            
+            NotificationPanelView.addView(mBlurredView, 0, new FrameLayout.LayoutParams(
+                    FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
+            mNotificationPanelView.requestLayout();
+
+            mBlurredView.setTag("ready_to_blur");
+            mBlurredView.setVisibility(View.INVISIBLE);
+
+            handleQuickSettingsBackround();
+    }
+    
+    private static void handleQuickSettingsBackround() {
+
+        if (mQsContainer == null)
+            return;
+        if (mKeyguardShowing) {
+            mQsContainer.getBackground().setAlpha(255);
+        } else {
+            mQsContainer.getBackground().setAlpha(mTranslucentQuickSettings ? mTranslucencyPercentage : 255);
+        }
+    }
+
+
+    public static void startBlurTask() {
+        if (!mBlurredStatusBarExpandedEnabled)
+            return;
+        try {
+            if (mBlurredView.getTag().toString().equals("blur_applied"))
+                return;
+        } catch (Exception e){
+        }
+        if (mNotificationPanelView == null)
+            return;
+        if (mKeyguardShowing || mHeadsUpShowing || mHeadsUpAnimatingAway)
+            return;
+
+        BlurTask.setBlurTaskCallback(new BlurUtils.BlurTaskCallback() {
+
+            @Override
+            public void blurTaskDone(Bitmap blurredBitmap) {
+                if (blurredBitmap != null) {
+                    int[] screenDimens = BlurTask.getRealScreenDimensions();
+                    mBlurredView.getLayoutParams().width = screenDimens[0];
+                    mBlurredView.requestLayout();
+
+                    BitmapDrawable drawable = new BitmapDrawable(blurredBitmap);
+                    drawable.setColorFilter(mColorFilter);
+
+                    mBlurredView.setBackground(drawable);
+
+                    mBlurredView.setTag("blur_applied");
+                } else {
+
+                    mBlurredView.setBackgroundColor(mBlurLightColorFilter);
+                    mBlurredView.setTag("error");
+
+                }
+                mBlurredView.startAnimation(mAlphaAnimation);
+             }
+
+            @Override
+            public void dominantColor(int color) {
+                double lightness = DisplayUtils.getColorLightness(color);
+
+                if (lightness >= 0.0 && color <= 1.0) {
+                    if (lightness <= 0.33) {
+                        mColorFilter = new PorterDuffColorFilter(mBlurLightColorFilter, PorterDuff.Mode.MULTIPLY);
+                    } else if (lightness >= 0.34 && lightness <= 0.66) {
+                        mColorFilter = new PorterDuffColorFilter(mBlurMixedColorFilter, PorterDuff.Mode.MULTIPLY);
+                    } else if (lightness >= 0.67 && lightness <= 1.0) {
+                        mColorFilter = new PorterDuffColorFilter(mBlurDarkColorFilter, PorterDuff.Mode.MULTIPLY);
+                    }
+                } else {
+                    mColorFilter = new PorterDuffColorFilter(mBlurMixedColorFilter, PorterDuff.Mode.MULTIPLY);
+                }
+            }
+        });
+
+        BlurTask.setBlurEngine(BlurUtils.BlurEngine.RenderScriptBlur);
+        new BlurTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
     @Override
@@ -549,6 +680,157 @@ public class NotificationPanelView extends PanelView implements
         mWeatherController.removeCallback(this);
     }
 
+    public static void updatePreferences(Context mContext) {
+
+        // atualiza
+        mBlurScale = Settings.System.getInt(mContext.getContentResolver(), Settings.System.BLUR_SCALE_PREFERENCE_KEY, 10);
+        mBlurRadius = Settings.System.getInt(mContext.getContentResolver(), Settings.System.BLUR_RADIUS_PREFERENCE_KEY, 5);
+        mBlurDarkColorFilter = Color.LTGRAY;
+        mBlurMixedColorFilter = Color.GRAY;
+        mBlurLightColorFilter = Color.DKGRAY;
+        mTranslucentQuickSettings = (Settings.System.getInt(mContext.getContentResolver(), Settings.System.TRANSLUCENT_QUICK_SETTINGS_PREFERENCE_KEY, 1) == 1);
+        mBlurredStatusBarExpandedEnabled = (Settings.System.getInt(mContext.getContentResolver(), Settings.System.STATUS_BAR_EXPANDED_ENABLED_PREFERENCE_KEY, 1) == 1);
+        mTranslucencyPercentage = Settings.System.getInt(mContext.getContentResolver(), Settings.System.TRANSLUCENTCY_PRECENTAGE_PREFERENCE_KEY, 60);
+        mTranslucencyPercentage = 255 - ((mTranslucencyPercentage * 255) / 100);
+
+        // transparente ?
+        handleQuickSettingsBackround();
+
+    }
+
+    public static void recycle() {
+
+        // limpa e recicla
+        if (mBlurredView != null &&
+                mBlurredView.getBackground() != null) {
+
+            // bitmap ?
+            if (mBlurredView.getBackground() instanceof BitmapDrawable) {
+
+                // recicla
+                Bitmap bitmap = ((BitmapDrawable) mBlurredView.getBackground()).getBitmap();
+                if (bitmap != null) {
+
+                    bitmap.recycle();
+                    bitmap = null;
+
+                }
+            }
+
+            // limpa
+            mBlurredView.setBackground(null);
+
+        }
+
+        // seta o tag de: pronto para receber o blur
+        mBlurredView.setTag("ready_to_blur");
+
+        // invisível
+        mBlurredView.setVisibility(View.INVISIBLE);
+
+    }
+
+    public static class BlurTask extends AsyncTask<Void, Void, Bitmap> {
+
+        private static int[] mScreenDimens;
+        private static BlurUtils.BlurEngine mBlurEngine;
+        private static BlurUtils.BlurTaskCallback mCallback;
+
+        private Bitmap mScreenBitmap;
+
+        public static void setBlurEngine(BlurUtils.BlurEngine blurEngine) {
+
+            mBlurEngine = blurEngine;
+
+        }
+
+        public static void setBlurTaskCallback(BlurUtils.BlurTaskCallback callBack) {
+
+            mCallback = callBack;
+
+        }
+
+        public static int[] getRealScreenDimensions() {
+
+            return mScreenDimens;
+
+        }
+
+        @Override
+        protected void onPreExecute() {
+
+            Context context = mNotificationPanelView.getContext();
+
+            // obtém o tamamho real da tela
+            mScreenDimens = DisplayUtils.getRealScreenDimensions(context);
+
+            // obtém a screenshot da tela com escala reduzida
+            mScreenBitmap = DisplayUtils.takeSurfaceScreenshot(context, mBlurScale);
+
+        }
+
+        @Override
+        protected Bitmap doInBackground(Void... arg0) {
+
+            try {
+
+                // continua ?
+                if (mScreenBitmap == null)
+                    return null;
+
+                // calback
+                mCallback.dominantColor(DisplayUtils.getDominantColorByPixelsSampling(mScreenBitmap, 20, 20));
+
+                // blur engine
+            //    if (mBlurEngine == BlurUtils.BlurEngine.RenderScriptBlur) {
+//
+   //                 mScreenBitmap = mBlurUtils.renderScriptBlur(mScreenBitmap, mBlurRadius);
+//
+  //              } else if (mBlurEngine == BlurUtils.BlurEngine.StackBlur) {
+
+    //                mScreenBitmap = mBlurUtils.stackBlur(mScreenBitmap, mBlurRadius);
+//
+  //              } else if (mBlurEngine == BlurUtils.BlurEngine.FastBlur) {
+//
+  //                  mBlurUtils.fastBlur(mScreenBitmap, mBlurRadius);
+//
+  //              }
+                mScreenBitmap = mBlurUtils.renderScriptBlur(mScreenBitmap, mBlurRadius);
+                return mScreenBitmap;
+
+            } catch (OutOfMemoryError e) {
+
+                // erro
+                return null;
+
+            }
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap bitmap) {
+
+            if (bitmap != null) {
+
+                // -----------------------------
+                // bitmap criado com sucesso !!!
+                // -----------------------------
+
+                // callback
+                mCallback.blurTaskDone(bitmap);
+
+            } else {
+
+                // --------------------------
+                // erro ao criar o bitmap !!!
+                // --------------------------
+
+                // callback
+                mCallback.blurTaskDone(null);
+
+            }
+        }
+    }
+///////////////////////////////////
     @Override
     protected void loadDimens() {
         super.loadDimens();
@@ -1390,6 +1672,12 @@ public class NotificationPanelView extends PanelView implements
         }
         resetVerticalPanelPosition();
         updateQsState();
+
+        try {
+            handleQuickSettingsBackround();
+            StatusBarHeaderView.handleStatusBarHeaderViewBackround();
+        } catch (Exception e){
+        }
     }
 
     private final Runnable mAnimateKeyguardStatusViewInvisibleEndRunnable = new Runnable() {
@@ -2694,9 +2982,11 @@ public class NotificationPanelView extends PanelView implements
     @Override
     public void onHeadsUpPinnedModeChanged(final boolean inPinnedMode) {
         if (inPinnedMode) {
+            mHeadsUpShowing = true;
             mHeadsUpExistenceChangedRunnable.run();
             updateNotificationTranslucency();
         } else {
+            mHeadsUpShowing = false;
             mHeadsUpAnimatingAway = true;
             mNotificationStackScroller.runAfterAnimationFinished(
                     mHeadsUpExistenceChangedRunnable);
