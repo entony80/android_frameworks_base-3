@@ -28,6 +28,7 @@ import android.content.res.Resources;
 import android.graphics.PixelFormat;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
+import android.provider.Settings;
 import android.os.RemoteException;
 import android.os.ServiceManager;
 import android.util.Log;
