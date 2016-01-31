@@ -396,6 +396,8 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
     // task manager click state
     private boolean mShowTaskList = false;
 
+    private boolean mShow4G;
+
     // top bar
     StatusBarHeaderView mHeader;
     KeyguardStatusBarView mKeyguardStatusBar;
@@ -523,8 +525,10 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
                     CMSettings.Secure.RECENTS_LONG_PRESS_ACTIVITY), false, this);
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.STATUS_BAR_XOSP_LOGO), false, this, UserHandle.USER_ALL);
-           resolver.registerContentObserver(Settings.System.getUriFor(
+           	resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.LOCKSCREEN_BLUR_RADIUS), false, this);	
+			resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.SHOW_FOURG), false, this, UserHandle.USER_ALL);
             update();
         }
 
@@ -535,6 +539,12 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
                     mShowTaskManager = Settings.System.getIntForUser(
                             mContext.getContentResolver(),
                             Settings.System.ENABLE_TASK_MANAGER,
+                            0, UserHandle.USER_CURRENT) == 1;
+            } else if (uri.equals(Settings.System.getUriFor(
+                    Settings.System.SHOW_FOURG))) {
+                    mShow4G = Settings.System.getIntForUser(
+                            mContext.getContentResolver(),
+                            Settings.System.SHOW_FOURG,
                             0, UserHandle.USER_CURRENT) == 1;
                     recreateStatusBar();
                     updateRowStates();
@@ -627,6 +637,9 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
             Intent intent = new Intent("com.cyanogenmod.action.UserChanged");
             intent.setPackage("com.android.settings");
             mContext.sendBroadcastAsUser(intent, new UserHandle(UserHandle.USER_CURRENT));
+
+            boolean mShow4G = Settings.System.getIntForUser(resolver,
+                    Settings.System.SHOW_FOURG, 0, UserHandle.USER_CURRENT) == 1;
         }
     }
 
