@@ -42,6 +42,7 @@ import android.content.pm.IPackageManager;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
+import android.os.PowerManager;
 import android.content.res.ThemeChangeRequest.RequestType;
 import android.content.res.ThemeConfig;
 import android.content.res.Resources;
@@ -348,7 +349,6 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
     // settings
     private QSDragPanel mQSPanel;
     private QSTileHost mQSTileHost;
-    private DevForceNavbarObserver mDevForceNavbarObserver;
 
     // top bar
     StatusBarHeaderView mHeader;
@@ -904,10 +904,6 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
                         checkUserAutohide(v, event);
                         return false;
                     }});
-            }
-        } catch (RemoteException ex) {
-            // no window manager? good luck with that
-        }
 
         if (mAssistManager == null) {
             mAssistManager = new AssistManager(this, context);
