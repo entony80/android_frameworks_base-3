@@ -27,7 +27,7 @@
     </item>
     <item android:state_checked="true" android:id="@+id/on">
         <bitmap android:src="@drawable/btn_radio_to_on_mtrl_015"
-                android:tint="@color/material_blue_900" />
+                android:tint="@color/material_deep_teal_500" />
     </item>
     <item android:id="@+id/off">
         <bitmap android:src="@drawable/btn_radio_to_on_mtrl_000"
@@ -69,35 +69,35 @@
             </item>
             <item android:duration="15">
                 <bitmap android:src="@drawable/btn_radio_to_on_mtrl_008"
-                        android:tint="@color/material_blue_900" />
+                        android:tint="@color/material_deep_teal_500" />
             </item>
             <item android:duration="15">
                 <bitmap android:src="@drawable/btn_radio_to_on_mtrl_009"
-                        android:tint="@color/material_blue_900" />
+                        android:tint="@color/material_deep_teal_500" />
             </item>
             <item android:duration="15">
                 <bitmap android:src="@drawable/btn_radio_to_on_mtrl_010"
-                        android:tint="@color/material_blue_900" />
+                        android:tint="@color/material_deep_teal_500" />
             </item>
             <item android:duration="15">
                 <bitmap android:src="@drawable/btn_radio_to_on_mtrl_011"
-                        android:tint="@color/material_blue_900" />
+                        android:tint="@color/material_deep_teal_500" />
             </item>
             <item android:duration="15">
                 <bitmap android:src="@drawable/btn_radio_to_on_mtrl_012"
-                        android:tint="@color/material_blue_900" />
+                        android:tint="@color/material_deep_teal_500" />
             </item>
             <item android:duration="15">
                 <bitmap android:src="@drawable/btn_radio_to_on_mtrl_013"
-                        android:tint="@color/material_blue_900" />
+                        android:tint="@color/material_deep_teal_500" />
             </item>
             <item android:duration="15">
                 <bitmap android:src="@drawable/btn_radio_to_on_mtrl_014"
-                        android:tint="@color/material_blue_900" />
+                        android:tint="@color/material_deep_teal_500" />
             </item>
             <item android:duration="15">
                 <bitmap android:src="@drawable/btn_radio_to_on_mtrl_015"
-                        android:tint="@color/material_blue_900" />
+                        android:tint="@color/material_deep_teal_500" />
             </item>
         </animation-list>
     </transition>
@@ -105,35 +105,35 @@
         <animation-list>
             <item android:duration="15">
                 <bitmap android:src="@drawable/btn_radio_to_off_mtrl_000"
-                        android:tint="@color/material_blue_900" />
+                        android:tint="@color/material_deep_teal_500" />
             </item>
             <item android:duration="15">
                 <bitmap android:src="@drawable/btn_radio_to_off_mtrl_001"
-                        android:tint="@color/material_blue_900" />
+                        android:tint="@color/material_deep_teal_500" />
             </item>
             <item android:duration="15">
                 <bitmap android:src="@drawable/btn_radio_to_off_mtrl_002"
-                        android:tint="@color/material_blue_900" />
+                        android:tint="@color/material_deep_teal_500" />
             </item>
             <item android:duration="15">
                 <bitmap android:src="@drawable/btn_radio_to_off_mtrl_003"
-                        android:tint="@color/material_blue_900" />
+                        android:tint="@color/material_deep_teal_500" />
             </item>
             <item android:duration="15">
                 <bitmap android:src="@drawable/btn_radio_to_off_mtrl_004"
-                        android:tint="@color/material_blue_900" />
+                        android:tint="@color/material_deep_teal_500" />
             </item>
             <item android:duration="15">
                 <bitmap android:src="@drawable/btn_radio_to_off_mtrl_005"
-                        android:tint="@color/material_blue_900" />
+                        android:tint="@color/material_deep_teal_500" />
             </item>
             <item android:duration="15">
                 <bitmap android:src="@drawable/btn_radio_to_off_mtrl_006"
-                        android:tint="@color/material_blue_900" />
+                        android:tint="@color/material_deep_teal_500" />
             </item>
             <item android:duration="15">
                 <bitmap android:src="@drawable/btn_radio_to_off_mtrl_007"
-                        android:tint="@color/material_blue_900" />
+                        android:tint="@color/material_deep_teal_500" />
             </item>
             <item android:duration="15">
                 <bitmap android:src="@drawable/btn_radio_to_off_mtrl_008"

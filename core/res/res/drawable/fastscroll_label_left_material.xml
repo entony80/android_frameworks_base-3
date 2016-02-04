@@ -18,7 +18,7 @@
        android:insetLeft="16dp">
     <shape
         android:shape="rectangle"
-        android:tint="@color/material_blue_900">
+        android:tint="@color/material_deep_teal_500">
         <corners
             android:topLeftRadius="44dp"
             android:topRightRadius="44dp"
