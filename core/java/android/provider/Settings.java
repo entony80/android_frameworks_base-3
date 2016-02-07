@@ -3653,12 +3653,6 @@ public final class Settings {
         public static final String DASHBOARD_COLUMNS = "dashboard_columns";
 
         /**
-         * Change the number of columns displayed in the Settings dashboard
-         * @hide
-         */
-        public static final String DASHBOARD_COLUMNS = "dashboard_columns";
-
-        /**
          * Whether to display dashboard tiles in a double line layout
          * @hide
          */
