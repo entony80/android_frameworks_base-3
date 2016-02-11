@@ -3396,9 +3396,17 @@ public final class Settings {
          */
         public static final String SIP_CALL_OPTIONS = "sip_call_options";
 
-        /** @hide */
+		/** @hide */
         public static final Validator SIP_CALL_OPTIONS_VALIDATOR = new DiscreteValueValidator(
                 new String[] {"SIP_ALWAYS", "SIP_ADDRESS_ONLY"});
+
+        /**
+         * Position of date
+         * 0 - Left of clock
+         * 1 - Right of clock
+         * @hide
+         */
+        public static final String STATUSBAR_CLOCK_DATE_POSITION = "statusbar_clock_date_position";
 
         /**
          * One of the sip call options: Always use SIP with network access.
