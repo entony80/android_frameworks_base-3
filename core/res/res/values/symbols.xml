@@ -1560,8 +1560,8 @@
   <java-symbol type="layout" name="screen_title_icons" />
   <java-symbol type="string" name="system_ui_date_pattern" />
   <java-symbol type="string" name="android_preparing_apk" />
-  <java-symbol type="string" name="reborn_start_title" />
-  <java-symbol type="string" name="reborn_upgrading_title" />
+  <java-symbol type="string" name="xosp_start_title" />
+  <java-symbol type="string" name="xosp_upgrading_title" />
   <java-symbol type="string" name="bugreport_title" />
   <java-symbol type="string" name="bugreport_message" />
   <java-symbol type="string" name="bugreport_status" />

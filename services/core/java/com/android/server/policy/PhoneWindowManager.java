@@ -7243,9 +7243,9 @@ public class PhoneWindowManager implements WindowManagerPolicy {
                         }
                     };
                     if (mContext.getPackageManager().isUpgrade()) {
-                        mBootMsgDialog.setTitle(R.string.reborn_upgrading_title);
+                        mBootMsgDialog.setTitle(R.string.xosp_upgrading_title);
                     } else {
-                        mBootMsgDialog.setTitle(R.string.reborn_start_title);
+                        mBootMsgDialog.setTitle(R.string.xosp_start_title);
                     }
                     mBootMsgDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
                     mBootMsgDialog.setIcon(com.android.internal.R.drawable.xosp);
@@ -7265,11 +7265,11 @@ public class PhoneWindowManager implements WindowManagerPolicy {
                 if (always && (currentPackageName != null)) {
                     // Only display the current package name if the main message says "Optimizing app N of M".
                     // We don't want to do this when the message says "Starting apps" or "Finishing boot", etc.
-                    mBootMsgDialog.setTitle(R.string.reborn_upgrading_title);
+                    mBootMsgDialog.setTitle(R.string.xosp_upgrading_title);
                     mBootMsgDialog.setMessage(msg + "\n" + currentPackageName);
                 }
                 else {
-                  mBootMsgDialog.setTitle(R.string.reborn_start_title);
+                  mBootMsgDialog.setTitle(R.string.xosp_start_title);
                   mBootMsgDialog.setMessage("Finishing the startup..\n\n" + msg);
                }
             }
