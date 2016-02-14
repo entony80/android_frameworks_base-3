@@ -870,8 +870,7 @@ public class NavigationBarView extends LinearLayout {
 
     void setListeners(OnClickListener recentsClickListener, OnTouchListener recentsPreloadListener,
                       OnLongClickListener recentsBackListener, OnTouchListener homeSearchActionListener,
-                      OnLongClickListener longPressHomeListener,
-                      OnLongClickListener notificationsLongListener,OnClickListener torchClickListener,
+                      OnLongClickListener longPressHomeListener,OnClickListener torchClickListener,
                       OnClickListener cameraClickListener, OnClickListener screenshotClickListener,
                       OnClickListener immersiveClickListener) {
         mRecentsClickListener = recentsClickListener;
