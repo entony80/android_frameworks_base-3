@@ -1674,7 +1674,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
 
         mNavigationBarView.setListeners(mRecentsClickListener, mRecentsPreloadOnTouchListener,
                 mLongPressBackRecentsListener, mHomeActionListener, mLongPressHomeListener,
-                mTorchClickListener, mCameraClickListener, mScreenShotClickListener, mImmersiveClickListener);
+                mTorchClickListener,mCameraClickListener, mScreenShotClickListener, mImmersiveClickListener);
         mAssistManager.onConfigurationChanged();
     }
 
