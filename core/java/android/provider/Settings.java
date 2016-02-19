@@ -2413,6 +2413,11 @@ public final class Settings {
         public static final String SHOW_SU_INDICATOR = "show_su_indicator";
 
         /**
+         * @hide
+         */
+        public static final String SHOW_HEADSET_INDICATOR = "show_headset_icon"
+
+        /**
          * Scaling factor for fonts, float.
          */
         public static final String FONT_SCALE = "font_scale";

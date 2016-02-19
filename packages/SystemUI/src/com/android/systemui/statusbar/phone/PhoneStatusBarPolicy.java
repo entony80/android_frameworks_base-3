@@ -97,6 +97,7 @@ public class PhoneStatusBarPolicy implements Callback {
     private boolean mAlarmIconVisible;
     private final SuController mSuController;
     private boolean mSuIndicatorVisible;
+    private boolean mShowHeadset;
 
     // Assume it's all good unless we hear otherwise.  We don't always seem
     // to get broadcasts that it *is* there.
@@ -245,8 +246,11 @@ public class PhoneStatusBarPolicy implements Callback {
                     CMSettings.System.SHOW_ALARM_ICON, 1) == 1;
             mSuIndicatorVisible = Settings.System.getInt(mContext.getContentResolver(),
                     Settings.System.SHOW_SU_INDICATOR, 1) == 1;
+            mShowHeadset = Settings.System.getInt(mContext.getContentResolver(),
+                    Settings.System.SHOW_HEADSET_INDICATOR,1) == 1;
             updateAlarm();
             updateSu();
+            updateHeadset();
         }
 
         @Override
@@ -256,8 +260,7 @@ public class PhoneStatusBarPolicy implements Callback {
     };
 
     private final void updateHeadset(Intent intent) {
-        int state = intent.getIntExtra("state", 0);
-        mService.setIconVisibility(SLOT_HEADSET, state == 1 ? true : false);
+        mService.setIconVisibility(SLOT_HEADSET, mShowHeadset);
     }
 
     public void setZenMode(int zen) {
