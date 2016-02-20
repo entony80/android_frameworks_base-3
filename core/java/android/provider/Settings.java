@@ -3863,6 +3863,13 @@ public final class Settings {
         public static final String STATUS_BAR_SHOW_CARRIER = "status_bar_show_carrier";
 
         /**
+         * Whether to wake up screen when call is disconnected
+         *
+         * @hide
+         */
+        public static final String WAKEUP_SCREEN_WHEN_CALL_DISCONNECTED = "wakeup_screen_when_call_disconnected";
+
+        /**
          * custom carrier label. The value is
          * String.
          */
