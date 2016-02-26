@@ -3665,6 +3665,13 @@ public final class Settings {
         public static final String DASHBOARD_TILEVIEW_DOUBLE_LINES = "dashboard_tileview_double_lines";
 
         /**
+ 	     *
+         * Whether to show switches for wifi/cell/bt in the settings dashboard
+         * @hide
+         */
+         public static final String DASHBOARD_SWITCHES = "dashboard_switches";
+        
+        /**
          *  Enable navigation bar double tap gesture on to put device to sleep
          * @hide
          */
