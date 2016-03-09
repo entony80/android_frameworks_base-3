@@ -117,7 +117,7 @@ public class NavbarEditor implements View.OnTouchListener {
     public static final ButtonInfo NAVBAR_BACK = new ButtonInfo("back",
             R.string.navbar_back_button, R.string.accessibility_back,
             KeyEvent.KEYCODE_BACK, R.drawable.ic_sysbar_back,
-            R.drawable.ic_sysbar_back, R.drawable.ic_sysbar_back_side);
+            R.drawable.ic_sysbar_back, R.drawable.ic_sysbar_back);
     public static final ButtonInfo NAVBAR_SEARCH = new ButtonInfo("search",
             R.string.navbar_search_button, R.string.accessibility_back,
             KeyEvent.KEYCODE_SEARCH, R.drawable.ic_sysbar_search,
@@ -125,7 +125,7 @@ public class NavbarEditor implements View.OnTouchListener {
     public static final ButtonInfo NAVBAR_RECENT = new ButtonInfo("recent",
             R.string.navbar_recent_button, R.string.accessibility_recent,
             0, R.drawable.ic_sysbar_recent,
-            R.drawable.ic_sysbar_recent, R.drawable.ic_sysbar_recent_side);
+            R.drawable.ic_sysbar_recent, R.drawable.ic_sysbar_recent);
     public static final ButtonInfo NAVBAR_CONDITIONAL_MENU = new ButtonInfo("menu0",
             R.string.navbar_menu_conditional_button, R.string.accessibility_menu,
             KeyEvent.KEYCODE_MENU, R.drawable.ic_sysbar_menu,
@@ -147,36 +147,11 @@ public class NavbarEditor implements View.OnTouchListener {
             KeyEvent.KEYCODE_DPAD_RIGHT, 0,
             0, R.drawable.ic_sysbar_ime_right);
 
-    public static final ButtonInfo NAVBAR_TORCH = new ButtonInfo("torch",
-            R.string.navbar_torch, R.string.accessibility_torch,
-            0, R.drawable.ic_sysbar_flashlight, R.drawable.ic_sysbar_flashlight,
-            R.drawable.ic_sysbar_flashlight);
-    public static final ButtonInfo NAVBAR_CAMERA = new ButtonInfo("camera",
-            R.string.navbar_camera, R.string.accessibility_camera,
-            0, R.drawable.ic_sysbar_picture, R.drawable.ic_sysbar_picture,
-            R.drawable.ic_sysbar_picture);
-    public static final ButtonInfo NAVBAR_SCREENSHOT = new ButtonInfo("screenshot",
-            R.string.navbar_screenshot, R.string.accessibility_screenshot,
-            0, R.drawable.ic_sysbar_ss, R.drawable.ic_sysbar_ss,
-            R.drawable.ic_sysbar_ss);
-    public static final ButtonInfo NAVBAR_EXPAND = new ButtonInfo("expand",
-            R.string.navbar_expand, R.string.accessibility_expand,
-            0, R.drawable.ic_sysbar_immersive_mode, R.drawable.ic_sysbar_immersive_mode,
-            R.drawable.ic_sysbar_immersive_mode);
-   public static final ButtonInfo NAVBAR_SCREENRECORD = new ButtonInfo("screenrecord",
-            R.string.navbar_screenrecord, R.string.accessibility_screenrecord,
-            0, R.drawable.ic_sysbar_screenrecord, R.drawable.ic_sysbar_screenrecord_land,
-            R.drawable.ic_sysbar_screenrecord_side);	
-   public static final ButtonInfo NAVBAR_KILLTASK = new ButtonInfo("killtask",
-            R.string.navbar_killtask, R.string.accessibility_killtask,
-            0, R.drawable.ic_sysbar_kill, R.drawable.ic_sysbar_kill_land,
-            R.drawable.ic_sysbar_kill_side);	
 
     private static final ButtonInfo[] ALL_BUTTONS = new ButtonInfo[] {
         NAVBAR_EMPTY, NAVBAR_HOME, NAVBAR_BACK, NAVBAR_SEARCH,
         NAVBAR_RECENT, NAVBAR_CONDITIONAL_MENU, NAVBAR_ALWAYS_MENU,
-        NAVBAR_MENU_BIG,NAVBAR_TORCH,NAVBAR_CAMERA,NAVBAR_SCREENSHOT, 
-        NAVBAR_EXPAND,NAVBAR_SCREENRECORD, NAVBAR_KILLTASK
+        NAVBAR_MENU_BIG 
     };
 
     private static final String DEFAULT_SETTING_STRING = "empty|back|home|recent|empty|menu0";
