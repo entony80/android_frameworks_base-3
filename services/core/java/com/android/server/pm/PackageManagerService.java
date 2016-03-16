@@ -6322,8 +6322,7 @@ public class PackageManagerService extends IPackageManager.Stub {
                     if (!isFirstBoot()) {
                         try {
                             ActivityManagerNative.getDefault().showBootMessage(
-                                    mContext.getResources().getString(
-                                            R.string.android_upgrading_fstrim), true);
+                                    null, Integer.MIN_VALUE + 1, Integer.MIN_VALUE + 1, true);
                         } catch (RemoteException e) {
                         }
                     }
@@ -6445,9 +6444,9 @@ public class PackageManagerService extends IPackageManager.Stub {
         return pkgNames;
     }
 
-    private void performBootDexOpt(PackageParser.Package pkg, int curr, int total) {
+    private void performBootDexOpt(PackageParser.Package pkg, int currentApp, int totalApps) {
         if (DEBUG_DEXOPT) {
-            Log.i(TAG, "Optimizing app " + curr + " of " + total + ": " + pkg.packageName);
+            Log.i(TAG, "Optimizing app " + currentApp + " of " + totalApps + ": " + pkg.packageName);
         }
         if (!isFirstBoot()) {
             try {
@@ -6460,12 +6459,10 @@ public class PackageManagerService extends IPackageManager.Stub {
                 }
                 mPolicy.setPackageName((String) (ai != null ? mContext.getPackageManager().getApplicationLabel(ai) : pkg.packageName));
 
-                ActivityManagerNative.getDefault().showBootMessage(
-                        mContext.getResources().getString(R.string.android_upgrading_apk,
-                                curr, total), true);
-            } catch (RemoteException e) {
-            }
+            ActivityManagerNative.getDefault().showBootMessage(pkg.applicationInfo, currentApp, totalApps, true);
+        } catch (RemoteException e) {
         }
+
         PackageParser.Package p = pkg;
         synchronized (mInstallLock) {
             mPackageDexOptimizer.performDexOpt(p, null /* instruction sets */,
