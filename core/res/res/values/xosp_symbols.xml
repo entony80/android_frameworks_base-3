@@ -48,7 +48,6 @@
   <java-symbol type="dimen" name="dexopt_logo_size" />
   <java-symbol type="dimen" name="dexopt_margin" />
   <java-symbol type="dimen" name="dexopt_logo_margin_top" />
-  <java-symbol type="dimen" name="dexopt_shadow_margin_top" />
   <java-symbol type="layout" name="dexopt_layout" />
   <java-symbol type="id" name="dexopt_icon" />
   <java-symbol type="id" name="dexopt_message" />
@@ -56,9 +55,18 @@
   <java-symbol type="id" name="dexopt_progress" />
   <java-symbol type="id" name="dexopt_logo" />
   <java-symbol type="id" name="dexopt_logo_text" />
-  <java-symbol type="id" name="dexopt_logo_text_shadow" />
   <java-symbol type="drawable" name="dexopt_brand_logo" />
   <java-symbol type="drawable" name="logo_xosp" />
   <java-symbol type="drawable" name="dexopt_logo_text" />
+
+  <!-- Shutdown/reboot screen -->
+  <java-symbol type="layout" name="shutdown_layout" />
+  <java-symbol type="color" name="shutdown_background" />
+  <java-symbol type="color" name="shutdown_primary_text" />
+  <java-symbol type="dimen" name="shutdown_margin" />
+  <java-symbol type="dimen" name="shutdown_logo_margin_top" />
+  <java-symbol type="dimen" name="shutdown_primary_text_margin_top" />
+  <java-symbol type="id" name="shutdown_logo" />
+  <java-symbol type="id" name="shutdown_message" />
 
 </resources>
