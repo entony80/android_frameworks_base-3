@@ -37,9 +37,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_below="@+id/dexopt_logo_shadow"
         android:gravity="center"
-        android:background="@drawable/dexopt_logo_text_shadow1"
         android:src="@drawable/dexopt_logo_text"
         android:contentDescription="@null" />
 
