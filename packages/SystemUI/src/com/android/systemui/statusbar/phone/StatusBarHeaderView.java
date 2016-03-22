@@ -1096,6 +1096,8 @@ public class StatusBarHeaderView extends RelativeLayout implements View.OnClickL
                     CMSettings.System.STATUS_BAR_BATTERY_STYLE), false, this, UserHandle.USER_ALL);
             resolver.registerContentObserver(CMSettings.System.getUriFor(
                     CMSettings.System.STATUS_BAR_SHOW_BATTERY_PERCENT), false, this, UserHandle.USER_ALL);
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.ENABLE_TASK_MANAGER), false, this);
             update();
         }
 
@@ -1129,6 +1131,9 @@ public class StatusBarHeaderView extends RelativeLayout implements View.OnClickL
             mShowBatteryTextExpanded = showExpandedBatteryPercentage;
             mShowWeather = CMSettings.System.getInt(
                     resolver, CMSettings.System.STATUS_BAR_SHOW_WEATHER, 1) == 1;
+            mShowTaskManager = Settings.System.getIntForUser(resolver,
+                Settings.System.ENABLE_TASK_MANAGER, 0, currentUserId) == 1;
+
             updateVisibilities();
             requestCaptureValues();
         }
