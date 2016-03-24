@@ -85,6 +85,11 @@ import android.os.UserManager;
 import android.os.Vibrator;
 import android.os.Message;
 import android.os.Messenger;
+import android.renderscript.Allocation;
+import android.renderscript.Allocation.MipmapControl;
+import android.renderscript.Element;
+import android.renderscript.RenderScript;
+import android.renderscript.ScriptIntrinsicBlur;
 import android.net.Uri;
 import android.provider.Settings;
 import android.service.notification.NotificationListenerService;
@@ -130,7 +135,6 @@ import com.android.internal.logging.MetricsLogger;
 import com.android.internal.statusbar.NotificationVisibility;
 import com.android.internal.statusbar.StatusBarIcon;
 import com.android.internal.util.cm.ActionUtils;
-import com.android.internal.util.cm.Blur;
 import com.android.keyguard.KeyguardHostView.OnDismissAction;
 import com.android.keyguard.KeyguardUpdateMonitor;
 import com.android.keyguard.KeyguardUpdateMonitorCallback;
@@ -5713,12 +5717,14 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
     }
 
     public void setBackgroundBitmap(Bitmap bmp) {
-        if (bmp == null && mBlurredImage == null) return;
-
-        if (bmp != null && mBlurRadius != 0) {
-            mBlurredImage = Blur.blurBitmap(mContext, bmp, mBlurRadius);
+        if (bmp != null) {
+            if (mBlurRadius != 0) {
+                mBlurredImage = blurBitmap(bmp, mBlurRadius);
+            } else {
+                mBlurredImage = bmp;
+            }
         } else {
-            mBlurredImage = bmp;
+            mBlurredImage = null;
         }
 
         mHandler.post(new Runnable() {
@@ -5727,6 +5733,25 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
                 updateMediaMetaData(true);
             }
         });
+    }
+
+    private Bitmap blurBitmap(Bitmap bmp, int radius) {
+        Bitmap out = Bitmap.createBitmap(bmp);
+        RenderScript rs = RenderScript.create(mContext);
+
+        Allocation input = Allocation.createFromBitmap(
+                rs, bmp, MipmapControl.MIPMAP_NONE, Allocation.USAGE_SCRIPT);
+        Allocation output = Allocation.createTyped(rs, input.getType());
+
+        ScriptIntrinsicBlur script = ScriptIntrinsicBlur.create(rs, Element.U8_4(rs));
+        script.setInput(input);
+        script.setRadius(radius);
+        script.forEach(output);
+
+        output.copyTo(out);
+
+        rs.destroy();
+        return out;
     }
 
     public VisualizerView getVisualizer() {
