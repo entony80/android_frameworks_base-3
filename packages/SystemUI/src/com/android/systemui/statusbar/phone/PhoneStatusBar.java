@@ -85,11 +85,6 @@ import android.os.UserManager;
 import android.os.Vibrator;
 import android.os.Message;
 import android.os.Messenger;
-import android.renderscript.Allocation;
-import android.renderscript.Allocation.MipmapControl;
-import android.renderscript.Element;
-import android.renderscript.RenderScript;
-import android.renderscript.ScriptIntrinsicBlur;
 import android.net.Uri;
 import android.provider.Settings;
 import android.service.notification.NotificationListenerService;
@@ -371,8 +366,6 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
     private boolean mScreenTurningOn;
     private BatteryMeterView mBatteryView;
     private BatteryLevelTextView mBatteryTextView;
-    private int mBlurRadius;
-    private Bitmap mBlurredImage = null;
 
     int mPixelFormat;
     Object mQueueLock = new Object();
@@ -524,9 +517,6 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.ENABLE_TASK_MANAGER),
                     false, this, UserHandle.USER_ALL);
-            resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.LOCKSCREEN_BLUR_RADIUS), false, this); 
-                    false, this, UserHandle.USER_ALL);
             update();
         }
 
@@ -566,9 +556,9 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
                     resolver, CMSettings.System.STATUS_BAR_BRIGHTNESS_CONTROL, 0,
                     UserHandle.USER_CURRENT) == 1;
 
-	        boolean showTaskManager = Settings.System.getIntForUser(resolver,
+	boolean showTaskManager = Settings.System.getIntForUser(resolver,
                     Settings.System.ENABLE_TASK_MANAGER, 0, UserHandle.USER_CURRENT) == 1;
-	        if (mShowTaskManager != showTaskManager) {
+	    if (mShowTaskManager != showTaskManager) {
                 if (!mShowTaskManager) {
                     // explicitly reset click state when disabled
                     mShowTaskList = false;
@@ -589,12 +579,9 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
 
             // This method reads CMSettings.Secure.RECENTS_LONG_PRESS_ACTIVITY
             updateCustomRecentsLongPressHandler(false);
-                mXOSPLogo = Settings.System.getIntForUser(resolver,
+           mXOSPLogo = Settings.System.getIntForUser(resolver,
            		Settings.System.STATUS_BAR_XOSP_LOGO, 0, mCurrentUserId) == 1;
-                showXOSPLogo(mXOSPLogo);
-
-             mBlurRadius = Settings.System.getInt(mContext.getContentResolver(),
-                Settings.System.LOCKSCREEN_BLUR_RADIUS, 14);
+           showXOSPLogo(mXOSPLogo);
         }
     }
 
@@ -2534,12 +2521,6 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
                 backdropBitmap = mMediaMetadata.getBitmap(MediaMetadata.METADATA_KEY_ALBUM_ART);
                 // might still be null
             }
-        }
-
-        // apply blurred image
-        if (backdropBitmap == null) {
-            backdropBitmap = mBlurredImage;
-            // might still be null
         }
 
         // HACK: Consider keyguard as visible if showing sim pin security screen
@@ -5714,44 +5695,6 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
                 || mFingerprintUnlockController.getMode()
                         == FingerprintUnlockController.MODE_WAKE_AND_UNLOCK_PULSING;
         updateDozingState();
-    }
-
-    public void setBackgroundBitmap(Bitmap bmp) {
-        if (bmp != null) {
-            if (mBlurRadius != 0) {
-                mBlurredImage = blurBitmap(bmp, mBlurRadius);
-            } else {
-                mBlurredImage = bmp;
-            }
-        } else {
-            mBlurredImage = null;
-        }
-
-        mHandler.post(new Runnable() {
-            @Override
-            public void run() {
-                updateMediaMetaData(true);
-            }
-        });
-    }
-
-    private Bitmap blurBitmap(Bitmap bmp, int radius) {
-        Bitmap out = Bitmap.createBitmap(bmp);
-        RenderScript rs = RenderScript.create(mContext);
-
-        Allocation input = Allocation.createFromBitmap(
-                rs, bmp, MipmapControl.MIPMAP_NONE, Allocation.USAGE_SCRIPT);
-        Allocation output = Allocation.createTyped(rs, input.getType());
-
-        ScriptIntrinsicBlur script = ScriptIntrinsicBlur.create(rs, Element.U8_4(rs));
-        script.setInput(input);
-        script.setRadius(radius);
-        script.forEach(output);
-
-        output.copyTo(out);
-
-        rs.destroy();
-        return out;
     }
 
     public VisualizerView getVisualizer() {
