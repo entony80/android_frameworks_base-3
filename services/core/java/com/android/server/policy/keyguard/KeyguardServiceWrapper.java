@@ -21,6 +21,7 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.util.Slog;
+import android.graphics.Bitmap;
 
 import com.android.internal.policy.IKeyguardDrawnCallback;
 import com.android.internal.policy.IKeyguardExitCallback;
@@ -50,6 +51,14 @@ public class KeyguardServiceWrapper implements IKeyguardService {
             mService.verifyUnlock(callback);
         } catch (RemoteException e) {
             Slog.w(TAG , "Remote Exception", e);
+        }
+    }
+
+    public void setBackgroundBitmap(Bitmap bmp) {
+        try {
+            mService.setBackgroundBitmap(bmp);
+        } catch (RemoteException e) {
+            Slog.w(TAG, "Remote Exception", e);
         }
     }
 

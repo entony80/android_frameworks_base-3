@@ -29,6 +29,7 @@ import android.view.ViewGroup;
 import android.view.ViewRootImpl;
 import android.view.WindowManager;
 import android.view.WindowManagerGlobal;
+import android.graphics.Bitmap;
 
 import com.android.internal.widget.LockPatternUtils;
 import com.android.keyguard.KeyguardUpdateMonitor;
@@ -588,6 +589,10 @@ public class StatusBarKeyguardViewManager {
 
     public boolean isKeyguardShowingMedia() {
         return mPhoneStatusBar.isKeyguardShowingMedia();
+    }
+
+    public void setBackgroundBitmap(Bitmap bmp) {
+        mPhoneStatusBar.setBackgroundBitmap(bmp);
     }
 
     public void setKeyguardExternalViewFocus(boolean hasFocus) {
