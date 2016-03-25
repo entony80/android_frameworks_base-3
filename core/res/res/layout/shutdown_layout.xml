@@ -66,9 +66,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:indeterminate="true"
-            tools:progress="20"
-            android:progressTintMode="src_atop"
-            android:progressTint="@color/shutdown_progress_tint" />
+            android:indeterminateTint="@color/shutdown_progress_tint"
+            android:indeterminateTintMode="src_in" />
     </LinearLayout>
 
 </RelativeLayout>
