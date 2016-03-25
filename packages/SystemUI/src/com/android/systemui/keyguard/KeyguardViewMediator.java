@@ -58,7 +58,6 @@ import android.view.WindowManagerGlobal;
 import android.view.WindowManagerPolicy;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.graphics.Bitmap;
 
 import com.android.systemui.cm.UserContentObserver;
 import com.android.systemui.qs.tiles.LockscreenToggleTile;
@@ -1947,8 +1946,5 @@ public class KeyguardViewMediator extends SystemUI {
                 Slog.w(TAG, "Failed to call onShowingStateChanged or onSimSecureStateChanged or onInputRestrictedStateChanged", e);
             }
         }
-    }
-    public void setBackgroundBitmap(Bitmap bmp) {
-        mStatusBarKeyguardViewManager.setBackgroundBitmap(bmp);
     }
 }

@@ -19,7 +19,6 @@ package com.android.systemui.keyguard;
 import android.app.Service;
 import android.content.Intent;
 import android.os.Binder;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Debug;
 import android.os.IBinder;
@@ -186,10 +185,6 @@ public class KeyguardService extends Service {
             checkPermission();
             mKeyguardViewMediator.onActivityDrawn();
         }
-        @Override
-        public void setBackgroundBitmap(Bitmap bmp) {
-           mKeyguardViewMediator.setBackgroundBitmap(bmp);
-       }
     };
 }
 
