@@ -30,15 +30,6 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.accessibility.AccessibilityEvent;
-import android.view.animation.AccelerateDecelerateInterpolator;
-import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
-import android.view.animation.AnimationSet;
-import android.view.animation.BounceInterpolator;
-import android.view.animation.LinearInterpolator;
-import android.view.animation.OvershootInterpolator;
-import android.view.animation.ScaleAnimation;
-import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -116,7 +107,6 @@ public class DexoptDialog extends Dialog {
                 mPackageName.setSelected(true);
             }
         });
-        startLogoAnimation();
     }
 
     public void setProgress(final ApplicationInfo info, final int current, final int total) {
@@ -202,139 +192,5 @@ public class DexoptDialog extends Dialog {
     @Override
     public boolean dispatchPopulateAccessibilityEvent(AccessibilityEvent event) {
         return true;
-    }
-
-    private void startLogoAnimation() {
-        setInitialState();
-
-        final AnimationSet shadowSet = new AnimationSet(false);
-        shadowSet.setRepeatCount(Animation.INFINITE);
-        shadowSet.setRepeatMode(Animation.REVERSE);
-
-        Animation alphaAnim = new AlphaAnimation(1.0f, 0.5f);
-        alphaAnim.setDuration(2500);
-        alphaAnim.setInterpolator(new LinearInterpolator());
-        alphaAnim.setRepeatCount(Animation.INFINITE);
-        alphaAnim.setRepeatMode(Animation.REVERSE);
-        shadowSet.addAnimation(alphaAnim);
-
-        Animation scaleAnim = new ScaleAnimation(1f, 0.7f, 1f, 0.7f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 1.0f);
-        scaleAnim.setDuration(2500);
-        scaleAnim.setInterpolator(new AccelerateDecelerateInterpolator());
-        scaleAnim.setRepeatCount(Animation.INFINITE);
-        scaleAnim.setRepeatMode(Animation.REVERSE);
-        shadowSet.addAnimation(scaleAnim);
-
-        final Animation transAnim = new TranslateAnimation(0, 0, 0, -AllianceUtils.dpToPx(mContext, 30));
-        transAnim.setDuration(2500);
-        transAnim.setInterpolator(new AccelerateDecelerateInterpolator());
-        transAnim.setRepeatMode(Animation.REVERSE);
-        transAnim.setRepeatCount(Animation.INFINITE);
-
-        AnimationSet dropShadowSet = new AnimationSet(true);
-        dropShadowSet.setInterpolator(new BounceInterpolator());
-        dropShadowSet.setFillAfter(true);
-
-        Animation dropAlpha = new AlphaAnimation(0.0f, 1.0f);
-        dropAlpha.setDuration(2000);
-        dropShadowSet.addAnimation(dropAlpha);
-
-        Animation dropScale = new ScaleAnimation(0.0f, 1.0f, 0.0f, 1.0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 1.0f);
-        dropScale.setDuration(2000);
-        dropShadowSet.addAnimation(dropScale);
-
-        Animation dropAnim = new TranslateAnimation(0, 0, -AllianceUtils.dpToPx(mContext, 300), 0);
-        dropAnim.setDuration(2000);
-        dropAnim.setInterpolator(new BounceInterpolator());
-        dropAnim.setFillAfter(true);
-        dropAnim.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-                //nothing
-            }
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                mLogo.startAnimation(transAnim);
-            }
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-                //nothing
-            }
-        });
-
-        mLogo.startAnimation(dropAnim);
-    }
-
-    public void startFinalAnimation(final Animation.AnimationListener listener) {
-        final AnimationSet animOutSet = new AnimationSet(true);
-        animOutSet.setInterpolator(new LinearInterpolator());
-        animOutSet.setDuration(2000);
-        animOutSet.setFillAfter(true);
-        animOutSet.setAnimationListener(listener);
-
-        Animation alphaOutAnim = new AlphaAnimation(1.0f, 0.0f);
-        alphaOutAnim.setDuration(2000);
-        alphaOutAnim.setFillAfter(true);
-        animOutSet.addAnimation(alphaOutAnim);
-
-        Animation scaleOutAnim = new ScaleAnimation(1.0f, 0.0f, 1.0f, 0.0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-        scaleOutAnim.setDuration(2000);
-        scaleOutAnim.setFillAfter(true);
-        animOutSet.addAnimation(scaleOutAnim);
-
-        final AnimationSet animInSet = new AnimationSet(false);
-        animInSet.setDuration(2500);
-        animInSet.setFillAfter(true);
-
-        Animation alphaInAnim = new AlphaAnimation(0.0f, 1.0f);
-        alphaInAnim.setDuration(2500);
-        alphaInAnim.setInterpolator(new LinearInterpolator());
-        alphaInAnim.setFillAfter(true);
-        animInSet.addAnimation(alphaInAnim);
-
-        Animation scaleInAnim = new ScaleAnimation(0.0f, 1.0f, 0.0f, 1.0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-        scaleInAnim.setDuration(2500);
-        scaleInAnim.setInterpolator(new OvershootInterpolator());
-        scaleInAnim.setFillAfter(true);
-        animInSet.addAnimation(scaleInAnim);
-
-        animInSet.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-                //nothing
-            }
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                animInSet.cancel();
-                mLogoText.startAnimation(animOutSet);
-            }
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-                //nothing
-            }
-        });
-
-        mLogoText.startAnimation(animInSet);
-    }
-
-    private void setInitialState() {
-        Animation alphaAnim = new AlphaAnimation(1.0f, 0.0f);
-        alphaAnim.setDuration(0);
-        alphaAnim.setFillAfter(true);
-
-        Animation transAnim = new TranslateAnimation(0, 0, 0, -AllianceUtils.dpToPx(mContext, 300));
-        transAnim.setDuration(0);
-        transAnim.setFillAfter(true);
-
-        Animation scaleAnim = new ScaleAnimation(1.0f, 0.0f, 1.0f, 0.0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 1.0f);
-        scaleAnim.setDuration(0);
-        scaleAnim.setFillAfter(true);
-
-        AnimationSet shadowSet = new AnimationSet(true);
-        shadowSet.addAnimation(alphaAnim);
-        shadowSet.addAnimation(scaleAnim);
-
-        mLogoText.startAnimation(alphaAnim);
-        mLogo.startAnimation(transAnim);
     }
 }
