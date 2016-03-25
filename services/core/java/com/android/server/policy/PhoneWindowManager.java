@@ -6686,30 +6686,10 @@ public class PhoneWindowManager implements WindowManagerPolicy {
 
         if (mBootMsgDialog != null) {
             if (DEBUG_WAKEUP) Slog.d(TAG, "handleHideBootMessage: dismissing");
-            Animation.AnimationListener mListener = new Animation.AnimationListener() {
-                @Override
-                public void onAnimationStart(Animation animation) {
-                    //do nothing
-                }
-                @Override
-                public void onAnimationEnd(Animation animation) {
-                    Handler animHandler = new Handler();
-                    animHandler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            mBootMsgDialog.dismiss();
-                            mBootMsgDialog = null;
-                        }
-                    }, 100);
-                }
-                @Override
-                public void onAnimationRepeat(Animation animation) {
-                    //do nothing
-                }
-            };
-            mBootMsgDialog.startFinalAnimation(mListener);
+                mBootMsgDialog.dismiss();
+                mBootMsgDialog = null;
+            }   
         }
-    }
 
     @Override
     public boolean isScreenOn() {
