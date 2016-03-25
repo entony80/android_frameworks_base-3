@@ -23,12 +23,10 @@
 
     <ImageView
         android:id="@+id/shutdown_logo"
-        android:layout_width="@dimen/shutdown_logo_size"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:scaleType="centerCrop"
         android:gravity="center"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/shutdown_logo_margin_top"
         android:src="@drawable/shutdown_brand_logo"
         android:contentDescription="@null" />
 
@@ -47,7 +45,7 @@
         android:scrollHorizontally="true"
         android:singleLine="true"
         android:textColor="@color/shutdown_primary_text"
-        tools:text="Alliance is rebooting"
+        tools:text="XOSP is now rebooting"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/shutdown_logo_shadow"
         android:layout_marginTop="@dimen/shutdown_primary_text_margin_top" />
