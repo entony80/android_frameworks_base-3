@@ -6459,10 +6459,10 @@ public class PackageManagerService extends IPackageManager.Stub {
                 }
                 mPolicy.setPackageName((String) (ai != null ? mContext.getPackageManager().getApplicationLabel(ai) : pkg.packageName));
 
-            ActivityManagerNative.getDefault().showBootMessage(pkg.applicationInfo, currentApp, totalApps, true);
-        } catch (RemoteException e) {
-        }
-
+           	 ActivityManagerNative.getDefault().showBootMessage(pkg.applicationInfo, currentApp, totalApps, true);
+        	} catch (RemoteException e) {
+        	}
+    	}
         PackageParser.Package p = pkg;
         synchronized (mInstallLock) {
             mPackageDexOptimizer.performDexOpt(p, null /* instruction sets */,

@@ -55,7 +55,6 @@ public class ShutdownDialog extends Dialog {
     private TextView mPrimaryText;
 
     private ImageView mLogo;
-    private ImageView mLogoShadow;
 
     public static ShutdownDialog create(Context context, int action) {
         return create(context,  WindowManager.LayoutParams.TYPE_KEYGUARD_DIALOG, action);
@@ -73,7 +72,6 @@ public class ShutdownDialog extends Dialog {
         final LayoutInflater inflater = LayoutInflater.from(context);
         final View rootView = inflater.inflate(com.android.internal.R.layout.shutdown_layout, null, false);
         mLogo = (ImageView) rootView.findViewById(R.id.shutdown_logo);
-        mLogoShadow = (ImageView) rootView.findViewById(R.id.shutdown_logo_shadow);
         mPrimaryText = (TextView) rootView.findViewById(R.id.shutdown_message);
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -208,8 +206,7 @@ public class ShutdownDialog extends Dialog {
                 //nothing
             }
             @Override
-            public void onAnimationEnd(Animation animation) {
-                mLogoShadow.startAnimation(shadowSet);
+            public void onAnimationEnd(Animation animation){
                 mLogo.startAnimation(transAnim);
             }
             @Override
@@ -219,7 +216,6 @@ public class ShutdownDialog extends Dialog {
         });
 
         mLogo.startAnimation(dropAnim);
-        mLogoShadow.startAnimation(dropShadowSet);
     }
 
     private void setInitialState() {
@@ -240,6 +236,5 @@ public class ShutdownDialog extends Dialog {
         shadowSet.addAnimation(scaleAnim);
 
         mLogo.startAnimation(transAnim);
-        mLogoShadow.startAnimation(shadowSet);
     }
 }
