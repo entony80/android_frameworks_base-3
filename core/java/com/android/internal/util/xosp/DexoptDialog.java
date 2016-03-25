@@ -55,7 +55,6 @@ public class DexoptDialog extends Dialog {
     private int mTotal;
 
     private ImageView mLogo;
-    private ImageView mLogoText;
 
     public static DexoptDialog create(Context context) {
         return create(context,  WindowManager.LayoutParams.TYPE_BOOT_PROGRESS);
@@ -79,7 +78,6 @@ public class DexoptDialog extends Dialog {
         mAppIcon = (ImageView) rootView.findViewById(R.id.dexopt_icon);
         mProgress = (ProgressBar) rootView.findViewById(R.id.dexopt_progress);
         mLogo = (ImageView) rootView.findViewById(R.id.dexopt_logo);
-        mLogoText = (ImageView) rootView.findViewById(R.id.dexopt_logo_text);
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(rootView);

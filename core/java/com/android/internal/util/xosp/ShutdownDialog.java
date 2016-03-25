@@ -65,7 +65,7 @@ public class ShutdownDialog extends Dialog {
         final LayoutInflater inflater = LayoutInflater.from(context);
         final View rootView = inflater.inflate(com.android.internal.R.layout.shutdown_layout, null, false);
         mLogo = (ImageView) rootView.findViewById(R.id.shutdown_logo);
-        mProgress = (ProgressBar) rootView.findViewById(R.id.dexopt_progress);
+        mProgress = (ProgressBar) rootView.findViewById(R.id.shutdown_progress);
         mPrimaryText = (TextView) rootView.findViewById(R.id.shutdown_message);
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
