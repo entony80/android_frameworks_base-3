@@ -27,6 +27,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/dexopt_logo_margin_top"
         android:src="@drawable/shutdown_brand_logo"
         android:contentDescription="@null" />
 
