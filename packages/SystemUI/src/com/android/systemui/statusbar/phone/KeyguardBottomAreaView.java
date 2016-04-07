@@ -129,7 +129,6 @@ public class KeyguardBottomAreaView extends FrameLayout implements View.OnClickL
     private boolean mBottomAreaAttached;
     private final WindowManager.LayoutParams mWindowLayoutParams;
     private OnInterceptTouchEventListener mInterceptTouchListener;
-    private BroadcastReceiver mDevicePolicyReceiver;
 
     private final ServiceConnection mPrewarmConnection = new ServiceConnection() {
 
@@ -180,7 +179,7 @@ public class KeyguardBottomAreaView extends FrameLayout implements View.OnClickL
     private void removeKeyguardBottomArea() {
         if (mBottomAreaAttached) {
             try {
-                mWindowManager.removeView(this);
+                mWindowManager.removeViewImmediate(this);
             } catch (IllegalArgumentException e) {
                 Log.e(TAG, e.getMessage());
             }
@@ -478,7 +477,6 @@ public class KeyguardBottomAreaView extends FrameLayout implements View.OnClickL
     private void watchForCameraPolicyChanges() {
         final IntentFilter filter = new IntentFilter();
         filter.addAction(DevicePolicyManager.ACTION_DEVICE_POLICY_MANAGER_STATE_CHANGED);
-        mDevicePolicyReceiver = new DevicePolicyBroadcastReceiver();
         getContext().registerReceiverAsUser(mDevicePolicyReceiver,
                 UserHandle.ALL, filter, null, null);
         KeyguardUpdateMonitor.getInstance(mContext).registerCallback(mUpdateMonitorCallback);
@@ -776,7 +774,7 @@ public class KeyguardBottomAreaView extends FrameLayout implements View.OnClickL
                 .setDuration(DOZE_ANIMATION_ELEMENT_DURATION);
     }
 
-    private final class DevicePolicyBroadcastReceiver extends BroadcastReceiver {
+    private final BroadcastReceiver mDevicePolicyReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             post(new Runnable() {
@@ -912,10 +910,7 @@ public class KeyguardBottomAreaView extends FrameLayout implements View.OnClickL
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         mAccessibilityController.removeStateChangedCallback(this);
-        if (mDevicePolicyReceiver != null) {
-            mContext.unregisterReceiver(mDevicePolicyReceiver);
-            mDevicePolicyReceiver = null;
-        }
+        mContext.unregisterReceiver(mDevicePolicyReceiver);
         mShortcutHelper.cleanup();
         mUnlockMethodCache.removeListener(this);
     }
