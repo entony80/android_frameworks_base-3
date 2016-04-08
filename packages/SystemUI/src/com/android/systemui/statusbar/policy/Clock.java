@@ -235,19 +235,9 @@ public class Clock extends TextView implements DemoMode {
         mClockFontSize = Settings.System.getIntForUser(resolver,
                 Settings.System.STATUSBAR_CLOCK_FONT_SIZE, 14,
                 UserHandle.USER_CURRENT);
-
-        int defaultColor = mContext.getResources().getColor(R.color.status_bar_clock_color);
-        int clockColor = Settings.System.getIntForUser(resolver,
-                Settings.System.STATUSBAR_CLOCK_COLOR, defaultColor,
-                UserHandle.USER_CURRENT);
-        if (clockColor == Integer.MIN_VALUE) {
-            // flag to reset the color
-            clockColor = defaultColor;
-        }
-        setTextColor(clockColor);
         getFontStyle(mClockFontStyle);
         setTextSize(mClockFontSize);
-
+                
         mCalendar.setTimeInMillis(System.currentTimeMillis());
         setText(getSmallTime());
     }
