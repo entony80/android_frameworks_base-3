@@ -6453,20 +6453,18 @@ public class PackageManagerService extends IPackageManager.Stub {
         if (DEBUG_DEXOPT) {
             Log.i(TAG, "Optimizing app " + currentApp + " of " + totalApps + ": " + pkg.packageName);
         }
-        if (!isFirstBoot()) {
+        try {
+            // give the packagename to the PhoneWindowManager
+            ApplicationInfo ai;
             try {
-                // give the packagename to the PhoneWindowManager
-                ApplicationInfo ai;
-                try {
-                    ai = mContext.getPackageManager().getApplicationInfo(pkg.packageName, 0);
-                } catch (Exception e) {
-                    ai = null;
-                }
-                mPolicy.setPackageName((String) (ai != null ? mContext.getPackageManager().getApplicationLabel(ai) : pkg.packageName));
+                ai = mContext.getPackageManager().getApplicationInfo(pkg.packageName, 0);
+            } catch (Exception e) {
+                ai = null;
+            }
+            mPolicy.setPackageName((String) (ai != null ? mContext.getPackageManager().getApplicationLabel(ai) : pkg.packageName));
 
-           	 ActivityManagerNative.getDefault().showBootMessage(pkg.applicationInfo, currentApp, totalApps, true);
-        	} catch (RemoteException e) {
-        	}
+       	 ActivityManagerNative.getDefault().showBootMessage(pkg.applicationInfo, currentApp, totalApps, true);
+    	} catch (RemoteException e) {
     	}
         PackageParser.Package p = pkg;
         synchronized (mInstallLock) {
