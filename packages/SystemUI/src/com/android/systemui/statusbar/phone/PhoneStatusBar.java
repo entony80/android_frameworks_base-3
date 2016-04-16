@@ -854,7 +854,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
 
         mStatusBarWindow = new StatusBarWindowView(mContext, null);
         mStatusBarWindow.setService(this);
-
+        
         super.start(); // calls createAndAddWindows()
 
         mMediaSessionManager
@@ -1365,6 +1365,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
             }
         }
 
+        mVisualizerView.setKeyguardMonitor(mKeyguardMonitor);
         mHeader.setNextAlarmController(mNextAlarmController);
         mHeader.setWeatherController(mWeatherController);
 
@@ -5097,7 +5098,6 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
             clearNotificationEffects();
         }
         mState = state;
-        mVisualizerView.setStatusBarState(state);
         mGroupManager.setStatusBarState(state);
         mStatusBarWindowManager.setStatusBarState(state);
         updateDozing();
