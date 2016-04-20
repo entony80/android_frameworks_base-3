@@ -388,6 +388,7 @@ public class NotificationPanelView extends PanelView implements
 
         mSwipeHelper = new SwipeHelper(SwipeHelper.X,
                 SwipeHelper.SWIPE_ZONE_LEFT, mSwipeCallback, mContext);
+        mSwipeHelper.setSwipeProgressFadeEnd(1.0f);
         mMinimumFlingVelocity = ViewConfiguration.get(getContext())
                 .getScaledMinimumFlingVelocity();
 
@@ -2371,6 +2372,10 @@ public class NotificationPanelView extends PanelView implements
         mKeyguardBottomArea.animate().setListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
+                mKeyguardBottomArea.expand(false);
+            }
+            @Override
+            public void onAnimationCancel(Animator animation) {
                 mKeyguardBottomArea.expand(false);
             }
         });
