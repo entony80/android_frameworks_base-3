@@ -1918,7 +1918,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
         			    }
        			 }
 
-    private void prepareNavigationBarView() {
+    private void prepareNavigationBarView(boolean forceReset) {
         mNavigationBarView.reorient();
 
         mNavigationBarView.setListeners(mRecentsClickListener, mRecentsPreloadOnTouchListener,
