@@ -30,7 +30,7 @@
     <color name="task_item_background">#0000</color>
     <color name="task_item_text">#ffffffff</color>
     
-    <color name="fab_color">#283593</color>
+    <color name="fab_color">#d35400</color>
     <color name="floating_action_button_icon_color">#ffffff</color>
 
 </resources>
