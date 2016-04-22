@@ -451,8 +451,6 @@ public class RecentsView extends FrameLayout implements TaskStackView.TaskStackV
                 dismissAllTasksAnimated();
             }
         });
-		mClearRecents.setVisibility(View.GONE);	
-		mFloatingButton.setVisibility(View.GONE);		
     }
 
     /**
