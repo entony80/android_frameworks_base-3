@@ -3496,6 +3496,12 @@ public final class Settings {
         public static final String GESTURES_UP_SWIPE = "gestures_up_swipe";
 
         /**
+         * whether to enable /disable showing charging current on lockscreen
+         * @hide
+         */
+        public static final String LOCK_SCREEN_SHOW_CURRENT = "lock_screen_show_current";
+
+        /**
          * down Swipe Action
          *
          * @hide
