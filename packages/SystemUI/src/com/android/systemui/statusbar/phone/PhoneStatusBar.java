@@ -357,7 +357,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
 
     StatusBarWindowView mStatusBarWindow;
     FrameLayout mStatusBarWindowContent;
-    PhoneStatusBarView mStatusBarView;
+    private PhoneStatusBarView mStatusBarView;
     private int mStatusBarWindowState = WINDOW_STATE_SHOWING;
     private StatusBarWindowManager mStatusBarWindowManager;
     private UnlockMethodCache mUnlockMethodCache;
@@ -584,6 +584,55 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
            		Settings.System.STATUS_BAR_XOSP_LOGO, 0, mCurrentUserId) == 1;
            showXOSPLogo(mXOSPLogo);
         }
+    }
+
+    public void setStatusBarViewVisibility(boolean visible) {
+        mStatusBarView.setVisibility(visible ? View.VISIBLE : View.INVISIBLE);
+    }
+
+    class DevForceNavbarObserver extends UserContentObserver {
+        DevForceNavbarObserver(Handler handler) {
+            super(handler);
+        }
+
+        @Override
+        protected void observe() {
+            super.observe();
+            ContentResolver resolver = mContext.getContentResolver();
+            resolver.registerContentObserver(CMSettings.Secure.getUriFor(
+                    CMSettings.Secure.DEV_FORCE_SHOW_NAVBAR), false, this, UserHandle.USER_ALL);
+        }
+
+        @Override
+        public void update() {
+            boolean visible = CMSettings.Secure.getIntForUser(mContext.getContentResolver(),
+                    CMSettings.Secure.DEV_FORCE_SHOW_NAVBAR, 0, UserHandle.USER_CURRENT) == 1;
+
+            if (visible) {
+                forceAddNavigationBar();
+            } else {
+                removeNavigationBar();
+            }
+
+            // Send a broadcast to Settings to update Key disabling when user changes
+            Intent intent = new Intent("com.cyanogenmod.action.UserChanged");
+            intent.setPackage("com.android.settings");
+            mContext.sendBroadcastAsUser(intent, new UserHandle(UserHandle.USER_CURRENT));
+        }
+    }
+
+    private void forceAddNavigationBar() {
+        // If we have no Navbar view and we should have one, create it
+        if (mNavigationBarView != null) {
+            return;
+        }
+
+        mNavigationBarView =
+                (NavigationBarView) View.inflate(mContext, R.layout.navigation_bar, null);
+
+        mNavigationBarView.setDisabledFlags(mDisabled1);
+        mNavigationBarView.setBar(this);
+        addNavigationBar(true); // dynamically adding nav bar, reset System UI visibility!
     }
 
     // ensure quick settings is disabled until the current user makes it through the setup wizard
@@ -837,6 +886,10 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
     private HashSet<Entry> mHeadsUpEntriesToRemoveOnSwitch = new HashSet<>();
     private RankingMap mLatestRankingMap;
     private boolean mNoAnimationOnNextBarModeChange;
+
+    public ScrimController getScrimController() {
+        return mScrimController;
+    }
 
     @Override
     public void start() {
@@ -1543,7 +1596,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
                         @Override
                         public void run() {
                             boolean isUpdate = mQSPanel.getHost().getCustomTileData()
-                                    .get(sbc.getKey()) != null;
+                                    .get(sbc.persistableKey()) != null;
                             if (isUpdate) {
                                 mQSPanel.getHost().updateCustomTile(sbc);
                             } else {
@@ -1559,7 +1612,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
                     mHandler.post(new Runnable() {
                         @Override
                         public void run() {
-                            mQSPanel.getHost().removeCustomTileSysUi(sbc.getKey());
+                            mQSPanel.getHost().removeCustomTileSysUi(sbc.persistableKey());
                         }
                     });
                 }
@@ -4713,6 +4766,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
             mDraggedDownRow = null;
         }
         mAssistManager.onLockscreenShown();
+        mKeyguardBottomArea.requestFocus();
         if (mLiveLockScreenController.isShowingLiveLockScreenView()) {
             mLiveLockScreenController.getLiveLockScreenView().onKeyguardShowing(
                     mStatusBarKeyguardViewManager.isScreenTurnedOn());
@@ -5905,5 +5959,9 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
                 }
             }
         }
+    }
+
+    public boolean isAffordanceSwipeInProgress() {
+        return mNotificationPanel.isAffordanceSwipeInProgress();
     }
 }
