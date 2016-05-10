@@ -786,6 +786,8 @@ public final class Call {
     private boolean mChildrenCached;
     private String mParentId = null;
     private int mState;
+    private int mNotificationCode;
+    private int mNotitificationtype;
     private List<String> mCannedTextResponses = null;
     private String mRemainingPostDialSequence;
     private InCallService.VideoCall mVideoCall;
@@ -1022,6 +1024,14 @@ public final class Call {
      */
     public int getState() {
         return mState;
+    }
+    
+    public int getNotificationType() {
+        return mNotificationType;
+    }
+    
+    public int getNotificationCode() {
+        return mNotificationCode;
     }
 
     /**
