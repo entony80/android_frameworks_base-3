@@ -286,6 +286,14 @@ public final class Phone {
         mInCallAdapter.turnProximitySensorOff(screenOnImmediately);
     }
 
+    public final String somcGetCommand(int commandId, String option) {
+        String result = null;
+        if(mSomcInCallAdapterExtend != null) {
+            result = mSomcInCallAdapterExtend.somcGetCommand(commandId, option);
+        }
+        return result;
+    }
+
     /**
      * Instructs Telecomm to switch to other active subscripion
      *
