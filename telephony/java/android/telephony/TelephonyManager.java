@@ -28,6 +28,7 @@ import android.app.ActivityThread;
 import android.content.ContentResolver;
 import android.app.AppOpsManager;
 import android.content.Context;
+import android.content.res.Resources;
 import android.content.Intent;
 import android.provider.Settings;
 import android.provider.Settings.SettingNotFoundException;
@@ -4148,6 +4149,13 @@ public class TelephonyManager {
             Log.e(TAG, "Error calling ITelephony#]", e);
         }
         return new int[0];
+    }
+
+    public String getVoicemailString() {
+        if(mContext == null) {
+            return null;
+        }
+        return mContext.getResources().getString(0x1040051);
     }
 
     /** @hide */
