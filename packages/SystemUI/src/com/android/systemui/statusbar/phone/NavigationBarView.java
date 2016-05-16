@@ -160,6 +160,8 @@ public class NavigationBarView extends LinearLayout {
     private boolean mLayoutTransitionsEnabled = true;
     private boolean mWakeAndUnlocking;
 
+    private GestureDetector mDoubleTapGesture;
+    private boolean mDoubleTapToSleep;
 
     private class NavTransitionListener implements TransitionListener {
         private boolean mBackTransitioning;
@@ -343,10 +345,19 @@ public class NavigationBarView extends LinearLayout {
         if (mDeadZone != null && event.getAction() == MotionEvent.ACTION_OUTSIDE) {
             mDeadZone.poke(event);
         }
+<<<<<<< HEAD
         if (mDoubleTapToSleep) {
             mDoubleTapGesture.onTouchEvent(event);
         }
-        
+=======
+        if (mDimNavButtonsTouchAnywhere) {
+            onNavButtonTouched();
+        }
+        if (mDoubleTapToSleep) {
+            mDoubleTapGesture.onTouchEvent(event);
+        }
+
+>>>>>>> 4fa18f3... Fix DT2S on navbar after SlimDim
         return super.onTouchEvent(event);
     }
 
@@ -1051,8 +1062,28 @@ public class NavigationBarView extends LinearLayout {
         }
 
         @Override
+<<<<<<< HEAD
         protected void update() {
-        
+=======
+        public void onChange(boolean selfChange) {
+            mShowDpadArrowKeys = CMSettings.System.getIntForUser(getContext().getContentResolver(),
+                    CMSettings.System.NAVIGATION_BAR_MENU_ARROW_KEYS, 0, UserHandle.USER_CURRENT) != 0;
+            // reset saved side button visibilities
+            for (int i = 0; i < mSideButtonVisibilities.length; i++) {
+                for (int j = 0; j < mSideButtonVisibilities[i].length; j++) {
+                    mSideButtonVisibilities[i][j] = -1;
+                }
+            }
+            setNavigationIconHints(mNavigationIconHints, true);
+
+            super.onChange(selfChange);
+            update();
+            onNavButtonTouched();
+            setNavigationIconHints(mNavigationIconHints, true);
+        }
+
+        public void update() {
+>>>>>>> 4fa18f3... Fix DT2S on navbar after SlimDim
             ContentResolver resolver = mContext.getContentResolver();
 
             mShowDpadArrowKeys = CMSettings.System.getIntForUser(getContext().getContentResolver(),
@@ -1075,9 +1106,7 @@ public class NavigationBarView extends LinearLayout {
             mDimNavButtonsTouchAnywhere = (Settings.System.getIntForUser(resolver,
                     Settings.System.DIM_NAV_BUTTONS_TOUCH_ANYWHERE, 0,
                     UserHandle.USER_CURRENT) == 1);
-            mDoubleTapToSleep = (Settings.System.getIntForUser(resolver,
-                    Settings.System.DOUBLE_TAP_SLEEP_NAVBAR, 0,
-                    UserHandle.USER_CURRENT) == 1);
+<<<<<<< HEAD
             // reset saved side button visibilities
             for (int i = 0; i < mSideButtonVisibilities.length; i++) {
                 for (int j = 0; j < mSideButtonVisibilities[i].length; j++) {
@@ -1085,6 +1114,15 @@ public class NavigationBarView extends LinearLayout {
                 }
             }
             setNavigationIconHints(mNavigationIconHints, true);
+
+            onNavButtonTouched();
+            mDoubleTapToSleep = Settings.System.getIntForUser(mContext.getContentResolver(),
+                    Settings.System.DOUBLE_TAP_SLEEP_NAVBAR, 0, UserHandle.USER_CURRENT) != 0;
+=======
+	    mDoubleTapToSleep = (Settings.System.getIntForUser(resolver,
+                    Settings.System.DOUBLE_TAP_SLEEP_NAVBAR, 0,
+                    UserHandle.USER_CURRENT) == 1);
+>>>>>>> 4fa18f3... Fix DT2S on navbar after SlimDim
         }
     }
 
