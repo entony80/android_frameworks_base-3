@@ -3684,12 +3684,6 @@ public final class Settings {
          * @hide
          */
          public static final String DASHBOARD_SWITCHES = "dashboard_switches";
-        
-        /**
-         *  Enable navigation bar double tap gesture on to put device to sleep
-         * @hide
-         */
-        public static final String DOUBLE_TAP_SLEEP_NAVBAR = "double_tap_sleep_navbar";
 
         /**
          * Whether to use the custom status bar header or not
