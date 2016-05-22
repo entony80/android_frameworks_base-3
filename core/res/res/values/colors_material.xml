@@ -78,9 +78,9 @@
     <color name="material_deep_teal_200">#ffd35400</color>
     <color name="material_deep_teal_500">#ffd35400</color>
 
-    <color name="material_blue_grey_800">#ff34495e</color>
-    <color name="material_blue_grey_900">#ff2c3e50</color>
-    <color name="material_blue_grey_950">#ff2c3e50</color>
+    <color name="material_blue_grey_800">#ff2980b9</color>
+    <color name="material_blue_grey_900">#ff2980b9</color>
+    <color name="material_blue_grey_950">#ff2980b9</color>
 
     <!-- Time picker defaults when no theme is set -->
     <eat-comment />
