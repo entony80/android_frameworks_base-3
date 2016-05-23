@@ -49,6 +49,7 @@ import android.util.Slog;
 import android.util.Spline;
 import android.util.TimeUtils;
 import android.view.Display;
+import android.provider.Settings;
 import android.view.WindowManagerPolicy;
 
 import java.io.PrintWriter;
