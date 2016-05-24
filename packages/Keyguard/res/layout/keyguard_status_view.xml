@@ -81,6 +81,18 @@
             android:format24Hour="@string/keyguard_widget_24_hours_format" 
             style="@style/widget_big_thin" />
         <include layout="@layout/keyguard_status_area" />
+
+        <TextView android:id="@+id/weather_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:textColor="@color/clock_white"
+            style="@style/widget_label"
+            android:textAllCaps="true"
+            android:letterSpacing="0.15"
+            android:gravity="center"
+            android:singleLine="true"
+            android:visibility="gone"/>
         <TextView 
             android:textSize="@dimen/widget_label_font_size" 
             android:textColor="#ccffffff" 
