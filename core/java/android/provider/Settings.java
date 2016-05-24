@@ -2415,7 +2415,7 @@ public final class Settings {
         /**
          * @hide
          */
-        public static final String SHOW_HEADSET_INDICATOR = "show_headset_icon"
+        public static final String SHOW_HEADSET_INDICATOR = "show_headset_icon";
 
         /**
          * Scaling factor for fonts, float.
