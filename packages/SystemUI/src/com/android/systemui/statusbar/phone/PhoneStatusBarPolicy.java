@@ -250,7 +250,7 @@ public class PhoneStatusBarPolicy implements Callback {
                     Settings.System.SHOW_HEADSET_INDICATOR,1) == 1;
             updateAlarm();
             updateSu();
-            updateHeadset();
+            updateHeadset(intent);
         }
 
         @Override
