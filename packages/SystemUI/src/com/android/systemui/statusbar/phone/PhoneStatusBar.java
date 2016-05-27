@@ -515,7 +515,6 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
                     CMSettings.Secure.RECENTS_LONG_PRESS_ACTIVITY), false, this);
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.STATUS_BAR_XOSP_LOGO), false, this, UserHandle.USER_ALL);
-            resolver.registerContentObserver(Settings.System.getUriFor(
             update();
         }
 
