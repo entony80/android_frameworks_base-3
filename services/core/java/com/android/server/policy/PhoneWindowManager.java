@@ -3246,6 +3246,13 @@ public class PhoneWindowManager implements WindowManagerPolicy {
         // it handle it, because that gives us the correct 5 second
         // timeout.
         if (keyCode == KeyEvent.KEYCODE_HOME) {
+            
+            if (mTopFullscreenOpaqueWindowState != null &&
+                     (mTopFullscreenOpaqueWindowState.getAttrs().privateFlags
+                             & WindowManager.LayoutParams.PRIVATE_FLAG_PREVENT_SYSTEM_KEYS) != 0
+                     && mScreenOnFully) {
+                return 0;
+            }
 
             // Disable home key if hw keys is set to off
             if (scanCode != 0 && !hasHwKeysEnabled()) {
@@ -3360,13 +3367,6 @@ public class PhoneWindowManager implements WindowManagerPolicy {
                 return 0;
             }
 
-            if (mTopFullscreenOpaqueWindowState != null &&
-                    (mTopFullscreenOpaqueWindowState.getAttrs().privateFlags
-                            & WindowManager.LayoutParams.PRIVATE_FLAG_PREVENT_SYSTEM_KEYS) != 0
-                    && mScreenOnFully) {
-                return 0;
-            }
-
             if (down) {
                 if (mPressOnMenuBehavior == KEY_ACTION_APP_SWITCH
                         || mLongPressOnMenuBehavior == KEY_ACTION_APP_SWITCH) {
@@ -3443,10 +3443,6 @@ public class PhoneWindowManager implements WindowManagerPolicy {
             // Disable app switch key if hw keys is set to off
             if (scanCode != 0 && !hasHwKeysEnabled()) {
                 Log.i(TAG, "Ignoring App Switch Key: we have hw keys disabled");
-            if (mTopFullscreenOpaqueWindowState != null &&
-                    (mTopFullscreenOpaqueWindowState.getAttrs().privateFlags
-                            & WindowManager.LayoutParams.PRIVATE_FLAG_PREVENT_SYSTEM_KEYS) != 0
-                    && mScreenOnFully) {
                 return 0;
             }
 
