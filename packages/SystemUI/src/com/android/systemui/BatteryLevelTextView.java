@@ -89,7 +89,7 @@ public class BatteryLevelTextView extends TextView implements
         }
         if(mBatteryCharging == charging){
             mXospCharging = (ImageView) findViewById(R.id.xosp_battery_charge);
-            mXospCharging.setImageResource(R.drawable.somc_sys_charging_am);
+            mXospCharging.setImageResource(R.drawable.xosp_sys_battery_charge);
             super.setVisibility(mRequestedVisibility);
         }
     }
