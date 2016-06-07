@@ -80,7 +80,7 @@ public class BatteryLevelTextView extends TextView implements
     @Override
     public void onBatteryLevelChanged(boolean present, int level, boolean pluggedIn,
             boolean charging) {
-        String percentage = NumberFormat.format((double) level / 100.0);
+        String percentage = NumberFormat.getPercentInstance().format((double) level / 100.0);
         setText(percentage);
         if (mBatteryPresent != present || mBatteryCharging != charging) {
             mBatteryPresent = present;
