@@ -24,6 +24,7 @@ import android.content.res.Configuration;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.widget.TextView;
+import android.widget.ImageView;
 
 import java.text.NumberFormat;
 
@@ -32,6 +33,7 @@ public class BatteryLevelTextView extends TextView implements
 
     private BatteryStateRegistar mBatteryStateRegistar;
     private boolean mBatteryPresent;
+    private ImageView mXospCharging;
 
     private boolean mBatteryCharging;
     private boolean mForceShow;
@@ -78,12 +80,17 @@ public class BatteryLevelTextView extends TextView implements
     @Override
     public void onBatteryLevelChanged(boolean present, int level, boolean pluggedIn,
             boolean charging) {
-        String percentage = NumberFormat.getPercentInstance().format((double) level / 100.0);
+        String percentage = NumberFormat.format((double) level / 100.0);
         setText(percentage);
         if (mBatteryPresent != present || mBatteryCharging != charging) {
             mBatteryPresent = present;
             mBatteryCharging = charging;
             updateVisibility();
+        }
+        if(mBatteryCharging == charging){
+            mXospCharging = (ImageView) findViewById(R.id.xosp_battery_charge);
+            mXospCharging.setImageResource(R.drawable.xosp_sys_battery_charge);
+            super.setVisibility(mRequestedVisibility);
         }
     }
 

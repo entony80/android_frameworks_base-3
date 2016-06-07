@@ -145,6 +145,14 @@
                 android:paddingStart="@dimen/header_battery_somc_keyguard"
                 android:gravity="center|start" />
 
+            <ImageView
+                android:id="@+id/xosp_battery_charge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:visibility="gone"
+                android:src="@drawable/xosp_sys_battery_charge" />
+
             <com.android.systemui.statusbar.policy.Clock
                 android:id="@+id/clock"
                 android:textAppearance="@style/TextAppearance.StatusBar.Clock"
