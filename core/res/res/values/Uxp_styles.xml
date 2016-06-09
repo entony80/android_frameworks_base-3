@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (C) 2016 The Xperia Open Source Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+<resources>
+    <style name="SEMCWidget" />
+    <style name="SEMCWidget.AbsListView" parent="@style/SEMCWidget" />
+    <style name="SEMCWidget.GestureOverlayView" parent="@style/SEMCWidget" />
+    <style name="SEMCWidget.GestureOverlayView.White" parent="@style/SEMCWidget.GestureOverlayView" />
+    <style name="SEMCWidget.Button" parent="@style/SEMCWidget" />
+    <style name="SEMCWidget.Button.Vanilla" parent="@style/SEMCWidget.Button" />
+    <style name="SEMCWidget.Button.Small" parent="@style/SEMCWidget.Button" />
+    <style name="SEMCWidget.Button.Inset" parent="@style/SEMCWidget.Button" />
+    <style name="SEMCWidget.Button.Transparent" parent="@style/SEMCWidget.Button" />
+    <style name="SEMCWidget.CompoundButton" parent="@style/SEMCWidget" />
+    <style name="SEMCWidget.CompoundButton.CheckBox" parent="@style/SEMCWidget.CompoundButton" />
+    <style name="SEMCWidget.CompoundButton.RadioButton" parent="@style/SEMCWidget.CompoundButton" />
+    <style name="SEMCWidget.CompoundButton.Star" parent="@style/SEMCWidget.CompoundButton" />
+    <style name="SEMCWidget.CompoundButton.SwitchButton" parent="@style/SEMCWidget.CompoundButton" />
+    <style name="SEMCWidget.Button.Toggle" parent="@style/SEMCWidget.Button" />
+    <style name="SEMCWidget.ProgressBar" parent="@style/SEMCWidget" />
+    <style name="SEMCWidget.ProgressBar.Large" parent="@style/SEMCWidget.ProgressBar" />
+    <style name="SEMCWidget.ProgressBar.Small" parent="@style/SEMCWidget.ProgressBar" />
+    <style name="SEMCWidget.ProgressBar.Inverse" parent="@style/SEMCWidget.ProgressBar" />
+    <style name="SEMCWidget.ProgressBar.Large.Inverse" parent="@style/SEMCWidget.ProgressBar.Large" />
+    <style name="SEMCWidget.ProgressBar.Small.Inverse" parent="@style/SEMCWidget.ProgressBar.Small" />
+    <style name="SEMCWidget.ProgressBar.Small.Title" parent="@style/SEMCWidget.ProgressBar.Small" />
+    <style name="SEMCWidget.ProgressBar.Horizontal" parent="@style/SEMCWidget.ProgressBar" />
+    <style name="SEMCWidget.SeekBar" parent="@style/SEMCWidget" />
+    <style name="SEMCWidget.RatingBar" parent="@style/SEMCWidget" />
+    <style name="SEMCWidget.RatingBar.Indicator" parent="@style/SEMCWidget.RatingBar" />
+    <style name="SEMCWidget.RatingBar.Small" parent="@style/SEMCWidget.RatingBar" />
+    <style name="SEMCWidget.TextView" parent="@style/SEMCWidget" />
+    <style name="SEMCWidget.TextView.ListSeparator" parent="@style/SEMCWidget.TextView" />
+    <style name="SEMCWidget.TextView.ListSeparator.White" parent="@style/SEMCWidget.TextView.ListSeparator" />
+    <style name="SEMCWidget.EditText" parent="@style/SEMCWidget" />
+    <style name="SEMCWidget.ExpandableListView" parent="@style/SEMCWidget" />
+    <style name="SEMCWidget.ImageWell" parent="@style/SEMCWidget" />
+    <style name="SEMCWidget.ImageButton" parent="@style/SEMCWidget" />
+    <style name="SEMCWidget.ImageButton.Vanilla" parent="@style/SEMCWidget.ImageButton" />
+    <style name="SEMCWidget.AutoCompleteTextView" parent="@style/SEMCWidget" />
+    <style name="SEMCWidget.Spinner" parent="@style/SEMCWidget" />
+    <style name="SEMCWidget.TextView.PopupMenu" parent="@style/SEMCWidget.TextView" />
+    <style name="SEMCWidget.TextView.SpinnerItem" parent="@style/SEMCWidget.TextView" />
+    <style name="SEMCWidget.DropDownItem" parent="@style/SEMCWidget" />
+    <style name="SEMCWidget.DropDownItem.Spinner" parent="@style/SEMCWidget.DropDownItem" />
+    <style name="SEMCWidget.ScrollView" parent="@style/SEMCWidget" />
+    <style name="SEMCWidget.HorizontalScrollView" parent="@style/SEMCWidget" />
+    <style name="SEMCWidget.ListView" parent="@style/SEMCWidget" />
+    <style name="SEMCWidget.ListView.White" parent="@style/SEMCWidget.ListView" />
+    <style name="SEMCWidget.ListView.DropDown" parent="@style/SEMCWidget.ListView" />
+    <style name="SEMCWidget.ListView.Menu" parent="@style/SEMCWidget.ListView" />
+    <style name="SEMCWidget.GridView" parent="@style/SEMCWidget" />
+    <style name="SEMCWidget.WebView" parent="@style/SEMCWidget" />
+    <style name="SEMCWidget.TabHost" parent="@style/SEMCWidget" />
+    <style name="SEMCWidget.TabWidget" parent="@style/SEMCWidget" />
+    <style name="SEMCWidget.Gallery" parent="@style/SEMCWidget" />
+    <style name="SEMCWidget.PopupWindow" parent="@style/SEMCWidget" />
+    <style name="SEMCWidget.KeyboardView" parent="@style/SEMCWidget" />
+    <style name="SEMCWidget.QuickContactBadge" parent="@style/SEMCWidget" />
+    <style name="SEMCWidget.QuickContactBadgeSmall" parent="@style/SEMCWidget" />
+    <style name="SEMCWidget.QuickContactBadge.WindowSmall" parent="@style/SEMCWidget.QuickContactBadge" />
+    <style name="SEMCWidget.QuickContactBadge.WindowMedium" parent="@style/SEMCWidget.QuickContactBadge" />
+    <style name="SEMCWidget.QuickContactBadge.WindowLarge" parent="@style/SEMCWidget.QuickContactBadge" />
+    <style name="SEMCWidget.QuickContactBadgeSmall.WindowSmall" parent="@style/SEMCWidget.QuickContactBadgeSmall" />
+    <style name="SEMCWidget.QuickContactBadgeSmall.WindowMedium" parent="@style/SEMCWidget.QuickContactBadgeSmall" />
+    <style name="SEMCWidget.QuickContactBadgeSmall.WindowLarge" parent="@style/SEMCWidget.QuickContactBadgeSmall" />
+    <style name="SEMCTextAppearance" />
+    <style name="SEMCTextAppearance.ExtraLarge" parent="@style/SEMCTextAppearance" />
+    <style name="SEMCTextAppearance.ExtraLarge.Secondary" parent="@style/SEMCTextAppearance.ExtraLarge" />
+    <style name="SEMCTextAppearance.ExtraLarge.Disabled" parent="@style/SEMCTextAppearance.ExtraLarge" />
+    <style name="SEMCTextAppearance.Large" parent="@style/SEMCTextAppearance" />
+    <style name="SEMCTextAppearance.Large.Secondary" parent="@style/SEMCTextAppearance.Large" />
+    <style name="SEMCTextAppearance.Large.Disabled" parent="@style/SEMCTextAppearance.Large" />
+    <style name="SEMCTextAppearance.Medium" parent="@style/SEMCTextAppearance" />
+    <style name="SEMCTextAppearance.Medium.Secondary" parent="@style/SEMCTextAppearance.Medium" />
+    <style name="SEMCTextAppearance.Medium.Disabled" parent="@style/SEMCTextAppearance.Medium" />
+    <style name="SEMCTextAppearance.Small" parent="@style/SEMCTextAppearance" />
+    <style name="SEMCTextAppearance.Small.Secondary" parent="@style/SEMCTextAppearance.Small" />
+    <style name="SEMCTextAppearance.Small.Disabled" parent="@style/SEMCTextAppearance.Small" />
+    <style name="SEMCTextAppearance.ExtraSmall" parent="@style/SEMCTextAppearance" />
+    <style name="SEMCTextAppearance.ExtraSmall.Secondary" parent="@style/SEMCTextAppearance.ExtraSmall" />
+    <style name="SEMCTextAppearance.ExtraSmall.Disabled" parent="@style/SEMCTextAppearance.ExtraSmall" />
+    <style name="SEMCTextAppearance.DialogWindowTitle" parent="@style/SEMCTextAppearance" />
+    <style name="SEMCTextAppearance.WindowTitle" parent="@style/SEMCTextAppearance" />
+    <style name="SEMCTextAppearance.Widget" parent="@style/SEMCTextAppearance" />
+    <style name="SEMCTextAppearance.Widget.Button" parent="@style/SEMCTextAppearance.Widget" />
+    <style name="SEMCTextAppearance.Widget.IconMenu" parent="@style/SEMCTextAppearance.Widget" />
+    <style name="SEMCTextAppearance.Widget.IconMenu.Item" parent="@style/SEMCTextAppearance.Widget.IconMenu" />
+    <style name="SEMCTextAppearance.Widget.EditText" parent="@style/SEMCTextAppearance.Widget" />
+    <style name="SEMCTextAppearance.Widget.TabWidget" parent="@style/SEMCTextAppearance.Widget" />
+    <style name="SEMCTextAppearance.Widget.TextView" parent="@style/SEMCTextAppearance.Widget" />
+    <style name="SEMCTextAppearance.Widget.DropDownHint" parent="@style/SEMCTextAppearance.Widget" />
+    <style name="SEMCTextAppearance.Widget.DropDownItem" parent="@style/SEMCTextAppearance.Widget" />
+    <style name="SEMCTextAppearance.Widget.TextView.SpinnerItem" parent="@style/SEMCTextAppearance.Widget.TextView" />
+    <style name="SEMCTextAppearance.SearchResult" parent="@style/SEMCTextAppearance" />
+    <style name="SEMCTextAppearance.SearchResult.Title" parent="@style/SEMCTextAppearance.SearchResult" />
+    <style name="SEMCTextAppearance.SearchResult.Subtitle" parent="@style/SEMCTextAppearance.SearchResult" />
+    <style name="SEMCPreference" />
+    <style name="SEMCPreference.Information" parent="@style/SEMCPreference" />
+    <style name="SEMCPreference.Category" parent="@style/SEMCPreference" />
+    <style name="SEMCPreference.CheckBoxPreference" parent="@style/SEMCPreference" />
+    <style name="SEMCPreference.PreferenceScreen" parent="@style/SEMCPreference" />
+    <style name="SEMCPreference.DialogPreference" parent="@style/SEMCPreference" />
+    <style name="SEMCPreference.DialogPreference.YesNoPreference" parent="@style/SEMCPreference.DialogPreference" />
+    <style name="SEMCPreference.DialogPreference.EditTextPreference" parent="@style/SEMCPreference.DialogPreference" />
+    <style name="SEMCPreference.RingtonePreference" parent="@style/SEMCPreference" />
+    <style name="SEMCMediaButton" />
+    <style name="SEMCMediaButton.Previous" parent="@style/SEMCMediaButton" />
+    <style name="SEMCMediaButton.Next" parent="@style/SEMCMediaButton" />
+    <style name="SEMCMediaButton.Play" parent="@style/SEMCMediaButton" />
+    <style name="SEMCMediaButton.Ffwd" parent="@style/SEMCMediaButton" />
+    <style name="SEMCMediaButton.Rew" parent="@style/SEMCMediaButton" />
+    <style name="SEMCMediaButton.Pause" parent="@style/SEMCMediaButton" />
+    <style name="SEMCButtonBar" />
+    <style name="SEMCTheme" />
+    <style name="SEMCTheme.NoTitleBar" parent="@style/SEMCTheme" />
+    <style name="SEMCTheme.NoTitleBar.Fullscreen" parent="@style/SEMCTheme.NoTitleBar" />
+    <style name="SEMCTheme.Light" parent="@style/SEMCTheme" />
+    <style name="SEMCTheme.Light.NoTitleBar" parent="@style/SEMCTheme.Light" />
+    <style name="SEMCTheme.Light.NoTitleBar.Fullscreen" parent="@style/SEMCTheme.Light.NoTitleBar" />
+    <style name="SEMCTheme.Black" parent="@style/SEMCTheme" />
+    <style name="SEMCTheme.Black.NoTitleBar" parent="@style/SEMCTheme.Black" />
+    <style name="SEMCTheme.Black.NoTitleBar.Fullscreen" parent="@style/SEMCTheme.Black.NoTitleBar" />
+    <style name="SEMCTheme.Wallpaper" parent="@style/SEMCTheme" />
+    <style name="SEMCTheme.Wallpaper.NoTitleBar" parent="@style/SEMCTheme.Wallpaper" />
+    <style name="SEMCTheme.Wallpaper.NoTitleBar.Fullscreen" parent="@style/SEMCTheme.Wallpaper.NoTitleBar" />
+    <style name="SEMCTheme.WallpaperSettings" parent="@style/SEMCTheme" />
+    <style name="SEMCTheme.Light.WallpaperSettings" parent="@style/SEMCTheme.Light" />
+    <style name="SEMCTheme.Translucent" parent="@style/SEMCTheme" />
+    <style name="SEMCTheme.Translucent.NoTitleBar" parent="@style/SEMCTheme.Translucent" />
+    <style name="SEMCTheme.Translucent.NoTitleBar.Fullscreen" parent="@style/SEMCTheme.Translucent.NoTitleBar" />
+    <style name="SEMCTheme.NoDisplay" parent="@style/SEMCTheme" />
+    <style name="SEMCTheme.Dialog" parent="@style/SEMCTheme" />
+    <style name="SEMCTheme.Dialog.ActionDialog" parent="@style/SEMCTheme.Dialog" />
+    <style name="SEMCTheme.Dialog.Alert" parent="@style/SEMCTheme.Dialog" />
+    <style name="SEMCTheme.Panel" parent="@style/SEMCTheme" />
+    <style name="SEMCTheme.Light.Panel" parent="@style/SEMCTheme.Light" />
+    <style name="SEMCTheme.InputMethod" parent="@style/SEMCTheme" />
+    <style name="SEMCTheme.SearchBar" parent="@style/SEMCTheme" />
+    <style name="SEMCTheme.GlobalSearchBar" parent="@style/SEMCTheme" />
+    <style name="SEMCTheme.IconMenu" parent="@style/SEMCTheme" />
+    <style name="SEMCTheme.ExpandedMenu" parent="@style/SEMCTheme" />
+    <style name="SEMCTheme.Dialog.AppError" parent="@style/SEMCTheme.Dialog" />
+    <style name="SEMCTheme.Dialog.RecentApplications" parent="@style/SEMCTheme.Dialog" />
+    <style name="SEMCTheme.Vanilla" parent="@style/SEMCTheme" />
+    <style name="SEMCTheme.Dialog.Vanilla" parent="@style/SEMCTheme.Dialog" />
+    <style name="SEMCTheme.Dialog.Alert.Vanilla" parent="@style/SEMCTheme.Dialog.Alert" />
+    <style name="SEMCTheme.NoGlobalAppBackground" parent="@style/SEMCTheme" />
+    <style name="SEMCTheme.BottomTabs" parent="@style/SEMCTheme" />
+    <style name="SEMCWidget.TabHost.Bottom" parent="@style/SEMCWidget.TabHost" />
+    <style name="SEMCWidget.TabWidget.TabStripDisabled" parent="@style/SEMCWidget.TabWidget" />
+    <style name="SEMCWindowTitleBackground" />
+    <style name="SEMCDialogWindowTitle" />
+    <style name="SEMCWindowTitle" />
+    <style name="SEMCWidget.TabWidget.Bottom" parent="@style/SEMCWidget.TabWidget" />
+    <style name="SEMCTextAppearance.Inverse" parent="@style/SEMCTextAppearance" />
+</resources>
