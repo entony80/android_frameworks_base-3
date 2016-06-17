@@ -570,121 +570,194 @@ public class NotificationPanelView extends PanelView implements
         });
 
         mKeyguardWeatherInfo = (TextView) mKeyguardStatusView.findViewById(R.id.weather_info);
-    }
 
-    public boolean isAffordanceSwipeInProgress() {
-        return mAfforanceHelper.isSwipingInProgress();
-        
-            mNotificationPanelView = this;
+        mNotificationPanelView = this;
 
+            // inicia o BlurUtils
             mBlurUtils = new BlurUtils(mNotificationPanelView.getContext());
 
+            // animação
             mAlphaAnimation = new AlphaAnimation(0.0f, 1.0f);
             mAlphaAnimation.setDuration(75);
             mAlphaAnimation.setAnimationListener(mAnimationListener);
 
+            // cria o mBlurredView
             mBlurredView = new FrameLayout(mNotificationPanelView.getContext());
-            
-            NotificationPanelView.addView(mBlurredView, 0, new FrameLayout.LayoutParams(
+
+            // insere o mBlurredView no mNotificationPanelView na posição 0 (ordem importa)
+            mNotificationPanelView.addView(mBlurredView, 0, new FrameLayout.LayoutParams(
                     FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
             mNotificationPanelView.requestLayout();
 
+            // seta o tag de: pronto para receber o blur
             mBlurredView.setTag("ready_to_blur");
+
+            // invisível
             mBlurredView.setVisibility(View.INVISIBLE);
 
+            // transparente ?
             handleQuickSettingsBackround();
+
     }
-    
+
+    ////////////////////////////////
     private static void handleQuickSettingsBackround() {
 
+        // continua ?
         if (mQsContainer == null)
             return;
+
         if (mKeyguardShowing) {
+
+        //    // opaco !
             mQsContainer.getBackground().setAlpha(255);
+
         } else {
+
+            // transparente ?
             mQsContainer.getBackground().setAlpha(mTranslucentQuickSettings ? mTranslucencyPercentage : 255);
+
         }
     }
 
 
     public static void startBlurTask() {
+        // habilitado ?
         if (!mBlurredStatusBarExpandedEnabled)
             return;
+
         try {
+            // não continua se o blur ja foi aplicado !!!
             if (mBlurredView.getTag().toString().equals("blur_applied"))
                 return;
         } catch (Exception e){
         }
+
+        // continua ?
         if (mNotificationPanelView == null)
             return;
+
+        // lockscreen heads up?        
         if (mKeyguardShowing || mHeadsUpShowing || mHeadsUpAnimatingAway)
             return;
 
+        // callback
         BlurTask.setBlurTaskCallback(new BlurUtils.BlurTaskCallback() {
 
             @Override
             public void blurTaskDone(Bitmap blurredBitmap) {
+
                 if (blurredBitmap != null) {
+
+                    // -------------------------
+                    // bitmap criado com sucesso
+                    // -------------------------
+
+                    // corrige o width do mBlurredView
                     int[] screenDimens = BlurTask.getRealScreenDimensions();
                     mBlurredView.getLayoutParams().width = screenDimens[0];
                     mBlurredView.requestLayout();
 
+                    // cria o drawable com o filtro de cor
                     BitmapDrawable drawable = new BitmapDrawable(blurredBitmap);
                     drawable.setColorFilter(mColorFilter);
 
+                    // seta o drawable
                     mBlurredView.setBackground(drawable);
 
+                    // seta o tag de: blur aplicado
                     mBlurredView.setTag("blur_applied");
+
                 } else {
 
+                    // ----------------------------
+                    // bitmap nulo por algum motivo
+                    // ----------------------------
+
+                    // seta o filtro de cor
                     mBlurredView.setBackgroundColor(mBlurLightColorFilter);
+
+                    // seta o tag de: erro
                     mBlurredView.setTag("error");
 
                 }
+
+                // anima e mostra o blur
                 mBlurredView.startAnimation(mAlphaAnimation);
-             }
+
+            }
 
             @Override
             public void dominantColor(int color) {
+
+                // obtém a luminosidade da cor dominante
                 double lightness = DisplayUtils.getColorLightness(color);
 
                 if (lightness >= 0.0 && color <= 1.0) {
+
+                    // --------------------------------------------------
+                    // seta o filtro de cor de acordo com a cor dominante
+                    // --------------------------------------------------
+
                     if (lightness <= 0.33) {
+
+                        // imagem clara (mais perto do branco)
                         mColorFilter = new PorterDuffColorFilter(mBlurLightColorFilter, PorterDuff.Mode.MULTIPLY);
+
                     } else if (lightness >= 0.34 && lightness <= 0.66) {
+
+                        // imagem mista
                         mColorFilter = new PorterDuffColorFilter(mBlurMixedColorFilter, PorterDuff.Mode.MULTIPLY);
+
                     } else if (lightness >= 0.67 && lightness <= 1.0) {
+
+                        // imagem clara (mais perto do preto)
                         mColorFilter = new PorterDuffColorFilter(mBlurDarkColorFilter, PorterDuff.Mode.MULTIPLY);
+
                     }
+
                 } else {
+
+                    // -------
+                    // erro !!
+                    // -------
+
+                    // seta a cor mista
                     mColorFilter = new PorterDuffColorFilter(mBlurMixedColorFilter, PorterDuff.Mode.MULTIPLY);
+
                 }
             }
         });
 
+        // engine
         BlurTask.setBlurEngine(BlurUtils.BlurEngine.RenderScriptBlur);
+
+        // blur
         new BlurTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+
     }
 
+    public boolean isAffordanceSwipeInProgress() {
+        return mAfforanceHelper.isSwipingInProgress();
+    }
+        
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
         mSettingsObserver.observe();
         mScrollView.setListener(this);
     }
-
+ 
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         mSettingsObserver.unobserve();
         mWeatherController.removeCallback(this);
     }
-
-    public static void updatePreferences(Context mContext) {
+    
+     public static void updatePreferences(Context mContext) {
 
         // atualiza
-        mBlurScale = Settings.System.getInt(mContext.getContentResolver(), Settings.System.BLUR_SCALE_PREFERENCE_KEY, 10);
-        mBlurRadius = Settings.System.getInt(mContext.getContentResolver(), Settings.System.BLUR_RADIUS_PREFERENCE_KEY, 5);
         mBlurDarkColorFilter = Color.LTGRAY;
         mBlurMixedColorFilter = Color.GRAY;
         mBlurLightColorFilter = Color.DKGRAY;
@@ -830,7 +903,7 @@ public class NotificationPanelView extends PanelView implements
             }
         }
     }
-///////////////////////////////////
+
     @Override
     protected void loadDimens() {
         super.loadDimens();
