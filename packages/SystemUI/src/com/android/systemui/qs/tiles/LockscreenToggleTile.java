@@ -52,9 +52,9 @@ public class LockscreenToggleTile extends QSTile<QSTile.BooleanState>
             @Override
             public void update() {
                 if (newEnabledState != mPersistedState) {
-+                    mPersistedState = newEnabledState;
-+                    refreshState();
-+                }
+                    mPersistedState = newEnabledState;
+                    refreshState();
+                }
             }
         };
 
