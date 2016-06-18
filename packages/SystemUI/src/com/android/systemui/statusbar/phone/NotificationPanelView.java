@@ -19,6 +19,7 @@ package com.android.systemui.statusbar.phone;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ArgbEvaluator;
+import android.graphics.drawable.BitmapDrawable;
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
 import android.animation.ValueAnimator;
@@ -26,24 +27,19 @@ import android.content.ContentResolver;
 import android.app.ActivityManager;
 import android.app.StatusBarManager;
 import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.pm.PackageManager;
-import android.graphics.drawable.BitmapDrawable;
+import android.graphics.*;
 import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.database.ContentObserver;
-import android.graphics.*;
+import android.os.AsyncTask;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Handler;
-import android.provider.Settings;
 import android.os.PowerManager;
 import android.os.UserHandle;
 import android.provider.Settings;
@@ -62,12 +58,13 @@ import android.view.WindowManager;
 import android.view.WindowManagerGlobal;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.animation.AnimationUtils;
-import android.view.animation.*;
 import android.view.animation.Interpolator;
 import android.view.animation.PathInterpolator;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.provider.Settings;
+import android.view.animation.*;
 
 import com.android.internal.logging.MetricsLogger;
 import com.android.keyguard.KeyguardStatusView;
@@ -78,8 +75,6 @@ import com.android.systemui.R;
 import com.android.systemui.SwipeHelper;
 import com.android.systemui.qs.QSContainer;
 import com.android.systemui.qs.QSDragPanel;
-import com.android.systemui.qs.QSPanel;
-import com.android.systemui.statusbar.*;
 import com.android.systemui.statusbar.ExpandableNotificationRow;
 import com.android.systemui.statusbar.ExpandableView;
 import com.android.systemui.statusbar.FlingAnimationUtils;
@@ -94,6 +89,7 @@ import com.android.systemui.statusbar.policy.WeatherController;
 import com.android.systemui.statusbar.policy.WeatherControllerImpl;
 import com.android.systemui.statusbar.stack.NotificationStackScrollLayout;
 import com.android.systemui.statusbar.stack.StackStateAnimator;
+import com.android.systemui.statusbar.*;
 
 import cyanogenmod.providers.CMSettings;
 import cyanogenmod.weather.util.WeatherUtils;
@@ -264,6 +260,38 @@ public class NotificationPanelView extends PanelView implements
     private int mStatusBarHeaderHeight;
     private GestureDetector mDoubleTapGesture;
 
+    public static boolean mBlurredStatusBarExpandedEnabled;
+    public static NotificationPanelView mNotificationPanelView;
+
+    private static int mBlurScale;
+    private static int mBlurRadius;
+    private static BlurUtils mBlurUtils;
+    private static FrameLayout mBlurredView;
+    private static ColorFilter mColorFilter;
+    private static int mBlurDarkColorFilter;
+    private static int mBlurMixedColorFilter;
+    private static int mBlurLightColorFilter;
+    private static int mTranslucencyPercentage;
+    private static AlphaAnimation mAlphaAnimation;
+    private static boolean mTranslucentQuickSettings;
+    
+    private static Animation.AnimationListener mAnimationListener = new Animation.AnimationListener() {
+
+        @Override
+        public void onAnimationStart(Animation anim) {
+            // visível
+            mBlurredView.setVisibility(View.VISIBLE);
+
+        }
+
+        @Override
+        public void onAnimationEnd(Animation anim) {}
+
+        @Override
+        public void onAnimationRepeat(Animation anim) {}
+
+    };
+
     // Task manager
     private boolean mShowTaskManager;
     private boolean mTaskManagerShowing;
@@ -353,36 +381,6 @@ public class NotificationPanelView extends PanelView implements
             mKeyguardStatusView.setTranslationX(0);
             mKeyguardStatusView.setAlpha(1f);
         }
-    public static boolean mBlurredStatusBarExpandedEnabled;
-    public static NotificationPanelView mNotificationPanelView;
-
-    private static int mBlurScale;
-    private static int mBlurRadius;
-    private static BlurUtils mBlurUtils;
-    private static FrameLayout mBlurredView;
-    private static ColorFilter mColorFilter;
-    private static int mBlurDarkColorFilter;
-    private static int mBlurMixedColorFilter;
-    private static int mBlurLightColorFilter;
-    private static int mTranslucencyPercentage;
-    private static AlphaAnimation mAlphaAnimation;
-    private static boolean mTranslucentQuickSettings;
-    private static Animation.AnimationListener mAnimationListener = new Animation.AnimationListener() {
-
-        @Override
-        public void onAnimationStart(Animation anim) {
-
-            // visível
-            mBlurredView.setVisibility(View.VISIBLE);
-
-        }
-
-        @Override
-        public void onAnimationEnd(Animation anim) {}
-
-        @Override
-        public void onAnimationRepeat(Animation anim) {}
-
     };
 
     public NotificationPanelView(Context context, AttributeSet attrs) {
@@ -569,9 +567,7 @@ public class NotificationPanelView extends PanelView implements
             }
         });
 
-        mKeyguardWeatherInfo = (TextView) mKeyguardStatusView.findViewById(R.id.weather_info);
-
-        mNotificationPanelView = this;
+            mNotificationPanelView = this;
 
             // inicia o BlurUtils
             mBlurUtils = new BlurUtils(mNotificationPanelView.getContext());
@@ -596,11 +592,10 @@ public class NotificationPanelView extends PanelView implements
             mBlurredView.setVisibility(View.INVISIBLE);
 
             // transparente ?
+
             handleQuickSettingsBackround();
-
     }
-
-    ////////////////////////////////
+////////////////////////////////
     private static void handleQuickSettingsBackround() {
 
         // continua ?
@@ -735,29 +730,32 @@ public class NotificationPanelView extends PanelView implements
         // blur
         new BlurTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
+        mKeyguardWeatherInfo = (TextView) mKeyguardStatusView.findViewById(R.id.weather_info);
     }
 
     public boolean isAffordanceSwipeInProgress() {
         return mAfforanceHelper.isSwipingInProgress();
     }
-        
+
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
         mSettingsObserver.observe();
         mScrollView.setListener(this);
     }
- 
+
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         mSettingsObserver.unobserve();
         mWeatherController.removeCallback(this);
     }
-    
+
      public static void updatePreferences(Context mContext) {
 
         // atualiza
+        mBlurScale = Settings.System.getInt(mContext.getContentResolver(), Settings.System.BLUR_SCALE_PREFERENCE_KEY, 10);
+        mBlurRadius = Settings.System.getInt(mContext.getContentResolver(), Settings.System.BLUR_RADIUS_PREFERENCE_KEY, 5);
         mBlurDarkColorFilter = Color.LTGRAY;
         mBlurMixedColorFilter = Color.GRAY;
         mBlurLightColorFilter = Color.DKGRAY;
@@ -903,6 +901,7 @@ public class NotificationPanelView extends PanelView implements
             }
         }
     }
+//////////////////////////////////
 
     @Override
     protected void loadDimens() {

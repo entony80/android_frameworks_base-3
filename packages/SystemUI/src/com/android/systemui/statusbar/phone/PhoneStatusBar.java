@@ -28,6 +28,7 @@ import android.app.ActivityManager;
 import android.app.ActivityManagerNative;
 import android.app.IActivityManager;
 import android.app.Notification;
+import android.hardware.display.DisplayManager;
 import android.app.PendingIntent;
 import android.app.StatusBarManager;
 import android.app.WallpaperManager;
@@ -59,7 +60,6 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.hardware.display.DisplayManager;
 import android.inputmethodservice.InputMethodService;
 import android.media.AudioAttributes;
 import android.media.MediaMetadata;
@@ -131,6 +131,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.android.systemui.recents.RecentsActivity;
 import com.android.systemui.omni.screenrecord.TakeScreenrecordService;
 import com.android.internal.logging.MetricsLogger;
 import com.android.internal.statusbar.NotificationVisibility;
@@ -155,8 +156,6 @@ import com.android.systemui.doze.DozeLog;
 import com.android.systemui.keyguard.KeyguardViewMediator;
 import com.android.systemui.omni.StatusBarHeaderMachine;
 import com.android.systemui.qs.QSDragPanel;
-import com.android.systemui.qs.QSPanel;
-import com.android.systemui.recents.RecentsActivity;
 import com.android.systemui.recents.ScreenPinningRequest;
 import com.android.systemui.settings.BrightnessController;
 import com.android.systemui.screenshot.TakeScreenshotService;
@@ -171,7 +170,6 @@ import com.android.systemui.statusbar.ExpandableNotificationRow;
 import com.android.systemui.statusbar.GestureRecorder;
 import com.android.systemui.statusbar.KeyguardIndicationController;
 import com.android.systemui.statusbar.MediaExpandableNotificationRow;
-import com.android.systemui.statusbar.NotificationBackgroundView;
 import com.android.systemui.statusbar.NotificationData;
 import com.android.systemui.statusbar.NotificationData.Entry;
 import com.android.systemui.statusbar.NotificationOverflowContainer;
@@ -211,6 +209,7 @@ import com.android.systemui.statusbar.policy.ZenModeController;
 import com.android.systemui.statusbar.stack.NotificationStackScrollLayout;
 import com.android.systemui.statusbar.stack.NotificationStackScrollLayout.OnChildLocationsChangedListener;
 import com.android.systemui.statusbar.stack.StackStateAnimator;
+import com.android.systemui.statusbar.NotificationBackgroundView;
 import com.android.systemui.statusbar.stack.StackViewState;
 import com.android.systemui.volume.VolumeComponent;
 import cyanogenmod.app.CMContextConstants;
@@ -953,7 +952,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
         WallpaperManager wallpaperManager = (WallpaperManager) mContext.getSystemService(
                 Context.WALLPAPER_SERVICE);
         mKeyguardWallpaper = wallpaperManager.getKeyguardBitmap();
-//TODO: BLUR
+
         mUnlockMethodCache = UnlockMethodCache.getInstance(mContext);
         mUnlockMethodCache.addListener(this);
         startKeyguard();
@@ -1481,10 +1480,8 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
         // Private API call to make the shadows look better for Recents
         ThreadedRenderer.overrideProperty("ambientRatio", String.valueOf(1.5f));
 
-        mStatusBarHeaderMachine = new StatusBarHeaderMachine(mContext);
-        mStatusBarHeaderMachine.addObserver(mHeader);
-        mStatusBarHeaderMachine.updateEnablement();
         try {
+            // receiver
             BroadcastReceiver receiver = new BroadcastReceiver() {
 
                 @Override
@@ -1492,32 +1489,61 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
                     if (NotificationPanelView.mKeyguardShowing) {
                         return;
                     }
+
                     String action = intent.getAction();
 
+                    // alterou a rotação ?
                if (action.equals(Intent.ACTION_CONFIGURATION_CHANGED)) {
                         if (NotificationPanelView.mKeyguardShowing) {
                             return;
                         }
+                        // recents
                         RecentsActivity.onConfigurationChanged();
 
+                        // ----------------------------------------------------------------------
+                        // se na rotação do celular o mod estiver habilitado e o painel expandido
+                        // estiver aberto, fecha o painel expandido forçando o usuário a expandir
+                        // o painel novamente para obtér a imagem desfocada com a rotação atual!!
+                        // ----------------------------------------------------------------------
+
+                        // habilitado ?
                         if (mExpandedVisible && NotificationPanelView.mBlurredStatusBarExpandedEnabled && (!NotificationPanelView.mKeyguardShowing)) {
+
+                            // fecha o painel
                             makeExpandedInvisible();
+
                         }
                     }
+
+       //             if (action.equals(Intent.ACTION_SCREEN_OFF)) {
+         //               NotificationPanelView.recycle();
+           //         }
+
+                    // atualiza
+
+
+                    // mata
+
                 }
             };
 
+            // registra o receiver
             IntentFilter intent = new IntentFilter();
             intent.addAction(Intent.ACTION_CONFIGURATION_CHANGED);
             this.mContext.registerReceiver(receiver, intent);
 
+            // inicia
             RecentsActivity.init(this.mContext);
 
+            // atualizam as preferências
             updatePreferences(this.mContext);
         } catch (Exception e){
             Log.d("mango918", String.valueOf(e));
         }
 
+        mStatusBarHeaderMachine = new StatusBarHeaderMachine(mContext);
+        mStatusBarHeaderMachine.addObserver(mHeader);
+        mStatusBarHeaderMachine.updateEnablement();
         return mStatusBarView;
     }
 
@@ -3130,7 +3156,6 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
 
     void makeExpandedVisible(boolean force) {
         NotificationPanelView.startBlurTask();
-
         if (SPEW) Log.d(TAG, "Make expanded visible: expanded visible=" + mExpandedVisible);
         if (!force && (mExpandedVisible || !panelsEnabled())) {
             return;

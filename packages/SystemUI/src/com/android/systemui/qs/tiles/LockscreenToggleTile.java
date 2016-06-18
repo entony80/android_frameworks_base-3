@@ -36,7 +36,6 @@ public class LockscreenToggleTile extends QSTile<QSTile.BooleanState>
             new Intent("android.settings.LOCK_SCREEN_SETTINGS");
 
     private KeyguardMonitor mKeyguard;
-    private boolean mPersistedState;
     private boolean mListening;
 
     private KeyguardViewMediator.LockscreenEnabledSettingsObserver mSettingsObserver;
@@ -80,8 +79,9 @@ public class LockscreenToggleTile extends QSTile<QSTile.BooleanState>
 
     @Override
     protected void handleClick() {
-        setPersistedState(!mPersistedState);
-        refreshState();
+        final boolean newState = !getState().value;
+        setPersistedState(newState);
+        refreshState(newState);
     }
 
     @Override
@@ -100,9 +100,8 @@ public class LockscreenToggleTile extends QSTile<QSTile.BooleanState>
             state.enabled = false;
         } else {
             final boolean lockscreenEnforced = mediator.lockscreenEnforcedByDevicePolicy();
-            final boolean lockscreenEnabled = lockscreenEnforced
-                        || mPersistedState
-            		|| arg != null ? (Boolean) arg : mediator.getKeyguardEnabledInternal();
+            final boolean lockscreenEnabled = lockscreenEnforced ||
+                    arg != null ? (Boolean) arg : mKeyguardViewMediator.getKeyguardEnabledInternal();
 
             state.visible = mediator.isKeyguardBound();
 
@@ -160,6 +159,5 @@ public class LockscreenToggleTile extends QSTile<QSTile.BooleanState>
         CMSettings.Secure.putIntForUser(mContext.getContentResolver(),
                 CMSettings.Secure.LOCKSCREEN_INTERNALLY_ENABLED,
                 enabled ? 1 : 0, UserHandle.USER_CURRENT);
-        mPersistedState = enabled;
     }
 }

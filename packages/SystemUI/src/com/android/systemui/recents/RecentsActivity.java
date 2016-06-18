@@ -24,27 +24,27 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProviderInfo;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.os.Bundle;
-import android.os.SystemClock;
-import android.os.UserHandle;
-import android.content.res.Resources;
 import android.graphics.*;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
+import android.content.Intent;
+import android.util.DisplayMetrics;
+import android.util.Log;
+import android.widget.FrameLayout;
+import android.content.IntentFilter;
+import com.android.systemui.statusbar.BlurUtils;
+import com.android.systemui.statusbar.DisplayUtils;
+import com.android.systemui.statusbar.phone.NotificationPanelView;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.os.UserHandle;
-import android.provider.Settings;
-import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewStub;
-import android.widget.FrameLayout;
+import java.lang.reflect.Field;
 import android.widget.Toast;
+import java.util.HashMap;
 
 import com.android.internal.logging.MetricsLogger;
 import com.android.systemui.Prefs;
@@ -61,15 +61,10 @@ import com.android.systemui.recents.views.DebugOverlayView;
 import com.android.systemui.recents.views.RecentsView;
 import com.android.systemui.recents.views.SystemBarScrimViews;
 import com.android.systemui.recents.views.ViewAnimation;
-import com.android.systemui.statusbar.BlurUtils;
-import com.android.systemui.statusbar.DisplayUtils;
-import com.android.systemui.statusbar.phone.NotificationPanelView;
 import cyanogenmod.providers.CMSettings;
 
 import java.lang.ref.WeakReference;
-import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * The main Recents activity that is started from AlternateRecentsComponent.
@@ -90,7 +85,6 @@ public class RecentsActivity extends Activity implements RecentsView.RecentsView
     View mEmptyView;
     DebugOverlayView mDebugOverlay;
 
-    //ME
     public static boolean mBlurredRecentAppsEnabled;
 
     private static int mBlurScale;
@@ -103,7 +97,6 @@ public class RecentsActivity extends Activity implements RecentsView.RecentsView
     private static int mBlurLightColorFilter;
     private static RecentsActivity mRecentsActivity;
     private static FrameLayout mRecentsActivityRootView;
-    //ME
 
     // Resize task debug
     RecentsResizeTaskDialog mResizeTaskDebugDialog;
@@ -118,8 +111,6 @@ public class RecentsActivity extends Activity implements RecentsView.RecentsView
 
     // Runnable to be executed after we paused ourselves
     Runnable mAfterPauseRunnable;
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 
     public static void startBlurTask() {
 
@@ -171,7 +162,7 @@ public class RecentsActivity extends Activity implements RecentsView.RecentsView
 
                 if (lightness >= 0.0 && color <= 1.0) {
 
-                    // --------------------------------------------------
+                     // --------------------------------------------------
                     // seta o filtro de cor de acordo com a cor dominante
                     // --------------------------------------------------
 
@@ -372,8 +363,6 @@ public class RecentsActivity extends Activity implements RecentsView.RecentsView
             }
         }
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
     private ReferenceCountedTrigger mExitTrigger;
 
     /**
@@ -485,8 +474,6 @@ public class RecentsActivity extends Activity implements RecentsView.RecentsView
         }
     });
 
-    /** Updates the set of recent tasks */
-
     private static void recycle() {
 
         if (mRecentsActivityRootView == null)
@@ -510,6 +497,7 @@ public class RecentsActivity extends Activity implements RecentsView.RecentsView
         }
     }
 
+    /** Updates the set of recent tasks */
     void updateRecentsTasks() {
         // If AlternateRecentsComponent has preloaded a load plan, then use that to prevent
         // reconstructing the task stack
@@ -717,7 +705,7 @@ public class RecentsActivity extends Activity implements RecentsView.RecentsView
         filter.addAction(Intent.ACTION_SCREEN_OFF);
         filter.addAction(SearchManager.INTENT_GLOBAL_SEARCH_ACTIVITY_CHANGED);
         registerReceiver(mSystemBroadcastReceiver, filter);
-//TODO: fuuuu
+
         try {
             // obtém os campos
             RecentsView mRecentsView = (RecentsView) getObjectField(this, "mRecentsView");

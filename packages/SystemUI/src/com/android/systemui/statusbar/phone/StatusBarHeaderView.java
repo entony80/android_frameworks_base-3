@@ -138,13 +138,13 @@ public class StatusBarHeaderView extends RelativeLayout implements View.OnClickL
 
     private int mClockCollapsedSize;
     private int mClockExpandedSize;
+    private static boolean mTranslucentHeader;
+    private static int mTranslucencyPercentage;
+    private static StatusBarHeaderView mStatusBarHeaderView;
 
     // Task manager
     private boolean mShowTaskManager;
     private View mTaskManagerButton;
-    private static boolean mTranslucentHeader;
-    private static int mTranslucencyPercentage;
-    private static StatusBarHeaderView mStatusBarHeaderView;
 
     /**
      * In collapsed QS, the clock and avatar are scaled down a bit post-layout to allow for a nice
@@ -264,10 +264,8 @@ public class StatusBarHeaderView extends RelativeLayout implements View.OnClickL
         if (d instanceof RippleDrawable) {
             ((RippleDrawable) d).setForceSoftware(true);
         }
-        
-        mStatusBarHeaderView = this;
 
-        //ME
+        mStatusBarHeaderView = this;
         handleStatusBarHeaderViewBackround();
     }
 
