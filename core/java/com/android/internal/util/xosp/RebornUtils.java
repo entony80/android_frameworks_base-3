@@ -18,6 +18,7 @@ package com.android.internal.util.xosp;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.net.ConnectivityManager;
 
 import java.util.Locale;
 
