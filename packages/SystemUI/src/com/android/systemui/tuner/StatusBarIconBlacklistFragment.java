@@ -26,7 +26,7 @@ import android.preference.PreferenceScreen;
 import android.preference.SwitchPreference;
 import android.provider.Settings;
 
-import com.android.internal.util.temasek.TemasekUtils;
+import com.android.internal.util.xosp.RebornUtils;
 import com.android.systemui.R;
 import com.android.systemui.statusbar.phone.StatusBarIconController;
 
@@ -45,7 +45,7 @@ public class StatusBarIconBlacklistFragment extends PreferenceFragment {
         final ContentResolver resolver = getActivity().getContentResolver();
 
         mShowFourG = (SwitchPreference) findPreference(SHOW_FOURG);
-        if (TemasekUtils.isWifiOnly(getActivity())) {
+        if (RebornUtils.isWifiOnly(getActivity())) {
             prefSet.removePreference(mShowFourG);
         } else {
             mShowFourG.setChecked((Settings.System.getInt(resolver,
