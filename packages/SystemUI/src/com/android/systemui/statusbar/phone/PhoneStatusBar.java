@@ -540,6 +540,11 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
                             mContext.getContentResolver(),
                             Settings.System.ENABLE_TASK_MANAGER,
                             0, UserHandle.USER_CURRENT) == 1;
+                    recreateStatusBar();
+                    updateRowStates();
+                    updateSpeedbump();
+                    updateClearAll();
+                    updateEmptyShadeView();
             } else if (uri.equals(Settings.System.getUriFor(
                     Settings.System.SHOW_FOURG))) {
                     mShow4G = Settings.System.getIntForUser(
@@ -626,6 +631,9 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
 
         @Override
         public void update() {
+
+            ContentResolver resolver = mContext.getContentResolver();
+
             boolean visible = CMSettings.Global.getIntForUser(mContext.getContentResolver(),
                     CMSettings.Global.DEV_FORCE_SHOW_NAVBAR, 0, UserHandle.USER_CURRENT) == 1;
 
