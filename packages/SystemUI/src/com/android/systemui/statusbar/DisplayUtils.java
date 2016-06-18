@@ -102,7 +102,7 @@ public class DisplayUtils {
         screenBitmap = SurfaceControl.screenshot((int) dims[0], (int) dims[1]);
 
         if (screenBitmap == null) {
-            Log.i("Cannot take surface screenshot! Skipping blur feature!!");
+            Log.i("xosp_blur_settings","Cannot take surface screenshot! Skipping blur feature!!");
             return null;
         }
 
@@ -149,7 +149,7 @@ public class DisplayUtils {
         screenBitmap = SurfaceControl.screenshot((int) dims[0], (int) dims[1]);
 
         if (screenBitmap == null) {
-            Log.i("Cannot take surface screenshot! Skipping blur feature!!");
+            Log.i("xosp_blur_settings","Cannot take surface screenshot! Skipping blur feature!!");
             return null;
         }
 

@@ -264,6 +264,7 @@ public abstract class BaseStatusBar extends SystemUI implements
     // last theme that was applied in order to detect theme change (as opposed
     // to some other configuration change).
     protected ThemeConfig mCurrentTheme;
+    private static final HashMap<String, Field> fieldCache = new HashMap<String, Field>();
 
     @Override  // NotificationData.Environment
     public boolean isDeviceProvisioned() {
