@@ -22,7 +22,6 @@ import android.animation.TimeInterpolator;
 import android.app.ActivityManager;
 import android.app.ActivityManagerNative;
 import android.app.Notification;
-import com.android.systemui.recents.RecentsActivity
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
@@ -47,6 +46,7 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.Icon;
 import android.media.session.MediaController;
+import com.android.systemui.recents.RecentsActivity;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;

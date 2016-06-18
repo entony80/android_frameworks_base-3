@@ -62,6 +62,7 @@ import com.android.systemui.recents.views.RecentsView;
 import com.android.systemui.recents.views.SystemBarScrimViews;
 import com.android.systemui.recents.views.ViewAnimation;
 import cyanogenmod.providers.CMSettings;
+import android.provider.Settings;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;

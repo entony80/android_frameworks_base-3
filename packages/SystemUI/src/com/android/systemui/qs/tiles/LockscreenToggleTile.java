@@ -101,7 +101,7 @@ public class LockscreenToggleTile extends QSTile<QSTile.BooleanState>
         } else {
             final boolean lockscreenEnforced = mediator.lockscreenEnforcedByDevicePolicy();
             final boolean lockscreenEnabled = lockscreenEnforced ||
-                    arg != null ? (Boolean) arg : mKeyguardViewMediator.getKeyguardEnabledInternal();
+                arg != null ? (Boolean) arg : mediator.getKeyguardEnabledInternal();
 
             state.visible = mediator.isKeyguardBound();
 
