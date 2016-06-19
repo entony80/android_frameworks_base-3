@@ -1502,7 +1502,6 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
         ThreadedRenderer.overrideProperty("ambientRatio", String.valueOf(1.5f));
 
         try {
-            // receiver
             BroadcastReceiver receiver = new BroadcastReceiver() {
 
                 @Override
@@ -1510,53 +1509,27 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
                     if (NotificationPanelView.mKeyguardShowing) {
                         return;
                     }
-
                     String action = intent.getAction();
 
-                    // alterou a rotação ?
                if (action.equals(Intent.ACTION_CONFIGURATION_CHANGED)) {
                         if (NotificationPanelView.mKeyguardShowing) {
                             return;
                         }
-                        // recents
                         RecentsActivity.onConfigurationChanged();
 
-                        // ----------------------------------------------------------------------
-                        // se na rotação do celular o mod estiver habilitado e o painel expandido
-                        // estiver aberto, fecha o painel expandido forçando o usuário a expandir
-                        // o painel novamente para obtér a imagem desfocada com a rotação atual!!
-                        // ----------------------------------------------------------------------
-
-                        // habilitado ?
                         if (mExpandedVisible && NotificationPanelView.mBlurredStatusBarExpandedEnabled && (!NotificationPanelView.mKeyguardShowing)) {
-
-                            // fecha o painel
                             makeExpandedInvisible();
-
                         }
                     }
-
-       //             if (action.equals(Intent.ACTION_SCREEN_OFF)) {
-         //               NotificationPanelView.recycle();
-           //         }
-
-                    // atualiza
-
-
-                    // mata
-
                 }
             };
 
-            // registra o receiver
             IntentFilter intent = new IntentFilter();
             intent.addAction(Intent.ACTION_CONFIGURATION_CHANGED);
             this.mContext.registerReceiver(receiver, intent);
 
-            // inicia
             RecentsActivity.init(this.mContext);
 
-            // atualizam as preferências
             updatePreferences(this.mContext);
         } catch (Exception e){
             Log.d("mango918", String.valueOf(e));
@@ -1569,8 +1542,6 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
     }
 
     public static void updatePreferences(Context context) {
-
-        // atualiza
         NotificationPanelView.updatePreferences(context);
         RecentsActivity.updatePreferences(context);
         NotificationBackgroundView.updatePreferences(context);

@@ -52,19 +52,15 @@ public class NotificationBackgroundView extends View {
         if (drawable != null && mActualHeight > mClipTopAmount) {
             drawable.setBounds(0, mClipTopAmount, getWidth(), mActualHeight);
 
-            // transparente ?
             if (mTranslucentNotifications) {
                 if (drawable.getAlpha() != mTranslucencyPercentage)
                     drawable.setAlpha(mTranslucencyPercentage);
-
                 if (NotificationPanelView.mKeyguardShowing) {
                     drawable.setAlpha(179);
                 }
-
                 if (NotificationPanelView.mHeadsUpShowing || NotificationPanelView.mHeadsUpAnimatingAway) {
                     drawable.setAlpha(255);
                 }
-
             } else {
                 drawable.setAlpha(255);
             }
@@ -161,10 +157,8 @@ public class NotificationBackgroundView extends View {
     }
 
     public static void updatePreferences(Context mContext) {
-        // atualiza
         mTranslucentNotifications = (Settings.System.getInt(mContext.getContentResolver(), Settings.System.TRANSLUCENT_NOTIFICATIONS_PREFERENCE_KEY, 1) == 1);
-        mTranslucencyPercentage = Settings.System.getInt(mContext.getContentResolver(), Settings.System.TRANSLUCENT_PRECENTAGE_PREFERENCE_KEY, 40);
+        mTranslucencyPercentage = Settings.System.getInt(mContext.getContentResolver(), Settings.System.TRANSLUCENT_NOTIFICATIONS_PRECENTAGE_PREFERENCE_KEY, 40);
         mTranslucencyPercentage = 255 - ((mTranslucencyPercentage * 255) / 100);
-
     }
 }

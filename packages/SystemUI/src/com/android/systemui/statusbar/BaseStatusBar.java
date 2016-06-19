@@ -1275,37 +1275,23 @@ public abstract class BaseStatusBar extends SystemUI implements
 
     public static void updatePreferences() {
 
-        // continua ?
         if (mNotificationData == null)
             return;
 
-        // passam por todas a notificações
         for (Entry entry : mNotificationData.getActiveNotifications()) {
-
-            // -------------------------------------------------------------------------
-            // ExpandableNotificationRow (entry.row) extends ActivatableNotificationView
-            // -------------------------------------------------------------------------
-
-            // obtém os campos
             NotificationBackgroundView mBackgroundNormal = (NotificationBackgroundView) getObjectField(entry.row, "mBackgroundNormal");
             NotificationBackgroundView mBackgroundDimmed = (NotificationBackgroundView) getObjectField(entry.row, "mBackgroundDimmed");
 
-
-            // invalida (força o draw no ui)
             mBackgroundNormal.postInvalidate();
             mBackgroundDimmed.postInvalidate();
-
         }
     }
 
 
-    //#################################################################################################
     public static Object getObjectField(Object obj, String fieldName) {
         try {
             return findField(obj.getClass(), fieldName).get(obj);
         } catch (IllegalAccessException e) {
-            // should not happen
-            Log.d("MANGOXPO", String.valueOf(e));
             throw new IllegalAccessError(e.getMessage());
         } catch (IllegalArgumentException e) {
             throw e;

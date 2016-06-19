@@ -271,27 +271,17 @@ public class StatusBarHeaderView extends RelativeLayout implements View.OnClickL
 
     public static void handleStatusBarHeaderViewBackround() {
 
-        // continua ?
         if (NotificationPanelView.mNotificationPanelView == null)
             return;
 
-        // obtém os campos
         boolean mKeyguardShowing = NotificationPanelView.mKeyguardShowing;
 
-        // continua ?
         if (mStatusBarHeaderView == null)
             return;
-
         if (mKeyguardShowing) {
-
-            // opaco !
             mStatusBarHeaderView.getBackground().setAlpha(255);
-
         } else {
-
-            // transparente ?
             mStatusBarHeaderView.getBackground().setAlpha(mTranslucentHeader ? mTranslucencyPercentage : 255);
-
         }
     }
 
@@ -885,15 +875,11 @@ public class StatusBarHeaderView extends RelativeLayout implements View.OnClickL
     }
 
     public static void updatePreferences(Context mContext) {
-
-        // atualiza
         mTranslucentHeader = (Settings.System.getInt(mContext.getContentResolver(), Settings.System.TRANSLUCENT_HEADER_PREFERENCE_KEY, 1) == 1);
-        mTranslucencyPercentage =  Settings.System.getInt(mContext.getContentResolver(), Settings.System.TRANSLUCENTCYCY_PRECENTAGE_PREFERENCE_KEY, 70);
+        mTranslucencyPercentage =  Settings.System.getInt(mContext.getContentResolver(), Settings.System.TRANSLUCENT_HEADER_PRECENTAGE_PREFERENCE_KEY, 70);
         mTranslucencyPercentage = 255 - ((mTranslucencyPercentage * 255) / 100);
 
-        // transparente ?
         handleStatusBarHeaderViewBackround();
-
     }
 
     public void setEditing(boolean editing) {

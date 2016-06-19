@@ -279,9 +279,7 @@ public class NotificationPanelView extends PanelView implements
 
         @Override
         public void onAnimationStart(Animation anim) {
-            // visível
             mBlurredView.setVisibility(View.VISIBLE);
-
         }
 
         @Override
@@ -569,75 +567,51 @@ public class NotificationPanelView extends PanelView implements
 
             mNotificationPanelView = this;
 
-            // inicia o BlurUtils
             mBlurUtils = new BlurUtils(mNotificationPanelView.getContext());
 
-            // animação
             mAlphaAnimation = new AlphaAnimation(0.0f, 1.0f);
             mAlphaAnimation.setDuration(75);
             mAlphaAnimation.setAnimationListener(mAnimationListener);
 
-            // cria o mBlurredView
             mBlurredView = new FrameLayout(mNotificationPanelView.getContext());
 
-            // insere o mBlurredView no mNotificationPanelView na posição 0 (ordem importa)
             mNotificationPanelView.addView(mBlurredView, 0, new FrameLayout.LayoutParams(
                     FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
             mNotificationPanelView.requestLayout();
 
-            // seta o tag de: pronto para receber o blur
             mBlurredView.setTag("ready_to_blur");
 
-            // invisível
             mBlurredView.setVisibility(View.INVISIBLE);
-
-            // transparente ?
 
             handleQuickSettingsBackround();
             mKeyguardWeatherInfo = (TextView) mKeyguardStatusView.findViewById(R.id.weather_info);
     }
-////////////////////////////////
     private static void handleQuickSettingsBackround() {
 
-        // continua ?
         if (mQsContainer == null)
             return;
-
         if (mKeyguardShowing) {
-
-        //    // opaco !
             mQsContainer.getBackground().setAlpha(255);
-
         } else {
-
-            // transparente ?
             mQsContainer.getBackground().setAlpha(mTranslucentQuickSettings ? mTranslucencyPercentage : 255);
-
         }
     }
 
 
     public static void startBlurTask() {
-        // habilitado ?
+
         if (!mBlurredStatusBarExpandedEnabled)
             return;
-
         try {
-            // não continua se o blur ja foi aplicado !!!
             if (mBlurredView.getTag().toString().equals("blur_applied"))
                 return;
         } catch (Exception e){
         }
-
-        // continua ?
         if (mNotificationPanelView == null)
-            return;
-
-        // lockscreen heads up?        
+            return;  
         if (mKeyguardShowing || mHeadsUpShowing || mHeadsUpAnimatingAway)
             return;
-
-        // callback
+       
         BlurTask.setBlurTaskCallback(new BlurUtils.BlurTaskCallback() {
 
             @Override
@@ -645,90 +619,51 @@ public class NotificationPanelView extends PanelView implements
 
                 if (blurredBitmap != null) {
 
-                    // -------------------------
-                    // bitmap criado com sucesso
-                    // -------------------------
-
-                    // corrige o width do mBlurredView
                     int[] screenDimens = BlurTask.getRealScreenDimensions();
                     mBlurredView.getLayoutParams().width = screenDimens[0];
                     mBlurredView.requestLayout();
 
-                    // cria o drawable com o filtro de cor
                     BitmapDrawable drawable = new BitmapDrawable(blurredBitmap);
                     drawable.setColorFilter(mColorFilter);
 
-                    // seta o drawable
                     mBlurredView.setBackground(drawable);
 
-                    // seta o tag de: blur aplicado
                     mBlurredView.setTag("blur_applied");
 
                 } else {
 
-                    // ----------------------------
-                    // bitmap nulo por algum motivo
-                    // ----------------------------
-
-                    // seta o filtro de cor
                     mBlurredView.setBackgroundColor(mBlurLightColorFilter);
 
-                    // seta o tag de: erro
                     mBlurredView.setTag("error");
 
                 }
-
-                // anima e mostra o blur
                 mBlurredView.startAnimation(mAlphaAnimation);
-
             }
 
             @Override
             public void dominantColor(int color) {
 
-                // obtém a luminosidade da cor dominante
                 double lightness = DisplayUtils.getColorLightness(color);
 
                 if (lightness >= 0.0 && color <= 1.0) {
-
-                    // --------------------------------------------------
-                    // seta o filtro de cor de acordo com a cor dominante
-                    // --------------------------------------------------
-
                     if (lightness <= 0.33) {
-
-                        // imagem clara (mais perto do branco)
                         mColorFilter = new PorterDuffColorFilter(mBlurLightColorFilter, PorterDuff.Mode.MULTIPLY);
 
                     } else if (lightness >= 0.34 && lightness <= 0.66) {
-
-                        // imagem mista
                         mColorFilter = new PorterDuffColorFilter(mBlurMixedColorFilter, PorterDuff.Mode.MULTIPLY);
 
                     } else if (lightness >= 0.67 && lightness <= 1.0) {
-
-                        // imagem clara (mais perto do preto)
                         mColorFilter = new PorterDuffColorFilter(mBlurDarkColorFilter, PorterDuff.Mode.MULTIPLY);
-
                     }
 
                 } else {
-
-                    // -------
-                    // erro !!
-                    // -------
-
-                    // seta a cor mista
                     mColorFilter = new PorterDuffColorFilter(mBlurMixedColorFilter, PorterDuff.Mode.MULTIPLY);
-
                 }
             }
         });
 
-        // engine
         BlurTask.setBlurEngine(BlurUtils.BlurEngine.RenderScriptBlur);
 
-        // blur
         new BlurTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
@@ -752,7 +687,6 @@ public class NotificationPanelView extends PanelView implements
 
      public static void updatePreferences(Context mContext) {
 
-        // atualiza
         mBlurScale = Settings.System.getInt(mContext.getContentResolver(), Settings.System.BLUR_SCALE_PREFERENCE_KEY, 10);
         mBlurRadius = Settings.System.getInt(mContext.getContentResolver(), Settings.System.BLUR_RADIUS_PREFERENCE_KEY, 5);
         mBlurDarkColorFilter = Color.LTGRAY;
@@ -760,42 +694,29 @@ public class NotificationPanelView extends PanelView implements
         mBlurLightColorFilter = Color.DKGRAY;
         mTranslucentQuickSettings = (Settings.System.getInt(mContext.getContentResolver(), Settings.System.TRANSLUCENT_QUICK_SETTINGS_PREFERENCE_KEY, 1) == 1);
         mBlurredStatusBarExpandedEnabled = (Settings.System.getInt(mContext.getContentResolver(), Settings.System.STATUS_BAR_EXPANDED_ENABLED_PREFERENCE_KEY, 1) == 1);
-        mTranslucencyPercentage = Settings.System.getInt(mContext.getContentResolver(), Settings.System.TRANSLUCENTCY_PRECENTAGE_PREFERENCE_KEY, 60);
+        mTranslucencyPercentage = Settings.System.getInt(mContext.getContentResolver(), Settings.System.TRANSLUCENT_QUICK_SETTINGS_PRECENTAGE_PREFERENCE_KEY, 60);
         mTranslucencyPercentage = 255 - ((mTranslucencyPercentage * 255) / 100);
 
-        // transparente ?
         handleQuickSettingsBackround();
-
     }
 
     public static void recycle() {
 
-        // limpa e recicla
         if (mBlurredView != null &&
                 mBlurredView.getBackground() != null) {
-
-            // bitmap ?
             if (mBlurredView.getBackground() instanceof BitmapDrawable) {
 
-                // recicla
                 Bitmap bitmap = ((BitmapDrawable) mBlurredView.getBackground()).getBitmap();
                 if (bitmap != null) {
-
                     bitmap.recycle();
                     bitmap = null;
-
                 }
             }
-
-            // limpa
             mBlurredView.setBackground(null);
-
         }
 
-        // seta o tag de: pronto para receber o blur
         mBlurredView.setTag("ready_to_blur");
 
-        // invisível
         mBlurredView.setVisibility(View.INVISIBLE);
 
     }
@@ -809,70 +730,39 @@ public class NotificationPanelView extends PanelView implements
         private Bitmap mScreenBitmap;
 
         public static void setBlurEngine(BlurUtils.BlurEngine blurEngine) {
-
             mBlurEngine = blurEngine;
-
         }
 
         public static void setBlurTaskCallback(BlurUtils.BlurTaskCallback callBack) {
-
             mCallback = callBack;
-
         }
 
         public static int[] getRealScreenDimensions() {
-
             return mScreenDimens;
-
         }
 
         @Override
         protected void onPreExecute() {
 
             Context context = mNotificationPanelView.getContext();
-
-            // obtém o tamamho real da tela
             mScreenDimens = DisplayUtils.getRealScreenDimensions(context);
-
-            // obtém a screenshot da tela com escala reduzida
             mScreenBitmap = DisplayUtils.takeSurfaceScreenshot(context, mBlurScale);
-
         }
 
         @Override
         protected Bitmap doInBackground(Void... arg0) {
 
             try {
-
-                // continua ?
                 if (mScreenBitmap == null)
                     return null;
 
-                // calback
                 mCallback.dominantColor(DisplayUtils.getDominantColorByPixelsSampling(mScreenBitmap, 20, 20));
 
-                // blur engine
-            //    if (mBlurEngine == BlurUtils.BlurEngine.RenderScriptBlur) {
-//
-   //                 mScreenBitmap = mBlurUtils.renderScriptBlur(mScreenBitmap, mBlurRadius);
-//
-  //              } else if (mBlurEngine == BlurUtils.BlurEngine.StackBlur) {
-
-    //                mScreenBitmap = mBlurUtils.stackBlur(mScreenBitmap, mBlurRadius);
-//
-  //              } else if (mBlurEngine == BlurUtils.BlurEngine.FastBlur) {
-//
-  //                  mBlurUtils.fastBlur(mScreenBitmap, mBlurRadius);
-//
-  //              }
                 mScreenBitmap = mBlurUtils.renderScriptBlur(mScreenBitmap, mBlurRadius);
                 return mScreenBitmap;
 
             } catch (OutOfMemoryError e) {
-
-                // erro
                 return null;
-
             }
         }
 
@@ -880,27 +770,13 @@ public class NotificationPanelView extends PanelView implements
         protected void onPostExecute(Bitmap bitmap) {
 
             if (bitmap != null) {
-
-                // -----------------------------
-                // bitmap criado com sucesso !!!
-                // -----------------------------
-
-                // callback
                 mCallback.blurTaskDone(bitmap);
 
             } else {
-
-                // --------------------------
-                // erro ao criar o bitmap !!!
-                // --------------------------
-
-                // callback
                 mCallback.blurTaskDone(null);
-
             }
         }
     }
-//////////////////////////////////
 
     @Override
     protected void loadDimens() {
