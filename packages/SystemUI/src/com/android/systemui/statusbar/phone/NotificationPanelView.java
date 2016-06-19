@@ -274,6 +274,9 @@ public class NotificationPanelView extends PanelView implements
     private static int mTranslucencyPercentage;
     private static AlphaAnimation mAlphaAnimation;
     private static boolean mTranslucentQuickSettings;
+
+    final boolean seeThrough = Settings.System.getBoolean(mContext.getContentResolver(),
+                Settings.System.LOCKSCREEN_SEE_THROUGH, false);
     
     private static Animation.AnimationListener mAnimationListener = new Animation.AnimationListener() {
 
@@ -590,7 +593,7 @@ public class NotificationPanelView extends PanelView implements
 
         if (mQsContainer == null)
             return;
-        if (mKeyguardShowing) {
+        if (seeThrough) {
             mQsContainer.getBackground().setAlpha(255);
         } else {
             mQsContainer.getBackground().setAlpha(mTranslucentQuickSettings ? mTranslucencyPercentage : 255);
