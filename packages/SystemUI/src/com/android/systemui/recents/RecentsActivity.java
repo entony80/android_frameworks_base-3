@@ -1022,8 +1022,8 @@ public class RecentsActivity extends Activity implements RecentsView.RecentsView
     }
 
     public static void updatePreferences(Context mContext) {
-        mBlurScale = 20;
-        mBlurRadius = 3;
+        mBlurScale = Settings.System.getInt(mContext.getContentResolver(), Settings.System.BLUR_SCALE_RECENTS_PREFERENCE_KEY, 20);;
+        mBlurRadius = Settings.System.getInt(mContext.getContentResolver(), Settings.System.BLUR_RADIUS_RECENTS_PREFERENCE_KEY, 3);;
         mBlurDarkColorFilter = Color.LTGRAY;
         mBlurMixedColorFilter = Color.GRAY;
         mBlurLightColorFilter = Color.DKGRAY;

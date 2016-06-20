@@ -3537,6 +3537,10 @@ public final class Settings {
         public static final String BLUR_SCALE_PREFERENCE_KEY = "blurred_expanded_panel_scale_pref";
    
         public static final String BLUR_RADIUS_PREFERENCE_KEY = "blurred_expanded_panel_radius_pref";
+
+        public static final String BLUR_SCALE_RECENTS_PREFERENCE_KEY = "blurred_scale_radius_pref";
+
+        public static final String BLUR_RADIUS_RECENTS_PREFERENCE_KEY = "blurred_recents_radius_pref";
   
         public static final String TRANSLUCENT_NOTIFICATIONS_PRECENTAGE_PREFERENCE_KEY = "translucent_notifications_percentage_pref";
 
