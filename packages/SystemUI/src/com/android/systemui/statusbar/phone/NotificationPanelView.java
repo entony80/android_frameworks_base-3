@@ -275,8 +275,8 @@ public class NotificationPanelView extends PanelView implements
     private static AlphaAnimation mAlphaAnimation;
     private static boolean mTranslucentQuickSettings;
 
-    final boolean seeThrough = Settings.System.getBoolean(mContext.getContentResolver(),
-                Settings.System.LOCKSCREEN_SEE_THROUGH, false);
+    public static boolean seeThrough = Settings.System.getBoolean(mContext.getContentResolver(),
+                Settings.System.LOCKSCREEN_SEE_THROUGH, true);
     
     private static Animation.AnimationListener mAnimationListener = new Animation.AnimationListener() {
 
