@@ -876,7 +876,7 @@ public class StatusBarHeaderView extends RelativeLayout implements View.OnClickL
     }
 
     public static void updatePreferences(Context mContext) {
-        mTranslucentHeader = (Settings.System.getInt(mContext.getContentResolver(), Settings.System.TRANSLUCENT_HEADER_PREFERENCE_KEY, 1) == 1);
+        mTranslucentHeader = (Settings.System.getInt(mContext.getContentResolver(), Settings.System.TRANSLUCENT_HEADER_PREFERENCE_KEY, 1) == 0);
         mTranslucencyPercentage =  Settings.System.getInt(mContext.getContentResolver(), Settings.System.TRANSLUCENT_HEADER_PRECENTAGE_PREFERENCE_KEY, 70);
         mTranslucencyPercentage = 255 - ((mTranslucencyPercentage * 255) / 100);
 
