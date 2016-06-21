@@ -275,11 +275,10 @@ public class StatusBarHeaderView extends RelativeLayout implements View.OnClickL
             return;
 
         boolean mKeyguardShowing = NotificationPanelView.mKeyguardShowing;
-        boolean seeThrough = NotificationPanelView.seeThrough;
 
         if (mStatusBarHeaderView == null)
             return;
-        if (seeThrough) {
+        if (mKeyguardShowing) {
             mStatusBarHeaderView.getBackground().setAlpha(255);
         } else {
             mStatusBarHeaderView.getBackground().setAlpha(mTranslucentHeader ? mTranslucencyPercentage : 255);
