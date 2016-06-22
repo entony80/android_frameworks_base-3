@@ -18,6 +18,8 @@ package com.android.systemui.statusbar;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.content.ContentResolver;
+import android.database.ContentObserver;
 import android.graphics.Canvas;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
@@ -91,6 +93,41 @@ public class NotificationBackgroundView extends View {
         }
     }
 
+    class SettingsObserver extends ContentObserver {
+        SettingsObserver(Handler handler) {
+            super(handler);
+        }
+        
+        void observe() {
+            ContentResolver resolver = mContext.getContentResolver();
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.TRANSLUCENT_NOTIFICATIONS_PREFERENCE_KEY), false, this);
+            update();
+        }
+
+        void unobserve() {
+            ContentResolver resolver = mContext.getContentResolver();
+            resolver.unregisterContentObserver(this);
+        }
+
+        @Override
+        public void onChange(boolean selfChange) {
+            update();
+        }
+
+        @Override
+        public void onChange(boolean selfChange, Uri uri) {
+            update();
+        }
+
+        public void update() {
+            ContentResolver resolver = mContext.getContentResolver();
+            mTranslucentNotifications = Settings.System.getIntForUser(resolver,
+                    Settings.System.TRANSLUCENT_NOTIFICATIONS_PREFERENCE_KEY, 0, UserHandle.USER_CURRENT) == 1;
+            updatePreferences();
+        }
+    }
+
     /**
      * Sets a background drawable. As we need to change our bounds independently of layout, we need
      * the notion of a background independently of the regular View background..
@@ -157,7 +194,6 @@ public class NotificationBackgroundView extends View {
     }
 
     public static void updatePreferences(Context mContext) {
-        mTranslucentNotifications = (Settings.System.getInt(mContext.getContentResolver(), Settings.System.TRANSLUCENT_NOTIFICATIONS_PREFERENCE_KEY, 1) == 0);
         mTranslucencyPercentage = Settings.System.getInt(mContext.getContentResolver(), Settings.System.TRANSLUCENT_NOTIFICATIONS_PRECENTAGE_PREFERENCE_KEY, 40);
         mTranslucencyPercentage = 255 - ((mTranslucencyPercentage * 255) / 100);
     }
