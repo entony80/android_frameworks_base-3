@@ -429,8 +429,8 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
     private ImageView XOSPLogo;
 
     //Blur stuff
-    private int mBlurScale;
-    private int mBlurRadius;
+    private static int mBlurScale;
+    private static int mBlurRadius;
     private boolean mTranslucentQuickSettings;
     private boolean mBlurredStatusBarExpandedEnabled;
     private boolean mTranslucentNotifications;

@@ -3535,24 +3535,12 @@ public final class Settings {
         public static final String RECENT_APPS_ENABLED_PREFERENCE_KEY = "blurred_recent_app_enabled_pref";
    
         public static final String BLUR_SCALE_PREFERENCE_KEY = "blurred_expanded_panel_scale_pref";
-
-        public static final Validator BLUR_SCALE_VALIDATOR_PREFERENCE_KEY  = 
-                new InclusiveIntegerRangeValidator(1, 25);
    
         public static final String BLUR_RADIUS_PREFERENCE_KEY = "blurred_expanded_panel_radius_pref";
 
-        public static final Validator BLUR_RADIUS_VALIDATOR_PREFERENCE_KEY =
-                new InclusiveIntegerRangeValidator(1, 25);
-
         public static final String BLUR_SCALE_RECENTS_PREFERENCE_KEY = "blurred_scale_radius_pref";
 
-        public static final Validator BLUR_SCALE_RECENTS_VALIDATOR_PREFERENCE_KEY = 
-                new InclusiveIntegerRangeValidator(1, 25);
-
         public static final String BLUR_RADIUS_RECENTS_PREFERENCE_KEY = "blurred_recents_radius_pref";
-
-        public static final Validator BLUR_RADIUS_RECENTS_VALIDATOR_PREFERENCE_KEY = 
-                new InclusiveIntegerRangeValidator(1, 25);
   
         public static final String TRANSLUCENT_NOTIFICATIONS_PRECENTAGE_PREFERENCE_KEY = "translucent_notifications_percentage_pref";
 
@@ -4262,10 +4250,6 @@ public final class Settings {
             VALIDATORS.put(WIFI_STATIC_DNS1, WIFI_STATIC_DNS1_VALIDATOR);
             VALIDATORS.put(WIFI_STATIC_DNS2, WIFI_STATIC_DNS2_VALIDATOR);
             VALIDATORS.put(POWER_OFF_ALARM_MODE, POWER_OFF_ALARM_MODE_VALIDATOR);
-            VALIDATORS.put(BLUR_RADIUS_PREFERENCE_KEY, BLUR_RADIUS_VALIDATOR_PREFERENCE_KEY);
-            VALIDATORS.put(BLUR_SCALE_PREFERENCE_KEY, BLUR_SCALE_VALIDATOR_PREFERENCE_KEY);
-            VALIDATORS.put(BLUR_RADIUS_RECENTS_PREFERENCE_KEY, BLUR_RADIUS_RECENTS_VALIDATOR_PREFERENCE_KEY);
-            VALIDATORS.put(BLUR_SCALE_RECENTS_PREFERENCE_KEY, BLUR_SCALE_RECENTS_VALIDATOR_PREFERENCE_KEY);
         }
 
         /**
