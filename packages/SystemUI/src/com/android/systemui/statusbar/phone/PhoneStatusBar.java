@@ -428,6 +428,13 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
     private boolean mXOSPLogo;
     private ImageView XOSPLogo;
 
+    //Blur stuff
+    private boolean mBlurScale;
+    private boolean mTranslucentQuickSettings;
+    private boolean mBlurredStatusBarExpandedEnabled;
+    private boolean mTranslucentNotifications;
+    private boolean mTranslucentHeader;
+
     boolean mExpandedVisible;
 
     private int mNavigationBarWindowState = WINDOW_STATE_SHOWING;
@@ -637,7 +644,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
                     Settings.System.TRANSLUCENT_NOTIFICATIONS_PREFERENCE_KEY, 0, UserHandle.USER_CURRENT) == 1;
             mTranslucentHeader = Settings.System.getIntForUser(resolver,
                 Settings.System.TRANSLUCENT_HEADER_PREFERENCE_KEY, 0, UserHandle.USER_CURRENT) == 1;
-            updatePreferences();
+            updatePreferences(this.mContext);
         }
     }
 
@@ -1568,10 +1575,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
     }
 
     public static void updatePreferences(Context context) {
-        NotificationPanelView.updatePreferences(context);
         RecentsActivity.updatePreferences(context);
-        NotificationBackgroundView.updatePreferences(context);
-        StatusBarHeaderView.updatePreferences(context);
         BaseStatusBar.updatePreferences();
     }
 

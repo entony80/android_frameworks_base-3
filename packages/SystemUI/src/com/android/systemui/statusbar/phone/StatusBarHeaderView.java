@@ -874,13 +874,6 @@ public class StatusBarHeaderView extends RelativeLayout implements View.OnClickL
         updateAmPmTranslation();
     }
 
-    public static void updatePreferences(Context mContext) {
-        mTranslucencyPercentage =  Settings.System.getInt(mContext.getContentResolver(), Settings.System.TRANSLUCENT_HEADER_PRECENTAGE_PREFERENCE_KEY, 70);
-        mTranslucencyPercentage = 255 - ((mTranslucencyPercentage * 255) / 100);
-
-        handleStatusBarHeaderViewBackround();
-    }
-
     public void setEditing(boolean editing) {
         mEditing = editing;
         if (editing && mEditingDetailAdapter == null) {
@@ -1167,7 +1160,10 @@ public class StatusBarHeaderView extends RelativeLayout implements View.OnClickL
             mTranslucentHeader = Settings.System.getIntForUser(resolver,
                 Settings.System.TRANSLUCENT_HEADER_PREFERENCE_KEY, 0, currentUserId) == 1;
 
-            updatePreferences();
+            mTranslucencyPercentage =  Settings.System.getInt(mContext.getContentResolver(), Settings.System.TRANSLUCENT_HEADER_PRECENTAGE_PREFERENCE_KEY, 70);
+            mTranslucencyPercentage = 255 - ((mTranslucencyPercentage * 255) / 100);
+
+            handleStatusBarHeaderViewBackround();
             updateVisibilities();
             requestCaptureValues();
         }

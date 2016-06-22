@@ -22,6 +22,9 @@ import android.content.ContentResolver;
 import android.database.ContentObserver;
 import android.graphics.Canvas;
 import android.graphics.PorterDuff;
+import android.os.Handler;
+import android.net.Uri;
+import android.os.UserHandle;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.RippleDrawable;
 import android.util.AttributeSet;
@@ -124,7 +127,9 @@ public class NotificationBackgroundView extends View {
             ContentResolver resolver = mContext.getContentResolver();
             mTranslucentNotifications = Settings.System.getIntForUser(resolver,
                     Settings.System.TRANSLUCENT_NOTIFICATIONS_PREFERENCE_KEY, 0, UserHandle.USER_CURRENT) == 1;
-            updatePreferences();
+            
+            mTranslucencyPercentage = Settings.System.getInt(mContext.getContentResolver(), Settings.System.TRANSLUCENT_NOTIFICATIONS_PRECENTAGE_PREFERENCE_KEY, 40);
+            mTranslucencyPercentage = 255 - ((mTranslucencyPercentage * 255) / 100);
         }
     }
 
@@ -191,10 +196,5 @@ public class NotificationBackgroundView extends View {
             RippleDrawable ripple = (RippleDrawable) mBackground;
             ripple.setColor(ColorStateList.valueOf(color));
         }
-    }
-
-    public static void updatePreferences(Context mContext) {
-        mTranslucencyPercentage = Settings.System.getInt(mContext.getContentResolver(), Settings.System.TRANSLUCENT_NOTIFICATIONS_PRECENTAGE_PREFERENCE_KEY, 40);
-        mTranslucencyPercentage = 255 - ((mTranslucencyPercentage * 255) / 100);
     }
 }
