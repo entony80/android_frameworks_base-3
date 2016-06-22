@@ -429,7 +429,8 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
     private ImageView XOSPLogo;
 
     //Blur stuff
-    private boolean mBlurScale;
+    private int mBlurScale;
+    private int mBlurRadius;
     private boolean mTranslucentQuickSettings;
     private boolean mBlurredStatusBarExpandedEnabled;
     private boolean mTranslucentNotifications;
@@ -511,7 +512,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
     // - The custom Recents Long Press, if selected.  When null, use default (switch last app).
     private ComponentName mCustomRecentsLongPressHandler = null;
 
-    private int mBlurRadius;
+    private int mBlurLockRadius;
     private Bitmap mBlurredImage = null;
 
     class SettingsObserver extends UserContentObserver {
@@ -630,8 +631,9 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
            		Settings.System.STATUS_BAR_XOSP_LOGO, 0, mCurrentUserId) == 1;
             showXOSPLogo(mXOSPLogo);
 
-            mBlurRadius = Settings.System.getInt(mContext.getContentResolver(),
+            mBlurLockRadius = Settings.System.getInt(mContext.getContentResolver(),
                     Settings.System.LOCKSCREEN_BLUR_RADIUS, 14);
+            
             mBlurScale = Settings.System.getInt(mContext.getContentResolver(),
                     Settings.System.BLUR_SCALE_PREFERENCE_KEY, 10);
             mBlurRadius = Settings.System.getInt(mContext.getContentResolver(),

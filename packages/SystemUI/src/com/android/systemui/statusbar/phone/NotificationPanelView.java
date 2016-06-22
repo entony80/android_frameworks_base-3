@@ -3088,8 +3088,8 @@ public class NotificationPanelView extends PanelView implements
             mBlurLightColorFilter = Color.DKGRAY;
             mTranslucencyPercentage = Settings.System.getInt(mContext.getContentResolver(), Settings.System.TRANSLUCENT_QUICK_SETTINGS_PRECENTAGE_PREFERENCE_KEY, 60);
             mTranslucencyPercentage = 255 - ((mTranslucencyPercentage * 255) / 100);
-            handleStatusBarHeaderViewBackround();
-            
+            StatusBarHeaderView.handleStatusBarHeaderViewBackround();
+
             boolean wasKeyguardWeatherEnabled = mKeyguardWeatherEnabled;
             mKeyguardWeatherEnabled = CMSettings.Secure.getInt(
                     resolver, CMSettings.Secure.LOCK_SCREEN_WEATHER_ENABLED, 0) == 1;
@@ -3097,7 +3097,6 @@ public class NotificationPanelView extends PanelView implements
                     && wasKeyguardWeatherEnabled != mKeyguardWeatherEnabled) {
                 onWeatherChanged(mWeatherController.getWeatherInfo());
             }
-            updatePreferences();
         }
     }
 
