@@ -24,6 +24,8 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProviderInfo;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.ContentResolver;
+import android.database.ContentObserver;
 import android.graphics.*;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -39,6 +41,8 @@ import com.android.systemui.statusbar.phone.NotificationPanelView;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.os.UserHandle;
+import android.os.Handler;
+import android.net.Uri;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewStub;
@@ -99,6 +103,8 @@ public class RecentsActivity extends Activity implements RecentsView.RecentsView
     private static RecentsActivity mRecentsActivity;
     private static FrameLayout mRecentsActivityRootView;
 
+    private SettingsObserver mSettingsObserver;
+
     // Resize task debug
     RecentsResizeTaskDialog mResizeTaskDebugDialog;
 
@@ -112,6 +118,11 @@ public class RecentsActivity extends Activity implements RecentsView.RecentsView
 
     // Runnable to be executed after we paused ourselves
     Runnable mAfterPauseRunnable;
+
+    public RecentsActivity(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        mSettingsObserver = new SettingsObserver(new Handler());
+    }
 
     public static void startBlurTask() {
 
@@ -366,6 +377,58 @@ public class RecentsActivity extends Activity implements RecentsView.RecentsView
             }
         }
     };
+
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        mSettingsObserver.observe();
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        mSettingsObserver.unobserve();
+    }
+
+    class SettingsObserver extends ContentObserver {
+        SettingsObserver(Handler handler) {
+            super(handler);
+        }
+        
+        void observe() {
+            ContentResolver resolver = mContext.getContentResolver();
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.RECENT_APPS_ENABLED_PREFERENCE_KEY), false, this);
+            update();
+        }
+
+        void unobserve() {
+            ContentResolver resolver = mContext.getContentResolver();
+            resolver.unregisterContentObserver(this);
+        }
+
+        @Override
+        public void onChange(boolean selfChange) {
+            update();
+        }
+
+        @Override
+        public void onChange(boolean selfChange, Uri uri) {
+            update();
+        }
+
+        public void update() {
+            ContentResolver resolver = mContext.getContentResolver();
+            mTranslucentNotifications = Settings.System.getIntForUser(resolver,
+                    Settings.System.RECENT_APPS_ENABLED_PREFERENCE_KEY, 0, UserHandle.USER_CURRENT) == 1;
+
+            mBlurScale = Settings.System.getInt(mContext.getContentResolver(), Settings.System.BLUR_SCALE_RECENTS_PREFERENCE_KEY, 20);;
+            mBlurRadius = Settings.System.getInt(mContext.getContentResolver(), Settings.System.BLUR_RADIUS_RECENTS_PREFERENCE_KEY, 3);;
+            mBlurDarkColorFilter = Color.LTGRAY;
+            mBlurMixedColorFilter = Color.GRAY;
+            mBlurLightColorFilter = Color.DKGRAY;
+        }
+    }
 
     /**
      * Broadcast receiver to handle messages from the system
@@ -1019,14 +1082,5 @@ public class RecentsActivity extends Activity implements RecentsView.RecentsView
 
         mContext = context;
         mBlurUtils = new BlurUtils(mContext);
-    }
-
-    public static void updatePreferences(Context mContext) {
-        mBlurScale = Settings.System.getInt(mContext.getContentResolver(), Settings.System.BLUR_SCALE_RECENTS_PREFERENCE_KEY, 20);;
-        mBlurRadius = Settings.System.getInt(mContext.getContentResolver(), Settings.System.BLUR_RADIUS_RECENTS_PREFERENCE_KEY, 3);;
-        mBlurDarkColorFilter = Color.LTGRAY;
-        mBlurMixedColorFilter = Color.GRAY;
-        mBlurLightColorFilter = Color.DKGRAY;
-        mBlurredRecentAppsEnabled = (Settings.System.getInt(mContext.getContentResolver(), Settings.System.RECENT_APPS_ENABLED_PREFERENCE_KEY, 1) == 0);
     }
 }
