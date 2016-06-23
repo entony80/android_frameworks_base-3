@@ -44,8 +44,11 @@ public class NotificationBackgroundView extends View {
     private static int mTranslucencyPercentage;
     private static boolean mTranslucentNotifications;
 
+    private SettingsObserver mSettingsObserver;
+
     public NotificationBackgroundView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        mSettingsObserver = new SettingsObserver(mHandler);
     }
 
     @Override
@@ -71,6 +74,18 @@ public class NotificationBackgroundView extends View {
             }
             drawable.draw(canvas);
         }
+    }
+
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        mSettingsObserver.observe();
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        mSettingsObserver.unobserve();
     }
 
     @Override
