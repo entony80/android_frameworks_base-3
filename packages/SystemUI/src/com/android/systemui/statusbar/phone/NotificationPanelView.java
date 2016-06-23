@@ -706,7 +706,7 @@ public class NotificationPanelView extends PanelView implements
 
     }
 
-    public static class BlurTask extends AsyncTask<Void, Void, Bitmap> {
+    public class BlurTask extends AsyncTask<Void, Void, Bitmap> {
 
         private static int[] mScreenDimens;
         private static BlurUtils.BlurEngine mBlurEngine;

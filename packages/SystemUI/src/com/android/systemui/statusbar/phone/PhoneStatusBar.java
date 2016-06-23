@@ -580,7 +580,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
                     updateClearAll();
                     updateEmptyShadeView();
             } else if (uri.equals(Settings.System.getUriFor(
-                    Settings.TRANSLUCENT_HEADER_PREFERENCE_KEY))) {
+                    Settings.System.TRANSLUCENT_HEADER_PREFERENCE_KEY))) {
                     mTranslucentHeader = Settings.System.getIntForUser(
                                         mContext.getContentResolver(),
                                         Settings.System.TRANSLUCENT_HEADER_PREFERENCE_KEY,
