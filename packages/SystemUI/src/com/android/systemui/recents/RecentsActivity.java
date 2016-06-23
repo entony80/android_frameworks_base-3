@@ -409,7 +409,7 @@ public class RecentsActivity extends Activity implements RecentsView.RecentsView
             mBlurredRecentAppsEnabled = Settings.System.getIntForUser(resolver,
                     Settings.System.RECENT_APPS_ENABLED_PREFERENCE_KEY, 0, UserHandle.USER_CURRENT) == 1;
 
-            startBlurTask();
+            RecentsActivity.startBlurTask()
             mBlurScale = Settings.System.getInt(mContext.getContentResolver(), Settings.System.BLUR_SCALE_RECENTS_PREFERENCE_KEY, 20);;
             mBlurRadius = Settings.System.getInt(mContext.getContentResolver(), Settings.System.BLUR_RADIUS_RECENTS_PREFERENCE_KEY, 3);;
             mBlurDarkColorFilter = Color.LTGRAY;
