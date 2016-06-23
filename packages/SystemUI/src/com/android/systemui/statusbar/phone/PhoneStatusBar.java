@@ -429,8 +429,8 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
     private ImageView XOSPLogo;
 
     //Blur stuff
-    private static int mBlurScale;
-    private static int mBlurRadius;
+    private int mBlurScale;
+    private int mBlurRadius;
     private boolean mTranslucentQuickSettings;
     private boolean mBlurredStatusBarExpandedEnabled;
     private boolean mTranslucentNotifications;
@@ -591,8 +591,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
                     updateClearAll();
                     updateEmptyShadeView();
             }
-            update(uri.equals(Settings.System.getUriFor(
-            );
+            update();
         }
 
         @Override
@@ -5954,8 +5953,8 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
 
     public void setBackgroundBitmap(Bitmap bmp) {
         if (bmp != null) {
-            if (mBlurRadius != 0) {
-                mBlurredImage = blurBitmap(bmp, mBlurRadius);
+            if (mBlurLockRadius != 0) {
+                mBlurredImage = blurBitmap(bmp,mBlurLockRadius);
             } else {
                 mBlurredImage = bmp;
             }

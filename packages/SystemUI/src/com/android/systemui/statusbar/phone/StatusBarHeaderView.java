@@ -281,7 +281,6 @@ public class StatusBarHeaderView extends RelativeLayout implements View.OnClickL
         if (mKeyguardShowing) {
             mStatusBarHeaderView.getBackground().setAlpha(255);
         } else {
-            mTranslucencyPercentage =  Settings.System.getInt(mContext.getContentResolver(), Settings.System.TRANSLUCENT_HEADER_PRECENTAGE_PREFERENCE_KEY, 70);
             mTranslucencyPercentage = 255 - ((mTranslucencyPercentage * 255) / 100);
             mStatusBarHeaderView.getBackground().setAlpha(mTranslucentHeader ? mTranslucencyPercentage : 255);
         }
@@ -1162,7 +1161,9 @@ public class StatusBarHeaderView extends RelativeLayout implements View.OnClickL
             mTranslucentHeader = Settings.System.getIntForUser(resolver,
                 Settings.System.TRANSLUCENT_HEADER_PREFERENCE_KEY, 0, currentUserId) == 1;
 
+            mTranslucencyPercentage =  Settings.System.getInt(mContext.getContentResolver(), Settings.System.TRANSLUCENT_HEADER_PRECENTAGE_PREFERENCE_KEY, 70);
             handleStatusBarHeaderViewBackround();
+            updateEverything();
             updateVisibilities();
             requestCaptureValues();
         }

@@ -263,8 +263,8 @@ public class NotificationPanelView extends PanelView implements
     public static boolean mBlurredStatusBarExpandedEnabled;
     public static NotificationPanelView mNotificationPanelView;
 
-    private static int mBlurScale;
-    private static int mBlurRadius;
+    private int mBlurScale;
+    private int mBlurRadius;
     private static BlurUtils mBlurUtils;
     private static FrameLayout mBlurredView;
     private static ColorFilter mColorFilter;
