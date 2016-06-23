@@ -558,7 +558,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
             update();
         }
 
-	@Override
+	    @Override
         public void onChange(boolean selfChange, Uri uri) {
             if (uri.equals(Settings.System.getUriFor(
                     Settings.System.ENABLE_TASK_MANAGER))) {
