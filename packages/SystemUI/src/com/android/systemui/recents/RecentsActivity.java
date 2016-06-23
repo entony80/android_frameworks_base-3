@@ -39,6 +39,7 @@ import android.content.IntentFilter;
 import com.android.systemui.statusbar.BlurUtils;
 import com.android.systemui.statusbar.DisplayUtils;
 import com.android.systemui.statusbar.phone.NotificationPanelView;
+import com.android.systemui.cm.UserContentObserver;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.os.UserHandle;
