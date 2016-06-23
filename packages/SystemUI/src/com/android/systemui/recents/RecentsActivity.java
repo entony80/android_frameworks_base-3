@@ -75,7 +75,8 @@ import java.util.ArrayList;
 /**
  * The main Recents activity that is started from AlternateRecentsComponent.
  */
-public class RecentsActivity extends Activity,View implements RecentsView.RecentsViewCallbacks,
+public class RecentsActivity extends Activity implements View.OnClickListener,
+        RecentsView.RecentsViewCallbacks,
         RecentsAppWidgetHost.RecentsAppWidgetHostCallbacks,
         DebugOverlayView.DebugOverlayViewCallbacks {
 
