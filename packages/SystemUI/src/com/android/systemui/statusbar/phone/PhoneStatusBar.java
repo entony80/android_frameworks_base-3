@@ -436,6 +436,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
     private boolean mTranslucentNotifications;
     private boolean mTranslucentHeader;
     private boolean mBlurredRecentAppsEnabled;
+    private boolean mTranslucencyPercentage;
 
     boolean mExpandedVisible;
 
