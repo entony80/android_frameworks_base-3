@@ -684,7 +684,7 @@ public class NotificationPanelView extends PanelView implements
         mWeatherController.removeCallback(this);
     }
 
-    public void recycle() {
+    public static void recycle() {
 
         if (mBlurredView != null &&
                 mBlurredView.getBackground() != null) {
