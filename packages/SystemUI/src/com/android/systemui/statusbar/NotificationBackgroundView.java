@@ -48,7 +48,7 @@ public class NotificationBackgroundView extends View {
 
     public NotificationBackgroundView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        mSettingsObserver = new SettingsObserver(mHandler);
+        mSettingsObserver = new SettingsObserver(new Handler());
     }
 
     @Override
