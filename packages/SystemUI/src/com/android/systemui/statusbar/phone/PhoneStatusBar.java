@@ -435,6 +435,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
     private boolean mBlurredStatusBarExpandedEnabled;
     private boolean mTranslucentNotifications;
     private boolean mTranslucentHeader;
+    private boolean mBlurredRecentAppsEnabled;
 
     boolean mExpandedVisible;
 
@@ -657,7 +658,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
                     Settings.System.TRANSLUCENT_NOTIFICATIONS_PREFERENCE_KEY, 0, UserHandle.USER_CURRENT) == 1;
             mTranslucentHeader = Settings.System.getIntForUser(resolver,
                     Settings.System.TRANSLUCENT_HEADER_PREFERENCE_KEY, 0, UserHandle.USER_CURRENT) == 1;
-            mTranslucentNotifications = Settings.System.getIntForUser(resolver,
+            mBlurredRecentAppsEnabled = Settings.System.getIntForUser(resolver,
                     Settings.System.RECENT_APPS_ENABLED_PREFERENCE_KEY, 0, UserHandle.USER_CURRENT) == 1;
             //updatePreferences(this.mContext);
         }
@@ -1590,7 +1591,6 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
     }
 
     public static void updatePreferences(Context context) {
-        RecentsActivity.updatePreferences(context);
         BaseStatusBar.updatePreferences();
     }
 

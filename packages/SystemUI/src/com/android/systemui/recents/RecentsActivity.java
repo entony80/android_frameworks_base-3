@@ -33,6 +33,7 @@ import android.os.AsyncTask;
 import android.content.Intent;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.util.AttributeSet;
 import android.widget.FrameLayout;
 import android.content.IntentFilter;
 import com.android.systemui.statusbar.BlurUtils;
@@ -74,7 +75,7 @@ import java.util.ArrayList;
 /**
  * The main Recents activity that is started from AlternateRecentsComponent.
  */
-public class RecentsActivity extends Activity implements RecentsView.RecentsViewCallbacks,
+public class RecentsActivity extends Activity,View implements RecentsView.RecentsViewCallbacks,
         RecentsAppWidgetHost.RecentsAppWidgetHostCallbacks,
         DebugOverlayView.DebugOverlayViewCallbacks {
 
@@ -419,7 +420,7 @@ public class RecentsActivity extends Activity implements RecentsView.RecentsView
 
         public void update() {
             ContentResolver resolver = mContext.getContentResolver();
-            mTranslucentNotifications = Settings.System.getIntForUser(resolver,
+            mBlurredRecentAppsEnabled = Settings.System.getIntForUser(resolver,
                     Settings.System.RECENT_APPS_ENABLED_PREFERENCE_KEY, 0, UserHandle.USER_CURRENT) == 1;
 
             mBlurScale = Settings.System.getInt(mContext.getContentResolver(), Settings.System.BLUR_SCALE_RECENTS_PREFERENCE_KEY, 20);;
