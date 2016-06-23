@@ -429,8 +429,8 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
     private ImageView XOSPLogo;
 
     //Blur stuff
-    private static int mBlurScale;
-    private static int mBlurRadius;
+    private int mBlurScale;
+    private int mBlurRadius;
     private boolean mTranslucentQuickSettings;
     private boolean mBlurredStatusBarExpandedEnabled;
     private boolean mTranslucentNotifications;
@@ -555,6 +555,8 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
                     Settings.System.TRANSLUCENT_HEADER_PREFERENCE_KEY), false, this);
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.RECENT_APPS_ENABLED_PREFERENCE_KEY), false, this);
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.TRANSLUCENT_QUICK_SETTINGS_PRECENTAGE_PREFERENCE_KEY), false, this);
             update();
         }
 
@@ -660,6 +662,8 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
                     Settings.System.TRANSLUCENT_HEADER_PREFERENCE_KEY, 0, UserHandle.USER_CURRENT) == 1;
             mBlurredRecentAppsEnabled = Settings.System.getIntForUser(resolver,
                     Settings.System.RECENT_APPS_ENABLED_PREFERENCE_KEY, 0, UserHandle.USER_CURRENT) == 1;
+            mTranslucencyPercentage = Settings.System.getInt(mContext.getContentResolver(),
+                    Settings.System.TRANSLUCENT_QUICK_SETTINGS_PRECENTAGE_PREFERENCE_KEY, 60);
             //updatePreferences(this.mContext);
             RecentsActivity.startBlurTask();
         }
