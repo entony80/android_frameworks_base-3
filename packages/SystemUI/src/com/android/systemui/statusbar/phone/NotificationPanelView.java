@@ -708,21 +708,21 @@ public class NotificationPanelView extends PanelView implements
 
     public class BlurTask extends AsyncTask<Void, Void, Bitmap> {
 
-        private static int[] mScreenDimens;
-        private static BlurUtils.BlurEngine mBlurEngine;
-        private static BlurUtils.BlurTaskCallback mCallback;
+        private int[] mScreenDimens;
+        private BlurUtils.BlurEngine mBlurEngine;
+        private BlurUtils.BlurTaskCallback mCallback;
 
         private Bitmap mScreenBitmap;
 
-        public static void setBlurEngine(BlurUtils.BlurEngine blurEngine) {
+        public void setBlurEngine(BlurUtils.BlurEngine blurEngine) {
             mBlurEngine = blurEngine;
         }
 
-        public static void setBlurTaskCallback(BlurUtils.BlurTaskCallback callBack) {
+        public void setBlurTaskCallback(BlurUtils.BlurTaskCallback callBack) {
             mCallback = callBack;
         }
 
-        public static int[] getRealScreenDimensions() {
+        public int[] getRealScreenDimensions() {
             return mScreenDimens;
         }
 
