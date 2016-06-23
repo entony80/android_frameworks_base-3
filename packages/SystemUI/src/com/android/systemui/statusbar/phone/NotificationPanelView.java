@@ -598,7 +598,7 @@ public class NotificationPanelView extends PanelView implements
     }
 
 
-    public static void startBlurTask() {
+    public void startBlurTask() {
 
         if (!mBlurredStatusBarExpandedEnabled)
             return;
