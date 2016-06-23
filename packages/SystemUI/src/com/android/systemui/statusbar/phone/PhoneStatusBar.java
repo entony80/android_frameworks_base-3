@@ -661,7 +661,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
             mBlurredRecentAppsEnabled = Settings.System.getIntForUser(resolver,
                     Settings.System.RECENT_APPS_ENABLED_PREFERENCE_KEY, 0, UserHandle.USER_CURRENT) == 1;
             //updatePreferences(this.mContext);
-            RecentsActivity.startBlurTask()
+            RecentsActivity.startBlurTask();
         }
     }
 
