@@ -180,19 +180,15 @@ public class BatteryMeterView extends View implements DemoMode,
         protected boolean shouldIndicateCharging() {
             if (status == BatteryManager.BATTERY_STATUS_CHARGING) {
                 mXospCharging = (ImageView) findViewById(R.id.xosp_battery_charge);
-                mXospCharging.setImageResource(R.drawable.xosp_sys_battery_charge);
-                setVisibility(View.VISIBLE);
-                mXospCharging.setVisibility(VISIBLE);
+                mXospCharging.setVisibility(View.VISIBLE);
                 return true;
             }
             if (plugged) {
                 mXospCharging = (ImageView) findViewById(R.id.xosp_battery_charge);
-                mXospCharging.setImageResource(R.drawable.xosp_sys_battery_charge);
-                setVisibility(View.VISIBLE);
-                mXospCharging.setVisibility(VISIBLE);
+                mXospCharging.setVisibility(View.VISIBLE);
                 return status == BatteryManager.BATTERY_STATUS_FULL;
             }
-            mXospCharging.setVisibility(GONE);
+            mXospCharging.setVisibility(View.GONE);
             return false;
         }
     }
