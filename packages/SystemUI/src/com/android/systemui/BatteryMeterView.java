@@ -44,6 +44,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.android.systemui.statusbar.policy.BatteryController;
 import com.android.systemui.statusbar.policy.BatteryStateRegistar;
@@ -85,6 +86,8 @@ public class BatteryMeterView extends View implements DemoMode,
     private int mLightModeFillColor;
 
     protected BatteryMeterMode mMeterMode = null;
+
+    private ImageView mXospCharging;
 
     protected boolean mAttached;
 
@@ -176,6 +179,9 @@ public class BatteryMeterView extends View implements DemoMode,
 
         protected boolean shouldIndicateCharging() {
             if (status == BatteryManager.BATTERY_STATUS_CHARGING) {
+                mXospCharging = (ImageView) findViewById(R.id.xosp_battery_charge);
+                mXospCharging.setImageResource(R.drawable.xosp_sys_battery_charge);
+                setVisibility(View.VISIBLE);
                 return true;
             }
             if (plugged) {
