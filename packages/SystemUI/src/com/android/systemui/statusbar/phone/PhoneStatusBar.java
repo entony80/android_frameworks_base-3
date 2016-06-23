@@ -551,7 +551,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.TRANSLUCENT_NOTIFICATIONS_PREFERENCE_KEY), false, this);
             resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.TRANSLUCENT_HEADER_PREFERENCE_KEY), false, this, UserHandle.USER_ALL);
+                    Settings.System.TRANSLUCENT_HEADER_PREFERENCE_KEY), false, this);
             update();
         }
 
@@ -579,8 +579,20 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
                     updateSpeedbump();
                     updateClearAll();
                     updateEmptyShadeView();
+            } else if (uri.equals(Settings.System.getUriFor(
+                    Settings.TRANSLUCENT_HEADER_PREFERENCE_KEY))) {
+                    mTranslucentHeader = Settings.System.getIntForUser(
+                                        mContext.getContentResolver(),
+                                        Settings.System.TRANSLUCENT_HEADER_PREFERENCE_KEY,
+                                        0, UserHandle.USER_CURRENT) == 1;
+                    recreateStatusBar();
+                    updateRowStates();
+                    updateSpeedbump();
+                    updateClearAll();
+                    updateEmptyShadeView();
             }
-            update();
+            update(uri.equals(Settings.System.getUriFor(
+            );
         }
 
         @Override
