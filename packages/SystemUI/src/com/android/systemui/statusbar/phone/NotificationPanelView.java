@@ -63,7 +63,6 @@ import android.view.animation.PathInterpolator;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.provider.Settings;
 import android.view.animation.*;
 
 import com.android.internal.logging.MetricsLogger;
@@ -263,8 +262,8 @@ public class NotificationPanelView extends PanelView implements
     public static boolean mBlurredStatusBarExpandedEnabled;
     public static NotificationPanelView mNotificationPanelView;
 
-    private int mBlurScale;
-    private int mBlurRadius;
+    private static int mBlurScale;
+    private static int mBlurRadius;
     private static BlurUtils mBlurUtils;
     private static FrameLayout mBlurredView;
     private static ColorFilter mColorFilter;
@@ -598,7 +597,7 @@ public class NotificationPanelView extends PanelView implements
     }
 
 
-    public void startBlurTask() {
+    public static void startBlurTask() {
 
         if (!mBlurredStatusBarExpandedEnabled)
             return;
@@ -685,7 +684,7 @@ public class NotificationPanelView extends PanelView implements
         mWeatherController.removeCallback(this);
     }
 
-    public static void recycle() {
+    public void recycle() {
 
         if (mBlurredView != null &&
                 mBlurredView.getBackground() != null) {
@@ -706,23 +705,23 @@ public class NotificationPanelView extends PanelView implements
 
     }
 
-    public class BlurTask extends AsyncTask<Void, Void, Bitmap> {
+    public static class BlurTask extends AsyncTask<Void, Void, Bitmap> {
 
-        private int[] mScreenDimens;
-        private BlurUtils.BlurEngine mBlurEngine;
-        private BlurUtils.BlurTaskCallback mCallback;
+        private static int[] mScreenDimens;
+        private static BlurUtils.BlurEngine mBlurEngine;
+        private static BlurUtils.BlurTaskCallback mCallback;
 
         private Bitmap mScreenBitmap;
 
-        public void setBlurEngine(BlurUtils.BlurEngine blurEngine) {
+        public static void setBlurEngine(BlurUtils.BlurEngine blurEngine) {
             mBlurEngine = blurEngine;
         }
 
-        public void setBlurTaskCallback(BlurUtils.BlurTaskCallback callBack) {
+        public static void setBlurTaskCallback(BlurUtils.BlurTaskCallback callBack) {
             mCallback = callBack;
         }
 
-        public int[] getRealScreenDimensions() {
+        public static int[] getRealScreenDimensions() {
             return mScreenDimens;
         }
 
