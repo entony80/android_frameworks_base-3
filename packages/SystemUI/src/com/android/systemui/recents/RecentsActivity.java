@@ -104,7 +104,7 @@ public class RecentsActivity extends Activity implements RecentsView.RecentsView
     private static RecentsActivity mRecentsActivity;
     private static FrameLayout mRecentsActivityRootView;
 
-    private SettingsObserver mSettingsObserver;
+    private SettingsObserver mSettingsObserver = new SettingsObserver(new Handler());
 
     // Resize task debug
     RecentsResizeTaskDialog mResizeTaskDebugDialog;
@@ -119,11 +119,6 @@ public class RecentsActivity extends Activity implements RecentsView.RecentsView
 
     // Runnable to be executed after we paused ourselves
     Runnable mAfterPauseRunnable;
-
-    public RecentsActivity(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        mSettingsObserver = new SettingsObserver(new Handler());
-    }
 
     public static void startBlurTask() {
 
@@ -379,7 +374,7 @@ public class RecentsActivity extends Activity implements RecentsView.RecentsView
         }
     };
 
-    class SettingsObserver extends ContentObserver {
+    class SettingsObserver extends UserContentObserver {
         SettingsObserver(Handler handler) {
             super(handler);
         }
