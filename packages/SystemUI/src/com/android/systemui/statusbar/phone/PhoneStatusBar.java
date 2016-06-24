@@ -558,9 +558,9 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.TRANSLUCENT_QUICK_SETTINGS_PRECENTAGE_PREFERENCE_KEY), false, this);
             resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.TRANSLUCENT_HEADER_PRECENTAGE_PREFERENCE_KEY,), false, this, UserHandle.USER_ALL);
+                    Settings.System.TRANSLUCENT_HEADER_PRECENTAGE_PREFERENCE_KEY), false, this, UserHandle.USER_ALL);
             resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.TRANSLUCENT_NOTIFICATIONS_PRECENTAGE_PREFERENCE_KEY,), false, this, UserHandle.USER_ALL);
+                    Settings.System.TRANSLUCENT_NOTIFICATIONS_PRECENTAGE_PREFERENCE_KEY), false, this, UserHandle.USER_ALL);
             update();
         }
 
@@ -671,7 +671,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
             mNotTranslucencyPercentage = Settings.System.getInt(mContext.getContentResolver(),
                     Settings.System.TRANSLUCENT_NOTIFICATIONS_PRECENTAGE_PREFERENCE_KEY, 70);
             //updatePreferences(this.mContext);
-            RecentsActivity.startBlurTask();
+            //RecentsActivity.startBlurTask();
         }
     }
 
@@ -1575,7 +1575,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
                         if (NotificationPanelView.mKeyguardShowing) {
                             return;
                         }
-                        RecentsActivity.onConfigurationChanged();
+                        //RecentsActivity.onConfigurationChanged();
 
                         if (mExpandedVisible && NotificationPanelView.mBlurredStatusBarExpandedEnabled && (!NotificationPanelView.mKeyguardShowing)) {
                             makeExpandedInvisible();
