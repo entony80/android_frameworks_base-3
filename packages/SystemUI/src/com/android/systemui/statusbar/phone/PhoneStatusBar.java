@@ -435,7 +435,6 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
     private boolean mBlurredStatusBarExpandedEnabled;
     private boolean mTranslucentNotifications;
     private boolean mTranslucentHeader;
-    private boolean mBlurredRecentAppsEnabled;
     private int mTranslucencyPercentage;
 
     boolean mExpandedVisible;
@@ -555,8 +554,6 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.TRANSLUCENT_HEADER_PREFERENCE_KEY), false, this);
             resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.RECENT_APPS_ENABLED_PREFERENCE_KEY), false, this);
-            resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.TRANSLUCENT_QUICK_SETTINGS_PRECENTAGE_PREFERENCE_KEY), false, this);
             update();
         }
@@ -661,8 +658,6 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
                     Settings.System.TRANSLUCENT_NOTIFICATIONS_PREFERENCE_KEY, 0, UserHandle.USER_CURRENT) == 1;
             mTranslucentHeader = Settings.System.getIntForUser(resolver,
                     Settings.System.TRANSLUCENT_HEADER_PREFERENCE_KEY, 0, UserHandle.USER_CURRENT) == 1;
-            mBlurredRecentAppsEnabled = Settings.System.getIntForUser(resolver,
-                    Settings.System.RECENT_APPS_ENABLED_PREFERENCE_KEY, 0, UserHandle.USER_CURRENT) == 1;
             mTranslucencyPercentage = Settings.System.getInt(mContext.getContentResolver(),
                     Settings.System.TRANSLUCENT_QUICK_SETTINGS_PRECENTAGE_PREFERENCE_KEY, 60);
             //updatePreferences(this.mContext);
