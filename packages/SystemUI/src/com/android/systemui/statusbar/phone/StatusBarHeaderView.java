@@ -131,6 +131,8 @@ public class StatusBarHeaderView extends RelativeLayout implements View.OnClickL
     private int mMultiUserExpandedMargin;
     private int mMultiUserCollapsedMargin;
 
+    private SettingsObserver mSettingsObserver;
+
     private int mClockMarginBottomExpanded;
     private int mClockMarginBottomCollapsed;
     private int mMultiUserSwitchWidthCollapsed;
@@ -169,7 +171,6 @@ public class StatusBarHeaderView extends RelativeLayout implements View.OnClickL
     private float mCurrentT;
     private boolean mShowingDetail;
     private boolean mDetailTransitioning;
-    private SettingsObserver mSettingsObserver;
     private boolean mShowWeather;
     private boolean mShowBatteryTextExpanded;
 
@@ -281,6 +282,7 @@ public class StatusBarHeaderView extends RelativeLayout implements View.OnClickL
         if (mKeyguardShowing) {
             mStatusBarHeaderView.getBackground().setAlpha(255);
         } else {
+            mTranslucencyPercentage = 255 - ((mTranslucencyPercentage * 255) / 100);
             mStatusBarHeaderView.getBackground().setAlpha(mTranslucentHeader ? mTranslucencyPercentage : 255);
         }
     }
@@ -874,14 +876,6 @@ public class StatusBarHeaderView extends RelativeLayout implements View.OnClickL
         updateAmPmTranslation();
     }
 
-    public static void updatePreferences(Context mContext) {
-        mTranslucentHeader = (Settings.System.getInt(mContext.getContentResolver(), Settings.System.TRANSLUCENT_HEADER_PREFERENCE_KEY, 1) == 1);
-        mTranslucencyPercentage =  Settings.System.getInt(mContext.getContentResolver(), Settings.System.TRANSLUCENT_HEADER_PRECENTAGE_PREFERENCE_KEY, 70);
-        mTranslucencyPercentage = 255 - ((mTranslucencyPercentage * 255) / 100);
-
-        handleStatusBarHeaderViewBackround();
-    }
-
     public void setEditing(boolean editing) {
         mEditing = editing;
         if (editing && mEditingDetailAdapter == null) {
@@ -1128,6 +1122,10 @@ public class StatusBarHeaderView extends RelativeLayout implements View.OnClickL
                     CMSettings.System.STATUS_BAR_SHOW_BATTERY_PERCENT), false, this, UserHandle.USER_ALL);
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.ENABLE_TASK_MANAGER), false, this);
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.TRANSLUCENT_HEADER_PREFERENCE_KEY), false, this, UserHandle.USER_ALL);
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.TRANSLUCENT_HEADER_PRECENTAGE_PREFERENCE_KEY), false, this, UserHandle.USER_ALL);
             update();
         }
 
@@ -1163,7 +1161,14 @@ public class StatusBarHeaderView extends RelativeLayout implements View.OnClickL
                     resolver, CMSettings.System.STATUS_BAR_SHOW_WEATHER, 1) == 1;
             mShowTaskManager = Settings.System.getIntForUser(resolver,
                 Settings.System.ENABLE_TASK_MANAGER, 0, currentUserId) == 1;
+            mTranslucentHeader = Settings.System.getIntForUser(resolver,
+                Settings.System.TRANSLUCENT_HEADER_PREFERENCE_KEY, 0, currentUserId) == 1;
+            mTranslucencyPercentage = Settings.System.getInt(mContext.getContentResolver(),
+                Settings.System.TRANSLUCENT_HEADER_PRECENTAGE_PREFERENCE_KEY, 70);
 
+            mTranslucencyPercentage = 255 - ((mTranslucencyPercentage * 255) / 100);
+            handleStatusBarHeaderViewBackround();
+            updateEverything();
             updateVisibilities();
             requestCaptureValues();
         }
