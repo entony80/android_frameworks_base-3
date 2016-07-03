@@ -1020,7 +1020,8 @@ class TelephonyRegistry extends ITelephonyRegistry.Stub {
             if (validatePhoneId(phoneId)) {
                 mDataActivity[phoneId] = state;
                 for (Record r : mRecords) {
-                    if (r.matchPhoneStateListenerEvent(PhoneStateListener.LISTEN_DATA_ACTIVITY)) {
+                    if (r.matchPhoneStateListenerEvent(PhoneStateListener.LISTEN_DATA_ACTIVITY)
+                            && idMatch(r.subId, subId, phoneId)) {
                         try {
                             r.callback.onDataActivity(state);
                         } catch (RemoteException ex) {
@@ -1063,7 +1064,8 @@ class TelephonyRegistry extends ITelephonyRegistry.Stub {
                 }
                 boolean modified = false;
                 if (state == TelephonyManager.DATA_CONNECTED) {
-                    if (!mConnectedApns[phoneId].contains(apnType)) {
+                    if (!mConnectedApns[phoneId].contains(apnType)
+                            && !apnType.equals(PhoneConstants.APN_TYPE_IMS)) {
                         mConnectedApns[phoneId].add(apnType);
                         if (mDataConnectionState[phoneId] != state) {
                             mDataConnectionState[phoneId] = state;
