@@ -532,6 +532,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
 
             if (visible) {
                 forceAddNavigationBar();
+                mNavigationBarView.updateNavBarIcons(mNavBarSwitch);
             } else {
                 removeNavigationBar();
             }
