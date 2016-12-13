@@ -54,6 +54,7 @@ import com.android.systemui.R;
 import com.android.systemui.RecentsComponent;
 import com.android.systemui.cm.UserContentObserver;
 import com.android.systemui.stackdivider.Divider;
+import com.android.systemui.statusbar.policy.BackButtonDrawable;
 import com.android.systemui.statusbar.policy.DeadZone;
 import com.android.systemui.tuner.TunerService;
 
@@ -69,6 +70,8 @@ public class NavigationBarView extends LinearLayout implements TunerService.Tuna
     // slippery nav bar when everything is disabled, e.g. during setup
     final static boolean SLIPPERY_WHEN_DISABLED = true;
 
+    final static boolean ALTERNATE_CAR_MODE_UI = false;
+
     final Display mDisplay;
     View mCurrentView = null;
     View[] mRotatedViews = new View[4];
@@ -83,9 +86,8 @@ public class NavigationBarView extends LinearLayout implements TunerService.Tuna
     int mDisabledFlags = 0;
     int mNavigationIconHints = 0;
 
-    private Drawable mBackIcon, mBackLandIcon, mBackAltIcon, mBackAltLandIcon;
-    private Drawable mBackCarModeIcon, mBackLandCarModeIcon;
-    private Drawable mBackAltCarModeIcon, mBackAltLandCarModeIcon;
+    private BackButtonDrawable mBackIcon, mBackLandIcon;
+    private BackButtonDrawable mBackCarModeIcon, mBackLandCarModeIcon;
     private Drawable mHomeDefaultIcon, mHomeCarModeIcon;
     private Drawable mRecentIcon;
     private Drawable mDockedIcon;
@@ -112,7 +114,8 @@ public class NavigationBarView extends LinearLayout implements TunerService.Tuna
     private OnVerticalChangedListener mOnVerticalChangedListener;
     private boolean mLayoutTransitionsEnabled = true;
     private boolean mWakeAndUnlocking;
-    private boolean mCarMode = false;
+    private boolean mUseCarModeUi = false;
+    private boolean mInCarMode = false;
     private boolean mDockedStackExists;
     
     private boolean mNavBarSwitch;
@@ -314,10 +317,9 @@ public class NavigationBarView extends LinearLayout implements TunerService.Tuna
     public ViewGroup getDpadView() { return (ViewGroup) getCurrentView().findViewById(R.id.dpad_group); }
 
     private void updateCarModeIcons(Context ctx) {
-        mBackCarModeIcon = ctx.getDrawable(R.drawable.ic_sysbar_back_carmode);
+        mBackCarModeIcon = new BackButtonDrawable(
+                ctx.getDrawable(R.drawable.ic_sysbar_back_carmode));
         mBackLandCarModeIcon = mBackCarModeIcon;
-        mBackAltCarModeIcon = ctx.getDrawable(R.drawable.ic_sysbar_back_ime_carmode);
-        mBackAltLandCarModeIcon = mBackAltCarModeIcon;
         mHomeCarModeIcon = ctx.getDrawable(R.drawable.ic_sysbar_home_carmode);
     }
 
@@ -379,13 +381,7 @@ public class NavigationBarView extends LinearLayout implements TunerService.Tuna
         setNavigationIconHints(hints, false);
     }
 
-    private Drawable getBackIconWithAlt(boolean carMode, boolean landscape) {
-        return landscape
-                ? carMode ? mBackAltLandCarModeIcon : mBackAltLandIcon
-                : carMode ? mBackAltCarModeIcon : mBackAltIcon;
-    }
-
-    private Drawable getBackIcon(boolean carMode, boolean landscape) {
+    private BackButtonDrawable getBackIcon(boolean carMode, boolean landscape) {
         return landscape
                 ? carMode ? mBackLandCarModeIcon : mBackLandIcon
                 : carMode ? mBackCarModeIcon : mBackIcon;
@@ -408,15 +404,14 @@ public class NavigationBarView extends LinearLayout implements TunerService.Tuna
         // We have to replace or restore the back and home button icons when exiting or entering
         // carmode, respectively. Recents are not available in CarMode in nav bar so change
         // to recent icon is not required.
-        Drawable backIcon = (backAlt)
-                ? getBackIconWithAlt(mCarMode, mVertical)
-                : getBackIcon(mCarMode, mVertical);
+        BackButtonDrawable backIcon = getBackIcon(mUseCarModeUi, mVertical);
+        backIcon.setImeVisible(backAlt);
 
         getBackButton().setImageDrawable(backIcon);
 
         updateRecentsIcon();
 
-        if (mCarMode) {
+        if (mUseCarModeUi) {
             getHomeButton().setImageDrawable(mHomeCarModeIcon);
         } else {
             getHomeButton().setImageDrawable(mHomeDefaultIcon);
@@ -447,9 +442,9 @@ public class NavigationBarView extends LinearLayout implements TunerService.Tuna
 
         final boolean disableHome = ((disabledFlags & View.STATUS_BAR_DISABLE_HOME) != 0);
 
-        // Disable recents always in car mode.
-        boolean disableRecent = (
-                mCarMode || (disabledFlags & View.STATUS_BAR_DISABLE_RECENT) != 0);
+        // Always disable recents when alternate car mode UI is active.
+        boolean disableRecent = mUseCarModeUi
+                        || ((disabledFlags & View.STATUS_BAR_DISABLE_RECENT) != 0);
         final boolean disableBack = ((disabledFlags & View.STATUS_BAR_DISABLE_BACK) != 0)
                 && ((mNavigationIconHints & StatusBarManager.NAVIGATION_HINT_BACK_ALT) == 0);
         final boolean disableSearch = ((disabledFlags & View.STATUS_BAR_DISABLE_SEARCH) != 0);
@@ -705,14 +700,19 @@ public class NavigationBarView extends LinearLayout implements TunerService.Tuna
         boolean uiCarModeChanged = false;
         if (newConfig != null) {
             int uiMode = newConfig.uiMode & Configuration.UI_MODE_TYPE_MASK;
-            if (mCarMode && uiMode != Configuration.UI_MODE_TYPE_CAR) {
-                mCarMode = false;
-                uiCarModeChanged = true;
-                getHomeButton().setCarMode(mCarMode);
-            } else if (uiMode == Configuration.UI_MODE_TYPE_CAR) {
-                mCarMode = true;
-                uiCarModeChanged = true;
-                getHomeButton().setCarMode(mCarMode);
+            final boolean isCarMode = (uiMode == Configuration.UI_MODE_TYPE_CAR);
+
+            if (isCarMode != mInCarMode) {
+                mInCarMode = isCarMode;
+                getHomeButton().setCarMode(isCarMode);
+
+                if (ALTERNATE_CAR_MODE_UI) {
+                    mUseCarModeUi = isCarMode;
+                    uiCarModeChanged = true;
+                } else {
+                    // Don't use car mode behavior if ALTERNATE_CAR_MODE_UI not set.
+                    mUseCarModeUi = false;
+                }
             }
         }
         return uiCarModeChanged;

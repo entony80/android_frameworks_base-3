@@ -43,7 +43,7 @@ public class NotificationBrightnessController implements ToggleSlider.Listener {
     public static final int LIGHT_BRIGHTNESS_MAXIMUM = 255;
 
     // Minimum delay between LED notification updates
-    private final static long LED_UPDATE_DELAY_MS = 250;
+    private final static long LED_UPDATE_DELAY_MS = 100;
 
     private int mCurrentBrightness;
     private final int mMinimumBrightness;
@@ -59,7 +59,6 @@ public class NotificationBrightnessController implements ToggleSlider.Listener {
             new ArrayList<BrightnessStateChangeCallback>();
 
     private boolean mListening;
-    private boolean mExternalChange;
 
     private boolean mNotificationAllow;
     private final Bundle mNotificationBundle;
@@ -168,13 +167,18 @@ public class NotificationBrightnessController implements ToggleSlider.Listener {
             return;
         }
 
+        // Read the brightness and set the maximum value for preview
+        mCurrentBrightness = CMSettings.System.getIntForUser(mContext.getContentResolver(),
+                CMSettings.System.NOTIFICATION_LIGHT_BRIGHTNESS_LEVEL,
+                mMaximumBrightness, UserHandle.USER_CURRENT);
+        CMSettings.System.putIntForUser(mContext.getContentResolver(),
+                CMSettings.System.NOTIFICATION_LIGHT_BRIGHTNESS_LEVEL,
+                mMaximumBrightness, UserHandle.USER_CURRENT);
+
         // Update the slider and mode before attaching the listener so we don't
         // receive the onChanged notifications for the initial values.
         mNotificationAllow = true;
         updateSlider();
-
-        mBrightnessObserver.startObserving();
-        mUserTracker.startTracking();
 
         mControl.setOnChangedListener(this);
         mListening = true;
@@ -187,8 +191,6 @@ public class NotificationBrightnessController implements ToggleSlider.Listener {
         }
 
         mNotificationAllow = false;
-        mBrightnessObserver.stopObserving();
-        mUserTracker.stopTracking();
         mControl.setOnChangedListener(null);
         mNotificationManager.cancel(1);
         mListening = false;
@@ -201,8 +203,6 @@ public class NotificationBrightnessController implements ToggleSlider.Listener {
     @Override
     public void onChanged(ToggleSlider view, boolean tracking, boolean automatic, int value,
             boolean stopTracking) {
-        if (mExternalChange) return;
-
         mCurrentBrightness = value + mMinimumBrightness;
         updateNotification();
 
@@ -213,14 +213,6 @@ public class NotificationBrightnessController implements ToggleSlider.Listener {
 
     /** Fetch the brightness from the system settings and update the slider */
     private void updateSlider() {
-        mCurrentBrightness = CMSettings.System.getIntForUser(mContext.getContentResolver(),
-                CMSettings.System.NOTIFICATION_LIGHT_BRIGHTNESS_LEVEL,
-                mMaximumBrightness, UserHandle.USER_CURRENT);
-
-        CMSettings.System.putIntForUser(mContext.getContentResolver(),
-                CMSettings.System.NOTIFICATION_LIGHT_BRIGHTNESS_LEVEL,
-                mMaximumBrightness, UserHandle.USER_CURRENT);
-
         mControl.setMax(mMaximumBrightness - mMinimumBrightness);
         mControl.setValue(mCurrentBrightness - mMinimumBrightness);
         updateNotification();
@@ -238,10 +230,9 @@ public class NotificationBrightnessController implements ToggleSlider.Listener {
 
             // Instead of canceling the notification, force it to update with the color.
             // Use a white light for a better preview of the brightness.
-            int notificationColor = 0xFFFFFF | (mCurrentBrightness << 24);
+            int notificationColor = 0x00FFFFFF | (mCurrentBrightness << 24);
             mNotificationBuilder.setLights(notificationColor, 1, 0);
             mNotificationManager.notify(1, mNotificationBuilder.build());
         }
     }
-
 }
